@@ -1,0 +1,24 @@
+### **High**  
+1. **Centralization Risk** – The `recoveryAdmin` and `admin` have significant control over the contract, including the ability to disable the Lossless protection mechanism. This centralization could be exploited or lead to mismanagement.  
+
+2. **Lossless Turn-Off Mechanism** – The `proposeLosslessTurnOff` and `executeLosslessTurnOff` functions allow disabling security measures. If compromised, an attacker could disable Lossless protection and perform unrestricted transfers.  
+
+3. **Blacklisted Funds Transfer** – The `transferOutBlacklistedFunds` function allows the lossless contract to reallocate balances of blacklisted users without limits, which could be misused if the lossless contract is compromised.  
+
+### **Medium**  
+4. **Lack of Access Control in `acceptRecoveryAdminOwnership`** – The function verifies the sender and key hash but does not implement multi-signature confirmation or time delay, making recovery admin changes susceptible to social engineering or phishing attacks.  
+
+5. **Unchecked External Call in `lossless` Hooks** – The `lossless` functions (`beforeTransfer`, `beforeBurn`, etc.) are externally called within modifiers. If the external contract is compromised or behaves maliciously, it could halt transactions or introduce unexpected behavior.  
+
+### **Low**  
+6. **Lack of Event Emission for Key Functions** – Critical functions like `_mint`, `_burn`, and `_approve` do not emit detailed custom events beyond the standard ERC20 events, making it harder to track administrative changes and approvals.  
+
+7. **Unchecked Arithmetic in `_approve` and `_burnFrom`** – While Solidity 0.8+ has built-in overflow protection, the contract uses `unchecked` blocks in `_burnFrom`, which could lead to subtle issues if the logic is modified.  
+
+### **Undetermined**  
+8. **Potential Lossless Dependency Risk** – The contract relies heavily on `ILssController`. If the external lossless contract is updated or deprecated, this contract may become non-functional or insecure.  
+
+### **Informational**  
+9. **Misleading Modifier Naming (`lssAprove`)** – The function name has a typo (`lssAprove` instead of `lssApprove`), which may cause confusion for developers interacting with the contract.  
+
+10. **Code Readability and Maintainability Issues** – The contract lacks sufficient inline comments and documentation, making it harder for developers to audit and understand the logic.

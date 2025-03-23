@@ -1,0 +1,38 @@
+### **High Severity**
+1. **Integer Underflow in `unlockedBalanceOf`**  
+   - The subtraction `balanceOf(account) - lockedBalanceOf[account]` can cause an underflow if `lockedBalanceOf[account] > balanceOf(account)`, leading to unintended behavior.  
+
+2. **Reentrancy Risk in `lock` and `unlock`**  
+   - Since these functions modify `lockedBalanceOf` before emitting events, a reentrancy attack could manipulate the balance through an external contract.
+
+3. **Batch Transfer Gas Limit Issue (`transfers` function)**  
+   - The function lacks gas limit checks and could fail if processing too many elements, making it a potential vector for denial-of-service (DoS) attacks.
+
+---
+
+### **Medium Severity**
+4. **Lack of Access Control on `lock` and `unlock`**  
+   - Any user can arbitrarily lock or unlock their tokens without any restrictions, which may be undesirable in some governance mechanisms.
+
+5. **Upgradeability Risk (`__gap` not properly reserved)**  
+   - While a storage gap exists, it is not clear if future upgrades will maintain storage alignment, which can cause contract corruption.
+
+---
+
+### **Low Severity**
+6. **Lack of Event Emission for Critical Actions**  
+   - The `transferFrom` and `transfer` functions override ERC20 functions but do not emit additional events to indicate when transfers are blocked due to insufficient unlocked tokens.
+
+7. **Unnecessary `return true` in Functions**  
+   - The `lock`, `unlock`, and `transfers` functions explicitly return `true`, but this is redundant as Solidity would revert if execution fails.
+
+---
+
+### **Informational**
+8. **Redundant Comments in `initialize` Function**  
+   - The comments explain Solidity upgradeability concepts, which may not be necessary for contract users.
+
+9. **Use of `public` Visibility in `initialize`**  
+   - Although `initializer` prevents re-execution, making `initialize` `external` would be a minor gas optimization.
+
+Let me know if you need recommendations on fixes! 🚀

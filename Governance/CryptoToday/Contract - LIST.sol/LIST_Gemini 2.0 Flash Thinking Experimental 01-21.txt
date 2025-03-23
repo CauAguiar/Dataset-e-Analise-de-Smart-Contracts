@@ -1,0 +1,21 @@
+Tempo de processamento: 9.11 segundos
+
+## Auditoria de Smart Contract - Contrato LIST
+
+Aqui estão as vulnerabilidades encontradas no contrato Solidity `LIST`, listadas com títulos, descrições curtas e categorias de severidade.
+
+**1. Reentrância na Transferência de Referência**
+**Descrição:** A função `invest` transfere Ether para o `referer`. Se o `referer` for um contrato, essa chamada externa pode ser vulnerável a ataques de reentrância.
+**Categoria:** Medium
+
+**2. Potencial DoS em `endSale` devido à Iteração do Array de Investidores**
+**Descrição:** A função `endSale` itera sobre todos os investidores para calcular as parcelas. Com um número muito grande de investidores, essa iteração pode consumir muito gás e potencialmente causar uma negação de serviço (DoS).
+**Categoria:** Low
+
+**3. Falta de Validação de Entrada para Valor de Investimento**
+**Descrição:** A função `invest` não verifica o valor de entrada `msg.value`. Embora não seja crítico, a validação de entrada é uma boa prática para robustez. Por exemplo, impedir investimentos de valor zero.
+**Categoria:** Informational
+
+**4. Controle Centralizado via Proprietário (Owner)**
+**Descrição:** O contrato depende de `Ownable`, dando ao proprietário do contrato controle significativo sobre funcionalidades cruciais como pausar, encerrar a venda e cunhar tokens. Isso não é uma vulnerabilidade em si, mas uma consideração de design em termos de descentralização e confiança.
+**Categoria:** Informational

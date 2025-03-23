@@ -1,0 +1,39 @@
+Tempo de processamento: 12.20 segundos
+
+Como auditor de smart contracts, listo as vulnerabilidades encontradas no contrato `LiquidatorStorage`:
+
+1.  **Título:** Falta de Validação de Entrada em `treasuryPercentMantissa`
+    **Descrição:** Não há validação para garantir que o valor de `treasuryPercentMantissa` esteja dentro de um intervalo aceitável ou seja um valor razoável para uma porcentagem, o que pode levar a cálculos inesperados ou erros lógicos.
+    **Categoria:** Low
+
+2.  **Título:** Crescimento Descontrolado do Mapeamento `allowedLiquidatorsByAccount`
+    **Descrição:** O mapeamento `allowedLiquidatorsByAccount` pode crescer indefinidamente à medida que mais contas e liquidadores autorizados são adicionados, potencialmente levando a problemas de armazenamento e aumento dos custos de gás ao longo do tempo.
+    **Categoria:** Low
+
+3.  **Título:** Risco de Configuração Incorreta em `liquidationRestricted`
+    **Descrição:** Se o valor padrão ou a lógica de configuração de `liquidationRestricted` for inadequada, pode inadvertidamente desabilitar as liquidações totalmente ou permitir liquidações não autorizadas, dependendo da intenção do sistema.
+    **Categoria:** Medium
+
+4.  **Título:** Risco de Configuração Incorreta em `minLiquidatableVAI`
+    **Descrição:** A definição incorreta de `minLiquidatableVAI` pode impedir liquidações quando deveriam ocorrer (se o limite for muito alto) ou permitir liquidações desnecessárias que não são economicamente justificadas (se o limite for muito baixo).
+    **Categoria:** Medium
+
+5.  **Título:** Risco de Configuração Incorreta em `forceVAILiquidate`
+    **Descrição:** A variável booleana `forceVAILiquidate` depende de sua configuração correta para o funcionamento esperado do sistema de liquidação do VAI. Uma configuração inadequada pode desativar ou ativar indevidamente a verificação de liquidação do VAI.
+    **Categoria:** Medium
+
+6.  **Título:** Crescimento Ilimitado do Array `pendingRedeem`
+    **Descrição:** O array `pendingRedeem` pode crescer indefinidamente se não houver um mecanismo para limitar ou limpar entradas, o que pode levar a altos custos de gás ao iterar sobre ele e potencial atingimento de limites de gás em transações futuras.
+    **Categoria:** Medium
+
+7.  **Título:** Falta de Validação do Endereço `protocolShareReserve`
+    **Descrição:** Não há validação para garantir que o endereço `protocolShareReserve` seja de fato um contrato válido, o que poderia levar a erros se um endereço incorreto ou um endereço de carteira comum (EOA) for acidentalmente definido.
+    **Categoria:** Low
+
+8.  **Título:** Variável Interna `pendingRedeemChunkLength` e Possível Impacto no Desempenho
+    **Descrição:** Embora `pendingRedeemChunkLength` seja interna a este contrato e seu impacto direto seja limitado, uma configuração inadequada pode afetar o desempenho das operações de resgate (redeem) durante a liquidação, o que indiretamente pode ter implicações operacionais.
+    **Categoria:** Informational
+
+9.  **Título:** Gap de Armazenamento `__gap`
+    **Descrição:** `__gap` é um espaço reservado no armazenamento, uma prática comum para contratos que podem ser atualizados por proxy. Não representa uma vulnerabilidade em si, mas sim uma consideração de design para compatibilidade futura em caso de upgrade do contrato.
+    **Categoria:** Informational

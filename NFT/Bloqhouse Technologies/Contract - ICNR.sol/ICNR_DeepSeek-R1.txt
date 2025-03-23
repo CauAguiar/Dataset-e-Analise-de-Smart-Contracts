@@ -1,0 +1,31 @@
+Tempo de processamento: 16.31 segundos
+
+**High-Risk Vulnerabilities:**
+
+1. **Excessive Privileges in changeBaseURI Function**  
+   The `changeBaseURI` function is marked as `external` without any access control modifiers, allowing any external actor to modify the base URI, potentially compromising the integrity of NFT metadata.
+
+---
+
+**Low-Risk Vulnerabilities:**
+
+1. **Missing Valid Contract Address Check in getNFTURI**  
+   The `contractAddress` parameter in `getNFTURI` is not validated, risking interactions with invalid or unintended addresses, which could result in failed calls or unexpected behavior.
+
+---
+
+**Undetermined Risks:**
+
+1. **Unspecified Behavior in ICNR Interface**  
+   The interface `ICNR` lacks implementation details for `getNFTURI` and `changeBaseURI`, leaving potential risks (e.g., logic flaws, unsafe operations) hidden until the actual implementation is reviewed.
+
+---
+
+**Informational Issues:**
+
+1. **Pinned Solidity Compiler Version**  
+   The contract specifies `pragma solidity 0.8.19`, which ensures security features of that version but restricts forward compatibility and upgrades to newer compiler versions.
+
+---
+
+**No medium-risk vulnerabilities identified in the provided code snippet.**

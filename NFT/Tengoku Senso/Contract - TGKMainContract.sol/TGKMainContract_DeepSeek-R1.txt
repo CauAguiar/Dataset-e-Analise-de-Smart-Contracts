@@ -1,0 +1,36 @@
+Tempo de processamento: 111.21 segundos
+
+**Audit Report: Vulnerabilities in TGKMainContract**
+
+---
+
+**High Severity:**
+1. **Centralization Risk**  
+   All critical functions (withdraw, token transfers) are restricted to a single owner, creating a single point of failure. Compromise of the owner's key could lead to loss of funds/NFTs.
+
+---
+
+**Medium Severity:**
+1. **Unsafe ETH Withdrawal Mechanism**  
+   Uses `transfer()` for ETH withdrawals, which may fail if the recipient is a contract with gas-intensive logic. Recommended to use `call()` with checks-effects-interactions.
+2. **Incorrect ERC20 Balance Handling**  
+   Assumes ERC20 token balances are static. Fee-on-transfer or rebasing tokens may cause discrepancies between the actual transferred amount and the `amount` parameter.
+
+---
+
+**Low Severity:**
+1. **Redundant NFT Ownership Check**  
+   The `ownerOf` check in `transferNFT` is redundant since `safeTransferFrom` inherently verifies ownership.
+
+---
+
+**Informational:**
+1. **Immutable Ownership**  
+   No mechanism to transfer ownership, limiting flexibility post-deployment.
+2. **Inaccurate Event Emission for ERC20 Transfers**  
+   Events may log incorrect `amount` values for non-standard ERC20 tokens (e.g., fee-on-transfer tokens).
+
+---
+
+**Undetermined:**  
+No undetermined risks identified.

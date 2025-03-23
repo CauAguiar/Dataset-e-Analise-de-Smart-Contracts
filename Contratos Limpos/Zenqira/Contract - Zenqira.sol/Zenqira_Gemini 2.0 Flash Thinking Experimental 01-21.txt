@@ -1,0 +1,13 @@
+Tempo de processamento: 9.94 segundos
+
+## Auditoria de Contrato Inteligente - Vulnerabilidades
+
+Aqui está uma lista de vulnerabilidades encontradas no contrato Solidity fornecido, categorizadas por severidade e no formato solicitado:
+
+**1. Centralização da Distribuição Inicial de Tokens**
+* **Descrição:** Todos os tokens são cunhados para o endereço do implantador do contrato no construtor. Isso dá controle significativo sobre o fornecimento inicial de tokens para uma única entidade, representando um risco de centralização.
+* **Categoria:** Medium
+
+**2. Fornecimento Fixo de Tokens**
+* **Descrição:** O fornecimento total de tokens é fixo e definido no contrato.  Não há mecanismos para aumentar ou diminuir o fornecimento no futuro, o que pode ser uma limitação dependendo dos objetivos do projeto.
+* **Categoria:** Informational

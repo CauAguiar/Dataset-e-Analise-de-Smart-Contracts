@@ -1,0 +1,26 @@
+Tempo de processamento: 48.58 segundos
+
+**Auditoria do Contrato TrooperNFT**
+
+**High Risk:**
+1. **Verificação Inadequada de Assinatura (Signature Verification Flaw)**  
+   A função `verifyNFT` (externo ao contrato) pode não validar corretamente se a assinatura é específica para `msg.sender` ou se permite ataques de replay, comprometendo a segurança do `claimTrooper`.
+
+2. **Controle Centralizado de Mint (Owner Mint Privilege)**  
+   A função `airdrop` permite ao `owner` criar NFTs arbitrários (qualquer `id`) para qualquer endereço, centralizando poder e permitindo abuso sem restrições.
+
+**Medium Risk:**
+1. **Falta de Prevenção contra Replay Attacks**  
+   Se a assinatura usada em `claimTrooper` não incorporar um nonce ou identificador único, a mesma assinatura pode ser reutilizada em redes paralelas (cross-chain replay).
+
+**Low Risk:**
+1. **Metadados Imutáveis (Fixed Metadata URI)**  
+   O URI dos tokens é definido no construtor e não pode ser atualizado, o que pode limitar funcionalidades futuras ou correções de metadados.
+
+**Informational:**
+1. **Ausência de Eventos Personalizados**  
+   A função `claimTrooper` não emite eventos personalizados para rastrear reivindicações, dificultando a auditoria externa e monitoramento.
+
+**Undetermined:**
+1. **Riscos no Contrato `Signature`**  
+   A segurança da função `verifyNFT` não pode ser avaliada sem análise do código-fonte do contrato `Signature`, tornando vulnerabilidades potenciais indeterminadas.

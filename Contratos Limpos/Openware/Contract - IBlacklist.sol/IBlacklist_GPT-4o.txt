@@ -1,0 +1,19 @@
+### **High**  
+1. **Centralization Risk** – The `COMPLIANCE_ROLE` has significant power, including blacklisting and burning funds, which can be misused if compromised.  
+
+2. **Lack of Access Control Implementation** – The interface does not define how roles are assigned or verified, potentially leading to unauthorized execution of sensitive functions.  
+
+3. **Irrevocable Burning** – The `burnBlacklisted` function does not specify safeguards or an appeal process for wrongly blacklisted users, making it prone to abuse or mistakes.  
+
+### **Medium**  
+4. **Event Emission Mismatch** – The event `BlacklistedBurnt` includes `amount`, but the interface does not specify how the amount is determined, leading to ambiguity in implementation.  
+
+5. **Absence of Validation** – The functions do not specify any checks before blacklisting, unblacklisting, or burning, increasing the risk of arbitrary execution.  
+
+### **Low**  
+6. **Lack of Documentation for Role Management** – The contract does not clarify how `COMPLIANCE_ROLE` is assigned or managed, which may lead to confusion during implementation.  
+
+### **Informational**  
+7. **No Implementation Details** – As an interface, the actual security risks will depend on how these functions are implemented in a concrete contract.  
+
+Would you like me to audit an implementation of this interface as well?

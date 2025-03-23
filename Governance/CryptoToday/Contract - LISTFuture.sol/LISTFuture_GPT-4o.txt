@@ -1,0 +1,24 @@
+### **High**  
+1. **Lack of Access Control on burnFrom Function**  
+   - The `burnFrom` function allows any approved spender to burn tokens, which could lead to unintended burns if approvals are misused.  
+
+2. **Missing Pausable Enforcement in Critical Functions**  
+   - The contract imports `Pausable`, but no functions implement the `whenNotPaused` modifier, making it ineffective.  
+
+### **Medium**  
+3. **Unchecked Minting in Constructor**  
+   - The constructor mints tokens without verification, potentially leading to over-minting beyond the cap if the input is manipulated.  
+
+4. **Cap Enforcement Inconsistency**  
+   - `_mint` is called in the constructor, but it does not explicitly check against `ERC20Capped`'s cap limit, relying on internal OpenZeppelin logic.  
+
+### **Low**  
+5. **Lack of Event Emission in burnFrom**  
+   - The `burnFrom` function does not emit an event, making it harder to track token burns on-chain.  
+
+### **Informational**  
+6. **Misleading Contract Name and Comments**  
+   - The contract name `LISTFuture` and the comments suggest functionality related to time-locked tokens, but there are no time-based restrictions in the contract itself.  
+
+7. **Use of `unchecked` in burnFrom Without Clear Justification**  
+   - The `unchecked` block is used for allowance reduction but is unnecessary in this case, as Solidity 0.8+ includes overflow checks by default.

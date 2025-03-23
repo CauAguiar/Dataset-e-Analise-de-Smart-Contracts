@@ -1,0 +1,30 @@
+Tempo de processamento: 9.27 segundos
+
+## Auditoria de Smart Contract - Interface ICNR
+
+Aqui está uma lista de vulnerabilidades potenciais na interface `ICNR`, separadas por categoria de risco e no formato Título e Descrição.
+
+**1. Vulnerabilidades**
+
+*   **Título:** Falta de Controle de Acesso na Função `changeBaseURI`
+    **Descrição:** A função `changeBaseURI` permite alterar a URI base. Se um contrato que implementa esta interface não restringir o acesso a esta função (por exemplo, apenas ao proprietário), qualquer pessoa poderá alterar a URI base, resultando em potenciais ataques de phishing ou manipulação da metadata dos NFTs.
+
+*   **Título:** Chamada Externa Não Segura na Função `getNFTURI`
+    **Descrição:** A função `getNFTURI` faz uma chamada para um contrato externo (`contractAddress`). Se o contrato externo for malicioso ou vulnerável, ele pode comprometer a segurança do sistema em geral. Isso inclui riscos como reentrada (se o contrato que implementa `ICNR` não lidar adequadamente com retornos ou se o contrato externo realizar ações vulneráveis) ou o retorno de dados inesperados e maliciosos.
+
+*   **Título:** Falta de Validação da URI Base em `changeBaseURI`
+    **Descrição:** A função `changeBaseURI` aceita uma nova URI base (`newBaseURI`) sem validação aparente na interface. Se o contrato que implementa esta interface não validar a entrada, URIs mal formatadas, excessivamente longas ou maliciosas podem ser definidas, potencialmente causando problemas de armazenamento, falhas em sistemas que dependem da URI ou problemas de exibição de NFTs.
+
+*   **Título:** Potencial Negação de Serviço (DoS) na Chamada Externa de `getNFTURI`
+    **Descrição:** Se o contrato externo (`contractAddress`) para o qual `getNFTURI` faz a chamada estiver inativo, muito lento para responder ou consumir muitos recursos, as chamadas para `getNFTURI` podem falhar ou demorar excessivamente, resultando em uma potencial negação de serviço para utilizadores que dependem desta função.
+
+*   **Título:** Confiança Implícita nos Dados Retornados por Contrato Externo em `getNFTURI`
+    **Descrição:** A função `getNFTURI` confia que o contrato externo (`contractAddress`) retornará uma URI válida e benigna.  Se o contrato externo for malicioso ou comprometido, ele pode retornar dados arbitrários ou URIs maliciosas. Embora isso não seja diretamente uma vulnerabilidade na *interface* em si, sistemas que utilizam os dados retornados por `getNFTURI` podem ser comprometidos se não validarem ou sanitizarem a URI recebida.
+
+**2. Categorias de Risco**
+
+*   **Falta de Controle de Acesso na Função `changeBaseURI`**: **High**
+*   **Chamada Externa Não Segura na Função `getNFTURI`**: **Medium**
+*   **Falta de Validação da URI Base em `changeBaseURI`**: **Medium**
+*   **Potencial Negação de Serviço (DoS) na Chamada Externa de `getNFTURI`**: **Low**
+*   **Confiança Implícita nos Dados Retornados por Contrato Externo em `getNFTURI`**: **Informational**

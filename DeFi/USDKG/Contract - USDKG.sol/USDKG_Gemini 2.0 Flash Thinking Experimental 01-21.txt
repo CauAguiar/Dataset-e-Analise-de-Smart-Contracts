@@ -1,0 +1,33 @@
+Tempo de processamento: 12.45 segundos
+
+**Auditoria de Smart Contract - USDKG**
+
+Aqui estão as vulnerabilidades encontradas no contrato Solidity, listadas por título e descrição, separadas por categorias de risco.
+
+**High**
+
+* **Nenhuma vulnerabilidade de risco 'High' detectada.**
+
+**Medium**
+
+* **Nenhuma vulnerabilidade de risco 'Medium' detectada.**
+
+**Low**
+
+* **Possível Underflow Aritmético em `destroyBlackFunds` e `redeem` (em versões Solidity < 0.8.0):**
+    * Descrição: Em versões do Solidity anteriores à 0.8.0, as operações de subtração em `_totalSupply` dentro das funções `destroyBlackFunds` e `redeem` podem causar underflow se `dirtyFunds` ou `amount` forem maiores que `_totalSupply`. Embora o código utilize Solidity versão 0.8.0 ou superior onde underflow causa revert, para versões mais antigas seria uma vulnerabilidade.
+
+* **Redundância ou potencial problema lógico na função `redeem`:**
+    * Descrição: A função `redeem` possui duas verificações `require`: uma para `_totalSupply >= amount` e outra para `balances[owner] >= amount`.  Embora a primeira verificação deva impedir que `_totalSupply` seja menor que `amount`, a sua presença juntamente com a segunda pode indicar redundância ou mascarar uma intenção lógica diferente. Em cenários normais, a segunda verificação `balances[owner] >= amount` deveria ser suficiente, já que os tokens são retirados da conta do `owner`.
+
+**Informational**
+
+* **Centralização e Confiança nas Funções de Proprietário e Compliance:**
+    * Descrição: O contrato depende fortemente de entidades centralizadas (`owner` e `compliance`) para funções críticas como pausa, blacklist, destruição de fundos, emissão e resgate de tokens.  Isto é inerente ao design de muitos tokens, mas é importante notar do ponto de vista da descentralização e confiança, pois estas entidades têm controle administrativo significativo sobre o contrato e os fundos.
+
+* **Ausência de Proteção Contra Reentrância (Contexto ERC20):**
+    * Descrição: Embora não haja chamadas externas explícitas nas funções principais de transferência (`transfer` e `transferFrom`) que tipicamente exponham contratos ERC20 a reentrância, é uma boa prática para algumas implementações ERC20 incluir considerações sobre reentrância dependendo da lógica específica e de potenciais extensões futuras. Neste contrato específico, a reentrância não aparenta ser um risco imediato, mas em designs de token mais complexos que interagem com outros contratos, pode se tornar relevante. Esta nota é meramente informativa no contexto deste código simples.
+
+**Undetermined**
+
+* **Nenhuma vulnerabilidade de risco 'Undetermined' detectada.**

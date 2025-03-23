@@ -1,0 +1,25 @@
+Tempo de processamento: 6.69 segundos
+
+Aqui estão as vulnerabilidades identificadas no contrato Solidity:
+
+### High
+1. **Reentrancy**: O contrato não protege contra ataques de reentrância, o que pode levar a problemas de segurança.
+2. **Uso de funções não reentrantes**: A função `getPrice` chama outras funções que podem ser reentrantes.
+3. **Dependência de contratos externos**: O contrato depende de outros contratos (`STETH` e `RESILIENT_ORACLE`) que podem ser vulneráveis ou mal implementados.
+
+### Medium
+1. **Validação de entrada**: A função `getPrice` não valida se o parâmetro `asset` é um endereço válido.
+2. **Uso de constantes mágicas**: O contrato usa constantes mágicas (como `1 ether`) que podem ser difíceis de entender e manter.
+3. **Divisão por zero**: A função `getPrice` pode dividir por zero se `EXP_SCALE` for zero.
+
+### Low
+1. **Performance**: A função `getPrice` realiza várias chamadas a funções externas, o que pode impactar o desempenho do contrato.
+2. **Gas**: O contrato não otimiza o uso de gas, o que pode levar a custos desnecessários.
+
+### Undetermined
+1. **Segurança do oráculo**: A segurança do oráculo `RESILIENT_ORACLE` não é clara e pode ser vulnerável a ataques.
+2. **Integridade dos contratos dependentes**: A integridade dos contratos `STETH` e `RESILIENT_ORACLE` não é clara e pode ser vulnerável a ataques.
+
+### Informational
+1. **Documentação**: O contrato não tem documentação suficiente sobre a lógica de negócios e as suposições feitas.
+2. **Testes**: O contrato não tem testes automatizados para garantir a correção e segurança.

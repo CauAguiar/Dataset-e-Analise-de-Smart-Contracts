@@ -1,0 +1,29 @@
+Tempo de processamento: 18.35 segundos
+
+## Auditoria de Smart Contract - Vulnerabilidades
+
+Aqui estão as vulnerabilidades encontradas no código Solidity fornecido, listadas em formato de título e descrição breves, separadas por categorias de severidade.
+
+**1. Reliance on External Signal Service Security**
+**Descrição:** A segurança da bridge depende criticamente da segurança e integridade do contrato externo `ISignalService`. Vulnerabilidades no `ISignalService`, como na verificação de provas ou gestão de sinais, podem comprometer diretamente a bridge.
+**Categoria:** High
+
+**2. Reentrancy Risk in Recallable Sender Callback**
+**Descrição:** A função `recallMessage` chama `IRecallableSender.onMessageRecalled`. Se o contrato chamado reentrar no contrato `Bridge`, pode levar a alterações de estado inesperadas ou vulnerabilidades, apesar de `Bridge.recallMessage` ser `nonReentrant`.
+**Categoria:** Medium
+
+**3. Reentrancy Risk in Owner's Receive/Fallback During Recall**
+**Descrição:** Ao recuar mensagens sem `IRecallableSender`, o valor é enviado para `message.owner` usando `sendEther`. Se `message.owner` for um contrato com uma função `receive` ou `fallback` vulnerável que reentra, pode criar vulnerabilidades de reentrância.
+**Categoria:** Medium
+
+**4. Potential Context Information Exposure during External Calls**
+**Descrição:** A variável de estado `_ctx` é atualizada e pode ser lida usando `context()`. Contratos externos invocados via `onMessageRecalled` ou `_invokeMessageCall` podem ser capazes de observar o estado `_ctx`, potencialmente levando à exposição de informações ou comportamento inesperado dependendo do controle de acesso de `context()` e da lógica do contrato externo.
+**Categoria:** Low
+
+**5. Gas Limit and Permission Logic Complexity**
+**Descrição:** As configurações de limite de gás e as verificações de permissão em `processMessage` e `retryMessage`, particularmente a interação entre `gasLimit == 0` e as restrições do chamador, introduzem complexidade na lógica de processamento e retentativa de mensagens. Uma configuração incorreta ou cenários de gás inesperados podem levar a negação de serviço ou bloqueio de mensagens se não forem exaustivamente testados.
+**Categoria:** Low
+
+**6. Unbounded `nextMessageId` Increment**
+**Descrição:** A variável `nextMessageId` incrementa sem verificações de overflow explícitas. Embora praticamente improvável, se atingir seu valor máximo, ele voltará a zero, potencialmente causando colisões de IDs de mensagens.
+**Categoria:** Informational

@@ -1,0 +1,28 @@
+### **Auditoria de Segurança do Smart Contract `RFRM`**  
+
+---
+
+## **Vulnerabilidades Identificadas**  
+
+### **High**  
+- **Nenhum mecanismo de governança ou controle de mintagem adicional**  
+  - O contrato não possui funções para controle de emissão futura de tokens. Se a intenção era permitir governança sobre a emissão, esse controle está ausente.  
+
+### **Medium**  
+- **Possível centralização de tokens na conta do deployer**  
+  - No momento da criação do contrato, todos os tokens são atribuídos ao `msg.sender`, o que pode indicar um risco de centralização se não houver um mecanismo de distribuição definido.  
+
+### **Low**  
+- **Uso de Solidity `0.8.23` em vez de uma versão fixa**  
+  - Embora a versão 0.8.23 seja segura, o uso de `pragma solidity 0.8.23;` sem um intervalo (`^0.8.23` ou `>=0.8.23 <0.9.0`) pode causar problemas de compatibilidade futura.  
+
+### **Informational**  
+- **Falta de eventos para rastreamento de ações importantes**  
+  - O contrato depende apenas dos eventos internos do OpenZeppelin. Pode ser útil adicionar eventos personalizados para rastrear ações importantes, como a queima de tokens.  
+- **Ausência de comentários sobre possíveis atualizações do contrato**  
+  - Não há documentação sobre se o contrato é projetado para ser atualizável ou se é intencionalmente imutável.  
+
+---
+
+## **Conclusão**  
+O contrato `RFRM` é relativamente simples e seguro devido ao uso da biblioteca OpenZeppelin. No entanto, há riscos potenciais relacionados à governança e centralização dos tokens, que podem ser aprimorados dependendo do uso pretendido do token.

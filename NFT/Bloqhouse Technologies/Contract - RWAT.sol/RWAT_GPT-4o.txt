@@ -1,0 +1,35 @@
+### **Auditoria de Segurança do Smart Contract RWAT**
+
+#### **High**
+1. **Falta de verificação de inicialização múltipla**  
+   - O contrato usa `initializer`, mas não há bloqueio explícito contra reentrância na inicialização.
+   
+2. **Falta de controle sobre `serverPubKey`**  
+   - O endereço do servidor (`serverPubKey`) pode ser alterado sem restrições, permitindo um possível ataque de assinatura maliciosa.
+
+3. **Problema de acesso no método `burnUnits`**  
+   - O `burnUnits` permite que o ADMIN queime tokens que estão sob sua posse ou sob posse do contrato, sem necessidade de consentimento do usuário.
+
+#### **Medium**
+4. **Privacidade de metadados (`tokenURI`)**  
+   - O contrato depende de um contrato externo (`ICNR`) para metadados, que pode comprometer a descentralização.
+
+5. **Poder excessivo do ADMIN**  
+   - ADMIN pode alterar várias configurações críticas do contrato, incluindo whitelist, pausa de transferências e supply de ativos.
+
+6. **Possível DoS na função `setWhitelisted`**  
+   - Como a função faz um loop sobre um array de usuários, pode atingir o limite de gas e falhar se for chamado com um grande número de endereços.
+
+#### **Low**
+7. **Uso de `private` para `serverPubKey`**  
+   - Impede a verificação externa do endereço do servidor, o que poderia ajudar na auditoria e transparência.
+
+8. **Uso de `private` para `name_` e `symbol_`**  
+   - O nome e o símbolo do token são armazenados em variáveis privadas e não podem ser lidos diretamente sem chamar `name()` e `symbol()`.
+
+#### **Informational**
+9. **Uso de `uint` sem especificação de tamanho**  
+   - A variável `internalNonce` poderia ser `uint256` explicitamente para evitar ambiguidades.
+
+10. **Comentários desatualizados e redundantes**  
+   - Alguns comentários fazem referência a funcionalidades que já são evidentes pelo código.

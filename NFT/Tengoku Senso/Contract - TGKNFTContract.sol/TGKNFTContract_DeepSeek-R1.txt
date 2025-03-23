@@ -1,0 +1,13 @@
+Tempo de processamento: 75.98 segundos
+
+**High:**
+- **Lack of Access Control in mintNFT:** The `mintNFT` function is publicly accessible without any restrictions, allowing unauthorized users to mint arbitrary tokens, potentially leading to token spoofing or unauthorized distribution.
+
+**Low:**
+- **Missing Token URI Validation:** The `mintNFT` function does not validate `_tokenURI` (e.g., non-empty checks), which may result in incorrect or non-functional metadata.
+
+**Informational:**
+- **Unlicensed SPDX Identifier:** The contract uses the `UNLICENSED` SPDX identifier, which is typically avoided for production contracts to clarify licensing terms.
+
+**Undetermined:**
+- **Inheritance Override Complexity:** While the overrides for multiple parent contracts (e.g., `_beforeTokenTransfer`, `_burn`) appear correct, detailed verification of inheritance hierarchy interactions is recommended to ensure no unintended behavior.

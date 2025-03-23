@@ -1,0 +1,60 @@
+Tempo de processamento: 278.21 segundos
+
+**Audit Report: RWAT Smart Contract Vulnerabilities**
+
+---
+
+### **High Severity**
+
+1. **Centralized Control Over User Tokens**  
+   Admins can forcibly transfer tokens between any addresses via `reclaimUnits`, bypassing user approvals and transfer restrictions.
+
+2. **Signature Verification Relies on Single Server Key**  
+   Compromised `serverPubKey` allows attackers to forge signatures and mint/claim tokens. Admins can update the key, but initial compromise remains critical.
+
+---
+
+### **Medium Severity**
+
+3. **Missing Critical Event Emissions**  
+   Key functions (`createAsset`, `updateAssetCap`, `setWhitelisted`) lack events, hindering off-chain monitoring and transparency.
+
+4. **Unrestricted Asset Creation and Minting**  
+   Admins can create unlimited assets (via `createAsset`) and mint tokens beyond intended limits by exploiting incremental `assetId` ranges.
+
+5. **Admin Bypass of Transfer Restrictions**  
+   Admins can disable `pausedTransfers`, enabling transfers even when paused, conflicting with user expectations of paused states.
+
+6. **Arbitrary Whitelist Manipulation**  
+   The `WHITELISTER` role can modify the whitelist, potentially bypassing transfer restrictions if compromised.
+
+---
+
+### **Low Severity**
+
+7. **Gas-Intensive Batch Operations**  
+   Loops in `mintUnits` and `burnUnits` risk out-of-gas errors for large batches, affecting usability.
+
+8. **Lax Input Validation in Whitelist**  
+   `setWhitelisted` does not check for zero addresses, allowing unintended whitelist entries.
+
+---
+
+### **Informational**
+
+9. **Magic Numbers Without Constants**  
+   Hardcoded `1_000_000_000` lacks a named constant, reducing readability.
+
+10. **Incomplete Function Documentation**  
+    Missing NatSpec comments for functions like `_mintUnits` or `_claimUnits` affect maintainability.
+
+---
+
+### **Undetermined**
+
+11. **Proxy Upgrade Risks**  
+    Upgradeability introduces dependency on proxy admin security, which is beyond the contract's scope but critical for overall safety.
+
+---
+
+**Note:** This audit assumes standard OpenZeppelin upgradeable contracts and focuses on code logic. External factors (e.g., proxy admin key management) require separate evaluation.

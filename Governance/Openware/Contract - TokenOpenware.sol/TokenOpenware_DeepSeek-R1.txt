@@ -1,0 +1,53 @@
+Tempo de processamento: 111.86 segundos
+
+**Audit Report: Token Contract Vulnerabilities**
+
+---
+
+### **High Severity**
+
+1. **Centralized Initial Role Assignment**  
+   The deployer retains `DEFAULT_ADMIN_ROLE` and `MINTER_ROLE` post-deployment, creating centralization risks if roles are not properly transferred to a DAO or multisig.
+
+2. **Unrestricted MINTER_ROLE Retention**  
+   The deployer retains `MINTER_ROLE` indefinitely unless explicitly revoked, risking unauthorized minting if not managed post-deployment.
+
+3. **Blacklisted Accounts Can Receive Tokens**  
+   Transfer functions only check the sender/`from` address for blacklisting, allowing blacklisted accounts to receive tokens, potentially violating compliance goals.
+
+---
+
+### **Medium Severity**
+
+1. **Admin-Controlled Burning of Blacklisted Funds**  
+   `DEFAULT_ADMIN_ROLE` can burn all tokens from blacklisted accounts, posing a risk of fund seizure if the admin is compromised or acts maliciously.
+
+2. **Premint Destination Risks**  
+   The `activate` function allows preminting to any address, which could lock funds if the target is a non-receiving contract (e.g., without `ERC20` support).
+
+3. **COMPLIANCE_ROLE Privilege Scope**  
+   `COMPLIANCE_ROLE` can blacklist any account, potentially enabling censorship or denial-of-service if misused.
+
+---
+
+### **Low Severity**
+
+1. **Non-Standard Decimal Override**  
+   Overriding decimals to `8` may cause integration issues with systems expecting the default `18` decimals, though compliant with the ERC20 standard.
+
+---
+
+### **Informational**
+
+1. **Role-Based Blacklisting**  
+   Uses `BLACKLISTED_ROLE` for blacklisting instead of a dedicated mapping, which is unconventional but functionally valid.
+
+2. **OpenZeppelin Role Management Events**  
+   Role grants/revokes emit events via OpenZeppelin’s `AccessControl`, ensuring transparency.
+
+---
+
+### **Undetermined**
+
+1. **Post-Deployment Role Management**  
+   Relies on external processes to transfer/revoke roles (e.g., `DEFAULT_ADMIN_ROLE` to a DAO), which is not enforced in-code.

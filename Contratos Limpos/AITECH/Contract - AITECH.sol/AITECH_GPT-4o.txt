@@ -1,0 +1,13 @@
+### **High**  
+- **Centralized Token Minting** – O deployer recebe a totalidade da oferta inicial, o que pode indicar risco de centralização.  
+- **Potential Reentrancy Risks** – Embora o contrato seja simples, a extensão `ERC20Burnable` pode ser utilizada em cenários onde um contrato externo execute chamadas não confiáveis.  
+
+### **Medium**  
+- **Lack of Access Control on Minting** – Se futuras funções de mint forem adicionadas, a ausência de controle de acesso pode permitir a criação arbitrária de tokens.  
+
+### **Low**  
+- **Decimals Function Usage** – O uso de `decimals()` para calcular a oferta inicial pode ser desnecessário, pois `ERC20` já define um valor padrão de 18.  
+
+### **Informational**  
+- **Lack of Events for Token Transfers** – Embora o padrão ERC-20 já emita eventos para transferências, seria uma boa prática adicionar logs adicionais para rastreabilidade.  
+- **Lack of Explicit Visibility on Mint Function** – `_mint()` é chamada no construtor, e pode ser benéfico indicar explicitamente o comportamento pretendido.

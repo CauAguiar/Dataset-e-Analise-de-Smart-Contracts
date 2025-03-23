@@ -1,0 +1,32 @@
+Tempo de processamento: 21.10 segundos
+
+Aqui estão as vulnerabilidades encontradas no código Solidity, listadas por categorias de severidade e com descrições breves, sem exemplos de código:
+
+**High**
+
+* **Dependência Crítica do Signatário de Serviço Único (Risco de Centralização):**
+   A funcionalidade crucial do contrato depende da integridade e disponibilidade da chave privada do `serviceSigner`. Se esta chave for comprometida ou o signatário se tornar indisponível, as operações de staking, unstaking e claim podem ser interrompidas ou exploradas, afetando todos os usuários.
+
+**Medium**
+
+* **Possível Negação de Serviço (DoS) ou Problema de Usabilidade em `emergencyUnstake`:**
+    Em caso de `shutdown` do contrato, a função `emergencyUnstake` permite que usuários retirem seus tokens, mas é limitada por `maxTokensPerUnstake`. Usuários com muitos tokens stakeados podem precisar chamar a função repetidamente, o que pode ser inconveniente, caro devido a custos de gás, ou até falhar se o limite de gás por bloco for atingido devido ao número de tokens, especialmente em situações de emergência.
+
+* **Risco de Out-of-Gas em `emergencyUnstake` com Alto Número de Tokens:**
+    Mesmo com o limite `maxTokensPerUnstake` por transação, se um usuário tiver um número muito grande de tokens e `ids.length` se aproximar dos limites de gás do bloco, a função `emergencyUnstake` ainda poderá falhar devido a `out-of-gas`, mesmo dentro do limite `maxTokensPerUnstake`, impedindo a retirada dos tokens em emergências.
+
+**Low**
+
+* **Limitação da Função `onERC721Received`:**
+    A função `onERC721Received` só retorna o selector de sucesso se o operador for o próprio contrato. Embora possa ser intencional para o design, essa restrição pode impedir interações ou funcionalidades futuras que dependam de transferências ERC721 para o contrato iniciadas por terceiros. É importante verificar se essa limitação é realmente necessária e documentar o motivo.
+
+**Informational**
+
+* **Uso Potencialmente Ambíguo de `abi.encodePacked` em Hash de Array para Assinaturas EIP712:**
+    Embora não seja explorável neste caso específico (`uint256[]`), o uso de `abi.encodePacked` para hashing de arrays em assinaturas EIP712 pode ser ambíguo em outros contextos, especialmente com tipos de tamanho variável ou estruturas complexas. Recomenda-se usar `abi.encode` para maior clareza e segurança futura.
+
+* **Tipo de Dados de `rentalDailyPrice` Poderia Ser `uint256`:**
+    Considerar usar `uint256` em vez de `uint96` para `rentalDailyPrice` para evitar potenciais overflows em cálculos de custo total de aluguel, especialmente se os períodos de aluguel puderem ser extensos, embora não haja cálculos de período de aluguel visíveis neste contrato.
+
+* **Falta de Eventos para Ações Administrativas Chave (Além de Algumas):**
+    Para rastreabilidade e transparência, é recomendável emitir eventos para funções administrativas importantes como `pause`, `unpause`, `updateMaxTokensInStake` e `toggleShutdown`, similar aos eventos já existentes para `ServiceSignerUpdated` e `TokenRescue`. Isso facilita o monitoramento e auditoria das ações administrativas.

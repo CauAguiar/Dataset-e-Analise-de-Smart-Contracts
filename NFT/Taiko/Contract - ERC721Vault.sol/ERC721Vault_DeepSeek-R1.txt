@@ -1,0 +1,30 @@
+Tempo de processamento: 91.51 segundos
+
+### **High Risk Vulnerabilities**  
+- **Insufficient Access Control on Bridged Token Functions**: The `BridgedERC721`'s `mint` and `burn` functions must restrict access to the vault contract to prevent unauthorized minting or burning of tokens.  
+
+---
+
+### **Medium Risk Vulnerabilities**  
+1. **Unbounded Token ID Arrays Causing Gas Limitations**: Looping through large `tokenIds` arrays (e.g., in `receiveToken`, `onMessageRecalled`) may exceed gas limits, leading to failed transactions.  
+2. **Implicit Reliance on ERC721Metadata Extension**: Tokens are assumed to implement the optional `name` and `symbol` functions (part of ERC721Metadata), which may cause failures for ERC721-compliant tokens without these functions.  
+3. **Unintended Token Locking via Direct Transfers**: ERC721 tokens sent directly to the vault (outside the `sendToken` flow) may become irretrievable.  
+
+---
+
+### **Low Risk Vulnerabilities**  
+- **Use of `sendEther` That Silently Fails**: Ether transfers via `sendEther` (using low-level `send`) may fail without reverting, potentially leaving funds stuck in the contract.  
+
+---
+
+### **Informational**  
+- **Unrestricted `onERC721Received` Callback**: The vault unconditionally accepts ERC721 tokens via `safeTransferFrom`, risking unintended lockups if users transfer tokens outside the protocol.  
+
+---
+
+### **Undetermined Risks**  
+- **Dependency on External Bridge Security**: The contract relies on the integrity of the bridge implementation; vulnerabilities in external components (e.g., message validation) could propagate to this contract.  
+
+---
+
+*Note: Risks are contingent on assumptions about external dependencies (e.g., secure `BridgedERC721` implementation, bridge message validity).*

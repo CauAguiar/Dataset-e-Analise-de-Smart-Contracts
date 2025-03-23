@@ -1,0 +1,35 @@
+### **High Severity**  
+1. **Reentrancy Attack (Invest Function)**  
+   - The `invest` function transfers funds (`referer.transfer(stake / 20)`) before updating all state variables, which can be exploited in a reentrancy attack.  
+
+2. **Unrestricted Ether Withdrawal (endSale Function)**  
+   - The `endSale` function allows the contract owner to transfer the entire contract balance without restrictions, potentially enabling rug pulls.  
+
+3. **Improper Token Minting Control (claimShares & claimFutures Functions)**  
+   - The `claimShares` and `claimFutures` functions allow arbitrary minting of tokens without proper constraints, leading to inflation vulnerabilities.  
+
+### **Medium Severity**  
+4. **Lack of Input Validation (Invest Function)**  
+   - No validation on the `investor` and `referer` addresses, allowing investments to be made with invalid or malicious addresses.  
+
+5. **Lack of Sale End Enforcement (Invest Function)**  
+   - The `invest` function does not check whether `_saleEnded` is true, potentially allowing investments after the sale is supposed to end.  
+
+6. **Use of Block Timestamp for Time-Based Logic (Multiple Functions)**  
+   - The contract uses `block.timestamp` for timing calculations, which miners can manipulate slightly, potentially affecting logic.  
+
+### **Low Severity**  
+7. **Gas Inefficiency in Investor Management (endSale & Invest Functions)**  
+   - Iterating over `_investors.values` in `endSale` and maintaining `AddressSet` with a mapping increases gas costs significantly.  
+
+8. **Use of `transfer()` Instead of `call()` (Invest & endSale Functions)**  
+   - The contract uses `transfer()`, which has a fixed gas stipend (2300 gas), potentially causing transactions to fail in case of gas-intensive fallback functions.  
+
+### **Informational**  
+9. **Missing Events for Critical Functions**  
+   - Functions like `mintToEngine`, `endSale`, `startSale`, `claimShares`, and `claimFutures` do not emit events, making it difficult to track execution on-chain.  
+
+10. **Unused `_pause()` in Constructor**  
+   - The constructor pauses the contract initially, which might be unnecessary or misleading if not properly documented.  
+
+Would you like me to suggest fixes for these issues?

@@ -1,0 +1,22 @@
+Tempo de processamento: 8.04 segundos
+
+Aqui está a lista de vulnerabilidades potenciais no contrato Solidity fornecido, categorizadas por nível de gravidade:
+
+### High
+- **Reentrância**: Possibilidade de um contrato ser reentrado, permitindo que um atacante execute uma função várias vezes antes que a execução da função original seja concluída.
+- **Uso de Funções Não Reentrantes**: Uso de funções que não são reentrantes, o que pode levar a problemas de segurança se não forem devidamente protegidas.
+
+### Medium
+- **Permissões Excessivas**: A função `changeBaseURI` pode permitir que qualquer um altere a URI base, o que pode ser um problema se a intenção for restringir essa capacidade a certos endereços.
+- **Falta de Validations**: A falta de validação nos parâmetros das funções pode levar a comportamentos inesperados ou erros.
+
+### Low
+- **Uso de Versão Específica do Compilador**: O uso de uma versão específica do compilador (0.8.19) pode limitar a flexibilidade para atualizações futuras.
+- **Interface Não Implementada**: A interface `ICNR` é declarada, mas não implementada no contrato fornecido, o que pode ser um problema se o contrato depende de sua implementação.
+
+### Undetermined
+- **Comportamento em Casos de Exceção**: O comportamento do contrato em casos de exceção ou erros não é claro, o que pode levar a vulnerabilidades se não for bem tratado.
+
+### Informational
+- **Licença**: O contrato utiliza a licença MIT, o que é uma escolha de licenciamento e não uma vulnerabilidade em si, mas é importante considerar as implicações legais.
+- **Compatibilidade**: A compatibilidade do contrato com diferentes versões do Solidity e ambientes de execução não é clara e pode ser um ponto a considerar para garantir a interoperabilidade.

@@ -1,0 +1,47 @@
+### High Severity
+
+**1. ERC20 Transfer Function Missing Return Value**  
+The `transfer` function does not return a boolean, violating the ERC20 standard and causing integration failures with contracts expecting a return value.
+
+**2. Deprecated Throw Statements**  
+Uses `throw` (deprecated) instead of `revert()` or `require()`, which may lead to compatibility issues and inefficient error handling.
+
+---
+
+### Medium Severity
+
+**1. ERC20 Allowance Race Condition**  
+The `approve` function is susceptible to front-running attacks when modifying existing non-zero allowances, a known ERC20 flaw.
+
+**2. Outdated Solidity Version**  
+The contract uses Solidity 0.4.8, which lacks critical security features and contains deprecated functionalities.
+
+---
+
+### Low Severity
+
+**1. Redundant Value Checks**  
+Explicit checks (e.g., `if (_value <= 0)`) duplicate SafeMath validations, adding unnecessary redundancy.
+
+**2. Missing Function Visibility Specifiers**  
+Functions like the constructor lack explicit visibility (e.g., `public`), defaulting to public, which may introduce unintended exposure.
+
+---
+
+### Informational
+
+**1. Centralized Ether Withdrawal**  
+The `withdrawEther` function allows only the owner to withdraw funds, posing centralization risks.
+
+**2. Payable Fallback Function**  
+The contract accepts Ether via a fallback function but lacks logic for handling received funds beyond owner withdrawal.
+
+**3. Constructor Naming Convention**  
+Uses legacy constructor naming (`BNB`), which is outdated but valid for Solidity 0.4.x.
+
+---
+
+### Undetermined
+
+**1. Freeze/Unfreeze Mechanism Scope**  
+The `freeze` and `unfreeze` functions allow any user to lock their tokens; impact depends on intended use case (e.g., governance or restrictions).

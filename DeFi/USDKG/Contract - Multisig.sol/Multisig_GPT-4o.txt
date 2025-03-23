@@ -1,0 +1,44 @@
+### **Auditoria de Smart Contract - Multisig**
+
+#### **1. Vulnerabilidades Identificadas e Classificadas**
+
+---
+
+### **High (Alto)**
+#### **1. Falta de verificação de contrato para tokens ERC-20**
+- A função `transferToken` não verifica se o endereço do token é um contrato, o que pode fazer com que a transação falhe silenciosamente se um endereço inválido for passado.
+
+#### **2. Uso de `tx.origin` na função `handlePayment`**
+- A função `handlePayment` usa `tx.origin`, o que pode abrir brechas para ataques de phishing em que um usuário é enganado para assinar uma transação que redireciona fundos para um atacante.
+
+---
+
+### **Medium (Médio)**
+#### **3. Possível DoS ao iterar sobre proprietários na função `checkNApprovals`**
+- O uso de um loop `while` para iterar sobre os proprietários pode levar a um ataque de negação de serviço (DoS) se a lista de proprietários for grande, pois pode consumir muito gás e fazer com que a transação falhe.
+
+#### **4. Falta de eventos para algumas ações críticas**
+- A falta de eventos para algumas operações pode dificultar a auditoria e rastreamento de transações. Por exemplo, não há evento emitido para mudanças nos proprietários ou no limiar de assinaturas.
+
+---
+
+### **Low (Baixo)**
+#### **5. Armazenamento de `owners` em um mapeamento ligado a uma estrutura encadeada**
+- Em vez de armazenar os proprietários diretamente em um array, o contrato usa um mapeamento com uma estrutura encadeada. Isso pode dificultar a recuperação eficiente dos dados e aumentar os custos de gás.
+
+#### **6. Uso de constantes para hashes de EIP-712 sem considerar futuras mudanças**
+- O contrato define valores constantes para `DOMAIN_SEPARATOR_TYPEHASH` e `SAFE_TX_TYPEHASH`, o que pode causar problemas de compatibilidade caso a implementação do EIP-712 mude no futuro.
+
+---
+
+### **Informational (Informacional)**
+#### **7. Comentários parcialmente incompletos**
+- Alguns comentários explicativos no código são cortados ou terminam abruptamente, dificultando a compreensão completa da lógica implementada.
+
+#### **8. Uso de assembly para a função `transferToken` sem tratamento de falhas adequado**
+- O uso de `assembly` para chamar `transfer` de ERC-20 pode não capturar corretamente falhas se o token não seguir o padrão esperado.
+
+---
+
+### **Conclusão**
+O contrato apresenta algumas vulnerabilidades de alto e médio risco que podem comprometer sua segurança e eficiência. Recomenda-se revisar o uso de `tx.origin`, melhorar a verificação de transferências de tokens ERC-20 e otimizar a estrutura de armazenagem de proprietários.

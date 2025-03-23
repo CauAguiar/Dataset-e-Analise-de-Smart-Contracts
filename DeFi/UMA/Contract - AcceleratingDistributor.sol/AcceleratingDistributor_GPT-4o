@@ -1,0 +1,47 @@
+### **Auditoria de Smart Contract: Análise de Vulnerabilidades**
+
+#### **High**
+1. **Possível Ataque de Reentrância**  
+   - O contrato usa `safeTransfer`, mas a função `unstake` atualiza o saldo do usuário **após** a transferência, o que pode permitir ataques de reentrância em tokens ERC-777 ou contratos maliciosos.
+
+2. **Falta de Restrição na Transferência de `rewardToken`**  
+   - O contrato permite que qualquer token ERC20 seja usado como `rewardToken`, mas não há proteção contra tokens que cobram taxas em transferências ou possuem mecânicas não padrão.
+
+3. **Possível Bloqueio de Fundos no `recoverToken`**  
+   - A lógica de recuperação de tokens pode falhar se um token malicioso for enviado ao contrato, impedindo a recuperação por `recoverToken`.
+
+---
+
+#### **Medium**
+4. **Risco de Overflow/Underflow em Cálculo de Recompensas**  
+   - O contrato depende de cálculos de multiplicadores e emissão de recompensas que podem ser manipulados por valores extremos, potencialmente causando overflows ou perda de precisão.
+
+5. **Falta de Validação de `msg.sender` em `exit`**  
+   - A função `exit` chama `unstake`, mas se o `msg.sender` for um contrato malicioso, pode manipular a execução de forma inesperada.
+
+6. **Possível Manipulação do Multiplicador de Recompensas**  
+   - O contrato permite definir `maxMultiplier` abaixo de `1e18`, o que pode levar a um comportamento inesperado na distribuição de recompensas.
+
+---
+
+#### **Low**
+7. **Uso de `block.timestamp` para Cálculo de Recompensas**  
+   - Dependência de timestamps pode ser explorada em blocos de baixa variabilidade de tempo.
+
+8. **Falta de Restrição em `stakeFor`**  
+   - Um usuário pode depositar tokens em nome de outro sem consentimento explícito.
+
+---
+
+#### **Informational**
+9. **Falta de Eventos para Algumas Operações Críticas**  
+   - Operações como `withdrawReward` não emitem eventos para mudanças de estado internas.
+
+10. **Possível Ineficiência no `recoverToken`**  
+   - O cálculo de tokens recuperáveis poderia ser otimizado para evitar cálculos desnecessários.
+
+---
+
+#### **Undetermined**
+11. **Compatibilidade com Tokens ERC20 Não Padrão**  
+   - O contrato menciona restrições quanto a tokens não padrão, mas não há verificações explícitas para evitar que tais tokens sejam adicionados.

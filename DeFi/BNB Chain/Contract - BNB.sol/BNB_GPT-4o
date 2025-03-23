@@ -1,0 +1,50 @@
+### **High**  
+
+#### **1. Reentrancy Vulnerability**  
+A função `withdrawEther` transfere Ether para o `owner` sem usar o padrão recomendado (`transfer` ou `call.value(...).gas(2300)()`), o que pode permitir ataques de reentrância.  
+
+#### **2. Integer Overflow/Underflow**  
+O contrato usa Solidity `^0.4.8`, que não possui verificações automáticas de overflow/underflow. Embora a biblioteca `SafeMath` tente mitigar isso, a implementação pode ser falha.  
+
+#### **3. Uso de `throw` em vez de `revert` ou `require`**  
+O uso de `throw` para lidar com erros é obsoleto e pode consumir todo o gás da transação, tornando a recuperação de fundos impossível em certos cenários.  
+
+#### **4. Falta de Modificadores de Acesso**  
+Funções críticas como `withdrawEther` e `burn` não usam modificadores de acesso (`onlyOwner`), permitindo que qualquer usuário execute ações potencialmente destrutivas.  
+
+---
+
+### **Medium**  
+
+#### **5. Falta de Eventos em Funções Críticas**  
+Funções como `approve` e `withdrawEther` não emitem eventos, dificultando a auditoria de alterações importantes.  
+
+#### **6. Problema no Sistema de Aprovação (`approve`)**  
+O método `approve` pode levar a ataques de race condition, onde um atacante pode alterar a aprovação antes que o destinatário consiga transferir os tokens.  
+
+---
+
+### **Low**  
+
+#### **7. Falta de uma Função `constructor`**  
+O contrato usa uma função com o mesmo nome (`BNB`), mas em Solidity 0.4.22+ isso não é um construtor válido. Isso pode causar problemas ao implantar o contrato em versões mais recentes.  
+
+#### **8. Uso de `assert` para Verificações de Entrada**  
+A função `SafeMath.safeDiv` usa `assert` para verificar divisões por zero, o que pode consumir todo o gás da transação. `require` seria mais adequado.  
+
+---
+
+### **Undetermined**  
+
+#### **9. Possível Problema com a Função `freeze`**  
+Não há uma verificação explícita para evitar que tokens congelados sejam gastos, o que pode levar a inconsistências no saldo dos usuários.  
+
+---
+
+### **Informational**  
+
+#### **10. Código Desatualizado (Versão Antiga do Solidity)**  
+O contrato usa Solidity `^0.4.8`, uma versão muito antiga que carece de várias melhorias de segurança introduzidas em versões mais recentes.  
+
+#### **11. Não Implementa o Padrão ERC-20 Completo**  
+O contrato não segue completamente o padrão ERC-20, pois falta um evento `Approval`. Isso pode causar problemas de compatibilidade com aplicações que esperam um contrato compatível com ERC-20.

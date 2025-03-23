@@ -1,0 +1,16 @@
+### **High**  
+1. **Signature Replay Attack** – O contrato não impede que a mesma assinatura seja reutilizada, permitindo que um atacante possa reutilizar uma assinatura válida para reivindicar múltiplos NFTs.  
+
+### **Medium**  
+2. **Lack of Event Emission** – Não há eventos emitidos nas funções `claimTrooper` e `airdrop`, dificultando a rastreabilidade das transações.  
+
+### **Low**  
+3. **Hardcoded Token ID in claimTrooper** – O ID do token está fixo como `0`, o que pode limitar a flexibilidade do contrato no futuro.  
+
+### **Informational**  
+4. **Centralized Ownership Risks** – O proprietário do contrato tem controle total sobre o airdrop de NFTs, o que pode ser um risco se a chave privada do `owner` for comprometida.  
+
+5. **No Mechanism to Revoke Claims** – Não há uma função para reverter um `claimed` caso ocorra erro ou ataque.  
+
+### **Undetermined**  
+6. **Dependency on External Signature Contract (`Signature.sol`)** – Sem a análise do código do contrato `Signature.sol`, não é possível verificar a segurança da verificação de assinaturas.

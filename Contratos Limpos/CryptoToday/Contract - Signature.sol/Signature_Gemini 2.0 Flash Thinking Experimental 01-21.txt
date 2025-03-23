@@ -1,0 +1,37 @@
+Tempo de processamento: 13.34 segundos
+
+## Auditoria de Smart Contract - Contrato: Signature
+
+A seguir, vulnerabilidades identificadas no contrato Solidity `Signature`, listadas por título, descrição e categoria de severidade.
+
+1. **Título:** Uso de Assembly para Manipulação de Assinatura
+   **Descrição:** O uso de assembly inline na função `splitSignature` para manipular diretamente a memória da assinatura aumenta a complexidade e o risco de erros, embora neste caso pareça correto, o assembly sempre exige revisão cuidadosa.
+   **Categoria:** Medium
+
+2. **Título:** Falta de Proteção Contra Replay no Contrato
+   **Descrição:** Embora a função `verify` utilize um `nonce`, o contrato `Signature` em si não implementa nenhuma lógica para garantir que cada `nonce` seja usado apenas uma vez. A proteção contra replay depende da implementação nos contratos que o utilizam.
+   **Categoria:** Medium
+
+3. **Título:** Número Mágico no Tamanho da Assinatura
+   **Descrição:** A verificação do tamanho da assinatura na função `splitSignature` usa o número mágico `65` diretamente, o que pode ser menos legível do que usar uma constante nomeada para representar o tamanho esperado da assinatura ECDSA com byte de recuperação.
+   **Categoria:** Informational
+
+4. **Título:** Retorno Implícito em Assembly
+   **Descrição:** A função `splitSignature` usa retornos implícitos em assembly, o que pode ser menos claro para desenvolvedores menos experientes com assembly inline do Solidity, afetando potencialmente a legibilidade.
+   **Categoria:** Informational
+
+5. **Título:** Dependência da Segurança no Signatário Externo
+   **Descrição:** A segurança do contrato depende da validade e segurança do endereço `signer` fornecido para as funções de verificação. O contrato assume que o endereço `signer` é de fato controlado pela chave privada correspondente, sem mecanismos de validação internos adicionais.
+   **Categoria:** Informational
+
+6. **Título:** Comentário Desatualizado ou Confuso sobre Funções Não Utilizadas
+   **Descrição:** O comentário `// @dev The unused verify and getMessageHash function will be removed when compiling contracts via optimizer dead code` parece impreciso ou confuso, pois as funções `verify` e `getMessageHash` são utilizadas no contrato. Isso pode gerar confusão sobre o propósito do código e a intenção do desenvolvedor.
+   **Categoria:** Informational
+
+7. **Título:** Licença WTFPL (Do What The F*** You Want to Public License)
+   **Descrição:** A utilização da licença WTFPL, embora permissiva, é menos comum para contratos inteligentes que lidam com segurança e finanças. A escolha da licença é um aspecto a ser considerado em auditorias de segurança e conformidade.
+   **Categoria:** Informational
+
+8. **Título:** Suscetibilidade à Maleabilidade de Assinatura (inherente ao ECDSA)
+   **Descrição:** O algoritmo `ecrecover` é inerentemente suscetível à maleabilidade da assinatura, onde múltiplas assinaturas válidas podem existir para a mesma mensagem. Embora o `ecrecover` e o código em si não sejam quebrados por maleabilidade neste contexto, é uma propriedade do ECDSA a ser considerada para conhecimento completo.
+   **Categoria:** Informational

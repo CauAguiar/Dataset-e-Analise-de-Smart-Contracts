@@ -1,0 +1,31 @@
+Tempo de processamento: 17.17 segundos
+
+**Vulnerabilidades no Código Solidity**
+
+Aqui estão as vulnerabilidades encontradas no código, separadas por categoria:
+
+### High
+
+1. **Reentrância**: A função `readBytes` não verifica se o `index` é um múltiplo de 32, o que pode causar uma reentrância se o `size` for maior que 32.
+2. **Overflow**: A função `readUint16` não verifica se o valor lido é maior que o máximo permitido para `uint16`, o que pode causar um overflow.
+
+### Medium
+
+1. **Out of Bounds**: As funções `readBytes`, `readUint16`, `readAddress`, `readBytes66` e `readBytes32` não verificam se o `index` está dentro dos limites do array, o que pode causar um erro de "out of bounds".
+2. **Injeção de dados**: A função `readBytes` não verifica se o `size` é maior que o comprimento do array, o que pode permitir a injeção de dados não autorizados.
+
+### Low
+
+1. **Ineficiência**: A função `readBytes` utiliza um loop para copiar os dados, o que pode ser ineficiente para grandes conjuntos de dados.
+2. **Uso excessivo de memória**: A função `readBytes` aloca uma nova variável `a` para armazenar os dados, o que pode ser excessivo se os dados forem muito grandes.
+
+### Undetermined
+
+1. **Comportamento indefinido**: A função `readBytes` não define o comportamento quando `size` é igual a 0, o que pode causar um comportamento indefinido.
+2. **Erro de tipos**: A função `readBytes32` não verifica se o tipo de dados lido é compatível com `bytes32`, o que pode causar um erro de tipos.
+
+### Informational
+
+1. **Código comentado**: O código não possui comentários suficientes para explicar o propósito e o funcionamento de cada função.
+2. **Documentação**: O código não possui documentação adequada para explicar como usar as funções e quais são os requisitos de entrada e saída.
+3. **Testes**: O código não possui testes adequados para garantir que as funções estejam funcionando corretamente.

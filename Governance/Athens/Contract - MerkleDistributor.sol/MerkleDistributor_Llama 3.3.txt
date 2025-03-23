@@ -1,0 +1,29 @@
+Tempo de processamento: 9.16 segundos
+
+Segue a lista de vulnerabilidades encontradas no contrato Solidity:
+
+**High**
+
+1. **Reentrancy em `claim`**: O contrato pode ser vulnerável a reentrancy, pois chama `IERC20(token).transfer` antes de verificar se o índice foi reclamado.
+2. **Reentrancy em `recover`**: O contrato pode ser vulnerável a reentrancy, pois chama `IERC20(token).transfer` sem verificar se o contrato tem saldo suficiente.
+
+**Medium**
+
+1. **Uso de `block.timestamp`**: O contrato usa `block.timestamp` para verificar se o tempo de bloqueio foi atingido, o que pode ser manipulado por mineração.
+2. **Falta de validação de `amount`**: O contrato não valida se `amount` é maior que zero em `claim` e `recover`.
+3. **Falta de validação de `merkleProof`**: O contrato assume que `merkleProof` é uma prova válida sem verificar sua validade.
+
+**Low**
+
+1. **Uso de `abi.encodePacked`**: O contrato usa `abi.encodePacked` para criar o nó da árvore de Merkel, o que pode ser um vetor de ataque se o contrato for atualizado.
+2. **Falta de documentação**: O contrato não tem documentação clara sobre como funciona e quais são as regras de negócio.
+
+**Undetermined**
+
+1. **Segurança da árvore de Merkel**: A segurança da árvore de Merkel depende da implementação da biblioteca `MerkleProof`, que não está incluída no contrato.
+2. **Validação de `index`**: O contrato não valida se `index` é um índice válido para a árvore de Merkel.
+
+**Informational**
+
+1. **Uso de contrato herdado**: O contrato herda de `Ownable` e `IMerkleDistributor`, o que pode ser um vetor de ataque se esses contratos tiverem vulnerabilidades.
+2. **Uso de bibliotecas externas**: O contrato usa bibliotecas externas como `@openzeppelin/contracts`, que podem ter vulnerabilidades.

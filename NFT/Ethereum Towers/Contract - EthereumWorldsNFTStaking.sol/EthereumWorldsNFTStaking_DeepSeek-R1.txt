@@ -1,0 +1,62 @@
+Tempo de processamento: 92.35 segundos
+
+**Vulnerability Audit Report for EthereumWorldsNFTStaking Contract**
+
+---
+
+### **High Risk Vulnerabilities**
+
+1. **Incorrect Token Count Adjustment in Emergency Unstake**  
+   The `emergencyUnstake` function decreases `tokensInStake` by the full length of the user's staked tokens array, not the actual number of tokens unstaked (limited by `maxTokensPerUnstake`). This may cause underflow or inconsistencies in the token count tracker.
+
+2. **Invalid ERC721 Receiver Implementation**  
+   The `onERC721Received` function incorrectly returns the selector only when the operator is the contract itself, blocking legitimate token deposits via `stake`, as the operator is the user (not the contract).
+
+3. **Reward Token Drain via Rescue Function**  
+   The `rescueERC20` function allows the owner to withdraw the `worldsToken` reserves, potentially draining rewards designated for users.
+
+4. **Signature Replay Risk Across Functions**  
+   The `signatureUsed` mapping stores signatures as raw bytes, risking replay attacks across different voucher types (e.g., `StakeVoucher`, `UnstakeVoucher`) if their encoded bytes collide.
+
+---
+
+### **Medium Risk Vulnerabilities**
+
+1. **Missing Parameter Validation in `setRentable`**  
+   The `setRentable` function lacks validation for parameters like `rentableUntil` (e.g., ensuring it’s in the future) or `rentalDailyPrice`, enabling invalid configurations.
+
+2. **Nonce Mismanagement**  
+   If nonces are not tracked and enforced per-user, off-chain signature generation could allow replay attacks or reuse of expired vouchers.
+
+---
+
+### **Low Risk Vulnerabilities**
+
+1. **Unrestricted `maxTokensInStake` Updates**  
+   The `updateMaxTokensInStake` function allows the owner to abruptly reduce the staking limit, potentially disrupting user operations without notice.
+
+---
+
+### **Undetermined Risk**
+
+1. **Reward Calculation Dependency**  
+   Reward logic depends on off-chain signature validation for `ClaimVoucher`. If the external signer is compromised, rewards could be manipulated (requires external context).
+
+---
+
+### **Informational**
+
+1. **Use of Reentrancy Guards and Safe Casts**  
+   The contract correctly implements reentrancy protection and type-safe casts, following best practices.
+
+2. **Token Array Management**  
+   The `_deleteFromTokensArray` function uses a swap-and-pop pattern for efficient storage cleanup.
+
+---
+
+**Recommendations:**  
+- Fix `tokensInStake` adjustment in `emergencyUnstake`.  
+- Correct `onERC721Received` to accept user-initiated transfers.  
+- Restrict `rescueERC20` from withdrawing `worldsToken`.  
+- Differentiate `signatureUsed` by voucher type or include domain separators.  
+- Validate parameters in `setRentable` (e.g., `rentableUntil > block.timestamp`).

@@ -1,0 +1,29 @@
+Tempo de processamento: 9.49 segundos
+
+1. **Falta de Clareza no Gerenciamento de `COMPLIANCE_ROLE`**
+    - Descrição: A interface menciona `COMPLIANCE_ROLE`, mas não define como os papéis são gerenciados, atribuídos ou revogados, levando potencialmente a acessos não autorizados.
+    - Categoria: Medium
+
+2. **Granularidade Limitada na Funcionalidade de Blacklist e Burn**
+    - Descrição: A função `burnBlacklisted` queima todos os tokens, faltando a opção de especificar uma quantidade a ser queimada, resultando em inflexibilidade.
+    - Categoria: Low
+
+3. **Risco de Uso Indevido da Funcionalidade por Detentores do Role `COMPLIANCE_ROLE`**
+    - Descrição: Se o papel `COMPLIANCE_ROLE` for comprometido ou usado indevidamente, contas legítimas podem ser blacklistadas e seus tokens queimados, causando perda de fundos.
+    - Categoria: High
+
+4. **Potencial para Griefing Através do Mecanismo de Blacklist**
+    - Descrição: O mecanismo de blacklist pode ser usado para griefing, interrompendo a capacidade de usuários legítimos interagirem com seus tokens, mesmo sem a queima.
+    - Categoria: Medium
+
+5. **Ausência de Mecanismo de Reversão ou Recuperação de Emergência para 'Burn'**
+    - Descrição: A queima de tokens é irreversível e não há função explícita para recuperar tokens queimados por engano, mesmo de contas blacklistadas.
+    - Categoria: Medium
+
+6. **Dependência Implícita de Contrato de Token Externo para 'Burn'**
+    - Descrição: A função `burnBlacklisted` depende de um mecanismo de 'burn' no contrato de token subjacente, não especificado na interface, com risco de inconsistências.
+    - Categoria: Undetermined
+
+7. **Falta de Validação de Entrada Detalhada para o Parâmetro `account`**
+    - Descrição: Embora o tipo `address` tenha validação básica, não há verificações explícitas adicionais no parâmetro `account`, como prevenção do endereço zero.
+    - Categoria: Low

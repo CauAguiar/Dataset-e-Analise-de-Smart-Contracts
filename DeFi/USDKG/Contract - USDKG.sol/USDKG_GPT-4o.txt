@@ -1,0 +1,79 @@
+### **High Severity Vulnerabilities**  
+
+1. **Integer Underflow & Overflow in Transfers**  
+   - The contract manually subtracts balances without using OpenZeppelin’s `SafeMath` (not necessary in Solidity 0.8+ but should still be considered). If an attacker manages to manipulate values, unexpected behavior could occur.  
+
+2. **Missing Event Emission in `approve`**  
+   - The `approve` function does not emit an event when called, making it difficult to track changes in allowances in off-chain monitoring applications.  
+
+3. **Lack of Front-Running Protection for `approve`**  
+   - The `approve` function allows overwriting an existing allowance without first setting it to zero, exposing it to the **ERC20 approve front-running attack** (a spender can quickly use old approvals before the new one takes effect).  
+
+4. **Blacklisted Users Can Still Receive Funds**  
+   - The contract prevents blacklisted users from sending tokens but does not prevent others from transferring tokens to them. This could allow blacklisted users to receive funds.  
+
+5. **Unchecked External Calls in ERC20 Interface**  
+   - The contract implements `IERC20` but does not correctly override required functions (`transfer`, `transferFrom`, `approve`), which could lead to unexpected behavior in integrations.  
+
+---
+
+### **Medium Severity Vulnerabilities**  
+
+6. **Lack of `ReentrancyGuard` in `destroyBlackFunds`**  
+   - The function `destroyBlackFunds` manipulates balances and `_totalSupply` without reentrancy protection, which could be exploited using callbacks from malicious contracts.  
+
+7. **Owner Can Arbitrarily Mint and Burn Tokens**  
+   - The `issue` and `redeem` functions allow the owner to increase or decrease `_totalSupply` arbitrarily, which could be a centralization risk and affect token holders' trust.  
+
+8. **Fee Calculation Vulnerability (Precision Loss)**  
+   - The fee calculation in `transfer` and `transferFrom` uses integer division, which could lead to minor precision errors in fee deductions.  
+
+9. **No Upper Limit on `issue` Function**  
+   - The `issue` function allows the owner to mint an unlimited number of tokens, which could lead to token devaluation.  
+
+---
+
+### **Low Severity Vulnerabilities**  
+
+10. **Hardcoded Fee Limit (`MAX_BASIS_POINTS`)**  
+   - The fee limit (`MAX_BASIS_POINTS = 20`) is hardcoded, making it difficult to upgrade if necessary in the future.  
+
+11. **Lack of Constructor Validation for `owner` and `compliance`**  
+   - The constructor does not validate if `_owner` or `_compliance` addresses are non-zero, which could lead to loss of control over the contract.  
+
+12. **Centralized Control Over Blacklist**  
+   - The compliance address has unchecked power to blacklist and destroy funds, which can be misused or lead to a loss of user funds due to an error.  
+
+---
+
+### **Informational Severity Issues**  
+
+13. **Missing Return Values in `transfer` and `transferFrom`**  
+   - The contract should explicitly return `true` after successful execution of `transfer` and `transferFrom` for better compatibility with ERC20 standards.  
+
+14. **Non-Standard ERC20 Implementations**  
+   - The contract does not follow OpenZeppelin’s ERC20 implementation, which could lead to unexpected behavior in integrations with DeFi protocols.  
+
+15. **Lack of Comments on Some Critical Functions**  
+   - Several functions lack proper documentation, making it harder for developers to understand the contract logic.  
+
+---
+
+### **Undetermined Severity Issues**  
+
+16. **Potential Centralization Risks**  
+   - The owner and compliance roles have significant control over the contract, including minting, burning, pausing transactions, and blacklisting users. This is a centralization risk but depends on the intended use case.  
+
+---
+
+#### **Summary of Vulnerabilities by Severity**  
+
+| **Severity**      | **Vulnerabilities** |
+|------------------|------------------|
+| **High**         | Integer underflow/overflow, Missing event in `approve`, Front-running in `approve`, Blacklisted users can receive funds, Incomplete `IERC20` implementation |
+| **Medium**       | Missing `ReentrancyGuard` in `destroyBlackFunds`, Owner-controlled minting/burning, Fee calculation precision loss, No upper limit on `issue` |
+| **Low**          | Hardcoded fee limit, Lack of constructor validation, Centralized blacklist control |
+| **Informational**| Missing return values, Non-standard ERC20 implementation, Lack of comments |
+| **Undetermined** | Centralization risks |
+
+This contract should be carefully reviewed for security risks before deployment, especially regarding centralization, fee calculations, and user fund management.

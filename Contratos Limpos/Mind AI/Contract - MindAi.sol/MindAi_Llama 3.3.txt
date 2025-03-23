@@ -1,0 +1,29 @@
+Tempo de processamento: 17.75 segundos
+
+Aqui estão as vulnerabilidades identificadas no contrato:
+
+### High
+
+*   ** Bolsa de mint sem restrição de autorização**: O contrato permite que apenas um endereço específico receba tokens recém-mintados, mas não há autorização ou restrição adicional para evitar que o contrato seja manipulado.
+*   **Exposição de contrato a ataques de reentrencia**: Embora o contrato utilize a biblioteca OpenZeppelin, a ausência de uma função de reentrada explicitamente segura pode expor o contrato a riscos de ataques de reentrada, casoDependency injection
+
+### Medium
+
+*   **Uso de versão específica do Solidity**: A especificação de uma versão exata do Solidity pode criar incompatibilidades com futuras atualizações da linguagem.
+*   ** Hardcode de endereços**: O endereço mencionado no contrato está hardcoded, o que pode dificultar futuras atualizações ou mudanças nos destinatários dos tokens recém-mintados.
+
+### Low
+
+*   **Falta de eventos de mintagem**: A ausência de eventos de mintagem pode dificultar o monitoramento e rastreio das atividades do contrato.
+*   **Comentários insuficientes**: Embora o contrato contenha alguns comentários, a documentação pode ser melhorada para esclarecer melhor as funcionalidades e decisões de design do contrato.
+
+### Undetermined
+
+*   **Impacto de future atualizações da OpenZeppelin**: Dependendo de como a biblioteca OpenZeppelin for atualizada, pode haver efeitos colaterais não intencionais no contrato, especialmente se novas vulnerabilidades forem introduzidas ou comportamentos mudados.
+*   **Desempenho do contrato em diferentes ambientes**: A eficiência do contrato pode variar dependendo do ambiente de execução (por exemplo, testnet vs mainnet, diferentes provedores de nós, etc.).
+
+### Informational
+
+*   **Informações de contato de segurança**: O contrato fornece informações de contato de segurança, o que é útil para reportar vulnerabilidades.
+*   **Licença de software**: A especificação da licença MIT fornece claridade sobre os termos de uso e distribuição do contrato.
+*   **Metadados do contrato**: O contrato contém metadados úteis, como o título, autor e descrição, que podem ajudar na identificação e documentação do contrato.

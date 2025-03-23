@@ -1,0 +1,42 @@
+### **High**  
+1. **Lack of Ownership Transfer Mechanism**  
+   - The contract does not provide a function to transfer ownership, meaning the original deployer remains the owner indefinitely.
+
+2. **Centralization Risk**  
+   - Only the owner can perform critical operations (withdrawals, token transfers, NFT transfers), creating a single point of failure.
+
+3. **Missing Reentrancy Guard in `withdraw`**  
+   - The contract sends Ether using `.transfer()`, which does not inherently prevent reentrancy attacks. If replaced with `.call()`, it could be a serious vulnerability.
+
+---
+
+### **Medium**  
+4. **Missing Event for Ownership Change**  
+   - If an ownership transfer function were later added, failing to emit an event would make tracking changes difficult.  
+
+5. **Lack of Input Validation in `transferNFT`**  
+   - The contract does not verify whether `receiverAddress` is a valid address before transferring the NFT.
+
+---
+
+### **Low**  
+6. **Use of `.transfer()` in `withdraw`**  
+   - The `.transfer()` function has a fixed gas stipend of 2300, which may cause failures if the recipient address is a contract with a fallback function requiring more gas.  
+
+7. **Hardcoded Owner in Constructor**  
+   - The owner is set at deployment but cannot be changed, limiting contract flexibility.
+
+---
+
+### **Informational**  
+8. **No Emergency Pause Mechanism**  
+   - The contract lacks a circuit breaker in case of security incidents.  
+
+9. **Lack of Detailed Error Messages**  
+   - The error messages in `require` statements are generic and could provide more context.  
+
+---
+
+### **Undetermined**  
+10. **Potential Issues with ERC20 Token Transfers**  
+   - Some ERC20 tokens do not return `true` on successful transfers, which could cause issues if the SafeERC20 library is not used correctly.

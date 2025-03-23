@@ -1,0 +1,24 @@
+Tempo de processamento: 49.75 segundos
+
+**1. Vulnerabilities List:**
+
+**High:**
+- **Unchecked Ether Transfer:** Use of `sendEther` without verifying the return value may result in silent failures and lost Ether.
+- **Bridged Token Access Control:** Reliance on external BridgedERC20's `mint`/`burn` without ensuring proper access controls in the token contract.
+- **Chain ID Truncation Risk:** Casting `block.chainid` (uint256) to uint64 may truncate values on chains with large IDs.
+
+**Medium:**
+- **Token Metadata Volatility:** Canonical token data (e.g., `decimals`) retrieved dynamically could change post-registration, causing inconsistencies.
+- **Front-Runnable Token Deployment:** Race conditions during bridged token deployment might allow unintended overwrites if not properly restricted.
+- **Insecure Message Recall Handling:** `onMessageRecalled` assumes caller validation via `checkRecallMessageContext`, risking unauthorized recalls if misconfigured.
+
+**Low:**
+- **Bridged Token Blacklist Bypass:** Blacklist enforcement only at send-time, allowing pre-blacklisted tokens to remain in circulation.
+- **Symbol/Name Collision:** Different canonical tokens with identical symbols/names could cause mapping conflicts.
+
+**Undetermined:**
+- **BridgedERC20 Implementation Risks:** Security depends on external `BridgedERC20` contract's correctness (e.g., migration logic, ownership checks).
+
+**Informational:**
+- **Reentrancy Protections:** Non-reentrant modifiers correctly applied to critical functions.
+- **Upgradability Gaps:** Reserved storage slots (`__gap`) used for upgradeability, following UUPS patterns.

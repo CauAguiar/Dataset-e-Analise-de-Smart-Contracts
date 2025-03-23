@@ -1,0 +1,31 @@
+Tempo de processamento: 23.77 segundos
+
+Aqui estão as vulnerabilidades identificadas no código Solidity, separadas por categorias de gravidade:
+
+### High
+
+* **Reentrância**: O contrato não impede reentrâncias em todas as funções que interagem com outros contratos, o que pode levar a ataques de reentrância.
+* **Perda de fundos**: A função `_deployBridgedToken` pode perder fundos se o contrato `BridgedERC20` não for deployado corretamente.
+* **Controle de acesso**: A função `changeBridgedToken` pode ser chamada por qualquer conta com permissão de `onlyOwner`, o que pode levar a mudanças não autorizadas nos tokens bridged.
+
+### Medium
+
+* **Integralidade de dados**: A função `_handleMessage` assume que o token transferido é o mesmo que o token armazenado no contrato, o que pode não ser sempre o caso.
+* **Erros de inicialização**: A função `_deployBridgedToken` não verifica se o contrato `BridgedERC20` foi inicializado corretamente antes de armazenar o endereço do token bridged.
+* **Falhas de validação**: A função `receiveToken` não verifica se o token recebido é válido antes de processá-lo.
+
+### Low
+
+* **Ineficiência de gas**: A função `_handleMessage` realiza duas chamadas ao contrato `ERC20` para obter o balanço do token, o que pode ser ineficiente em termos de gas.
+* **Prefixos de função**: As funções do contrato não têm prefixos de função claros, o que pode dificultar a compreensão do código.
+* **Comentários**: O código não tem comentários suficientes para explicar a lógica por trás das funções e variáveis.
+
+### Undetermined
+
+* **Interoperabilidade**: O contrato utiliza a biblioteca `LibDeploy` para deployar contratos, o que pode levar a problemas de interoperabilidade se a biblioteca não for compatível com outras bibliotecas ou versões do Solidity.
+* **Segurança da rede**: O contrato utiliza a função `resolve` para obter endereços de contratos, o que pode levar a problemas de segurança se a rede não for configurada corretamente.
+
+### Informational
+
+* **Boas práticas de coding**: O contrato utiliza boas práticas de coding, como a utilização de nomes claros e descritivos para variáveis e funções, e a utilização de comentários para explicar a lógica do código.
+* **Documentação**: O contrato tem documentação clara e concisa, o que ajuda a entender a funcionalidade do contrato.

@@ -1,0 +1,25 @@
+Tempo de processamento: 20.08 segundos
+
+Aqui estão as vulnerabilidades identificadas no contrato Solidity:
+
+### High
+1. **Reentrancy**: A função `liquidateBorrow` é marcada como `nonReentrant`, mas há chamadas para contratos externos que podem ser vulneráveis à reentrancy.
+2. **emonic Attack**: O contrato utiliza a função `transfer` para enviar tokens, que pode ser vulnerável a ataques de reentrancy ou econômicos.
+
+### Medium
+1. **Permissões Excessivas**: A função `restrictLiquidation` e `unrestrictLiquidation` podem ser chamadas por qualquer usuário com permissão de admin, o que pode levar a abusos.
+2. **Utilização de Funções Obsoletas**: O contrato utiliza funções obsoletas como `SafeERC20Upgradeable` que podem ter vulnerabilidades conhecidas.
+3. **Falta de Verificação de Estado**: A função `_checkForceVAILiquidate` não verifica se o estado do contrato é válido antes de realizar a ação.
+
+### Low
+1. **Utilização de Tipos de Dados Inseguros**: O contrato utiliza tipos de dados como `uint256` que podem ser vulneráveis a ataques de overflow.
+2. **Falta de Documentação**: O contrato não tem documentação suficiente sobre as funções e variáveis, o que pode dificultar a auditoria e a manutenção.
+3. **Utilização de Funções não Verificadas**: A função `requireNoError` não é verificada para garantir que o erro seja tratado corretamente.
+
+### Undetermined
+1. **Interoperabilidade com outros Contratos**: O contrato interage com outros contratos, mas não é claro se esses contratos são seguros e confiáveis.
+2. **Dependência de Bibliotecas Externas**: O contrato depende de bibliotecas externas como `@openzeppelin/contracts-upgradeable`, mas não é claro se essas bibliotecas são seguras e atualizadas.
+
+### Informational
+1. **Falta de Testes**: Não há testes visíveis para o contrato, o que pode dificultar a detecção de vulnerabilidades.
+2. **Falta de Auditoria**: O contrato não parece ter sido auditado por uma terceira parte, o que pode aumentar o risco de vulnerabilidades.

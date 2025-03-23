@@ -1,0 +1,48 @@
+Tempo de processamento: 91.66 segundos
+
+**Audit Report: Vulnerabilities in VotingEngine Smart Contract**
+
+**High Severity:**
+
+1. **Unchecked ERC20 Transfer Return Values**  
+   The `deposit` and `proposeVote` functions use `transferFrom` without checking the return value. If the ERC20 token does not revert on failure (e.g., returns `false`), transactions may proceed despite transfer failures, leading to inconsistent state changes (e.g., `_voteCounter` incrementing without tokens being deposited).
+
+---
+
+**Medium Severity:**
+
+1. **Centralization Risk in Vote Resolution**  
+   The `resolveVote` function is restricted to the owner, who can arbitrarily set IPFS hashes for vote results. This creates a trust assumption that the owner will act honestly and accurately resolve votes.
+
+2. **Potential Reentrancy in ERC20 Transfers**  
+   `deposit` and `proposeVote` lack reentrancy guards when calling `transferFrom`. If the ERC20 token is malicious, reentrant calls could exploit unintended state changes (e.g., emitting events for deposits that never occurred).
+
+---
+
+**Low Severity:**
+
+1. **Possible Signature Replay Across Contracts/Chains**  
+   The signature verification mechanism (in `withdrawFor`) may not include chain/contract-specific data (e.g., chain ID), enabling cross-chain or cross-contract replay attacks if `Signature.sol` does not mitigate this.
+
+2. **Incorrect Event Emission in Withdraw**  
+   The `Withdrawn` event logs `msg.sender` instead of the `receiver` address, causing discrepancies in off-chain tracking of withdrawals.
+
+---
+
+**Undetermined Severity:**
+
+1. **Signature Verification Implementation Risks**  
+   Risks depend on the unprovided `Signature.sol` code. Vulnerabilities may exist if signatures lack proper validation (e.g., unique nonces, context-bound parameters).
+
+---
+
+**Informational:**
+
+1. **Redundant SafeMathUpgradeable Import**  
+   The contract imports `SafeMathUpgradeable` but does not use it. SafeMath is unnecessary in Solidity ≥0.8.x due to built-in overflow checks.
+
+2. **Missing SafeERC20 Usage**  
+   OpenZeppelin’s `SafeERC20` is not utilized for token transfers, increasing reliance on tokens implementing revert-on-failure behavior instead of returning `false`.
+
+3. **Lack of Access Control on proposeVote**  
+   While `proposeVote` requires a token payment, the absence of role-based restrictions could lead to spam if token costs are negligible.

@@ -1,0 +1,41 @@
+### **Auditoria de Smart Contract - Identificação de Vulnerabilidades**
+
+A análise foi realizada sobre a implementação do contrato ERC-20 baseado na biblioteca OpenZeppelin. A seguir, listamos as vulnerabilidades identificadas, categorizadas conforme sua criticidade.
+
+---
+
+### **High**
+1. **Possível Problema com Reentrada (Reentrancy) em Contratos Externos**  
+   - O contrato não protege contra reentrancy caso seja combinado com contratos externos que chamem `transfer` ou `transferFrom` dentro de um fallback. Isso pode levar a ataques de reentrada dependendo da implementação externa.
+
+---
+
+### **Medium**
+2. **Problema de Aprovação Dupla (Approve/TransferFrom Race Condition)**  
+   - A função `approve` permite que um atacante explore uma condição de corrida onde um usuário pode alterar uma aprovação enquanto uma transação ainda está pendente, resultando em transferências não intencionais.
+
+---
+
+### **Low**
+3. **Uso de `unchecked` Sem Verificação Adequada**  
+   - O uso de `unchecked {}` na função `transferFrom` pode ser perigoso se houver alguma alteração na lógica do contrato que impacte a subtração de valores, potencialmente permitindo falhas inesperadas.
+
+---
+
+### **Informational**
+4. **Falta de Eventos para Algumas Funções Importantes**  
+   - A função `_transfer` não emite um evento explícito para rastreamento interno, o que pode dificultar a auditoria on-chain. Embora `transfer` e `transferFrom` emitam eventos, seria interessante reforçar a rastreabilidade interna.
+
+5. **Possível Falta de Mecanismos de Controle de Suprimento**  
+   - Como a implementação do ERC-20 não prevê um mecanismo explícito de criação (`mint`) ou destruição (`burn`) de tokens, contratos derivados devem adicionar essas funcionalidades com cuidado para evitar manipulações indevidas.
+
+---
+
+### **Undetermined**
+6. **Ausência de Mecanismo de Atualização ou Governança**  
+   - O contrato não possui funções administrativas ou mecanismos de governança. Caso seja necessário modificar regras no futuro, pode ser problemático. A criticidade depende do contexto do token.
+
+---
+
+### **Conclusão**
+A implementação segue padrões seguros da OpenZeppelin, mas algumas melhorias podem ser feitas para mitigar riscos potenciais. Recomenda-se adicionar proteções contra reentrancy caso o contrato interaja com contratos externos, além de melhorias na lógica de aprovação e rastreamento de eventos.

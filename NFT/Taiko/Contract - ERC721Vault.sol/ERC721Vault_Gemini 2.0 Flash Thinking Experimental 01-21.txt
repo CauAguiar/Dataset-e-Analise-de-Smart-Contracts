@@ -1,0 +1,31 @@
+Tempo de processamento: 14.72 segundos
+
+```
+1. Vulnerabilidades Encontradas no Contrato ERC721Vault
+
+**1.1. Encaminhamento Inesperado de Ether**
+Descrição: As funções `receiveToken` e `onMessageRecalled` encaminham o `msg.value` para um endereço sem um motivo claro. Isso pode resultar em comportamento inesperado, especialmente se o valor de Ether anexado à mensagem não tiver o objetivo de ser transferido para o destinatário do token.
+
+**1.2. Manipulação de Taxas Não Clara**
+Descrição: A função `sendToken` calcula `message.value = msg.value - op.fee`, mas então envia `msg.value` completo para a função `sendMessage` do contrato Bridge. Não está claro se a taxa (`op.fee`) é devidamente deduzida e processada, potencialmente levando a cálculos de taxa incorretos ou a um comportamento inesperado no processamento de taxas da ponte.
+
+**1.3. Potencial de Negação de Serviço (DoS) em Loops**
+Descrição: As funções `sendToken`, `receiveToken` e `onMessageRecalled` contêm loops que iteram sobre `tokenIds`. Se `tokenIds` puder ser arbitrariamente grande, isso pode levar à exaustão de gás e DoS. A mitigação depende da existência de limites impostos noutros locais do sistema, como na função `withValidOperation` ou na ponte.
+
+**1.4. Dependência de AddressResolver e LibDeploy**
+Descrição: O contrato depende de bibliotecas externas como `AddressResolver` e `LibDeploy`. Problemas nessas dependências ou configurações incorretas podem afetar a segurança do contrato ERC721Vault. Isso representa um risco de dependência em vez de uma vulnerabilidade inerente ao contrato em si.
+
+2. Categorias de Severidade
+
+**1.1. Encaminhamento Inesperado de Ether**
+Categoria: High
+
+**1.2. Manipulação de Taxas Não Clara**
+Categoria: Medium
+
+**1.3. Potencial de Negação de Serviço (DoS) em Loops**
+Categoria: Medium
+
+**1.4. Dependência de AddressResolver e LibDeploy**
+Categoria: Informational
+```

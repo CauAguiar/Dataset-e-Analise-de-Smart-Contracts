@@ -1,0 +1,48 @@
+Tempo de processamento: 99.99 segundos
+
+Here is the audit report for the provided Solidity contract, categorized by vulnerability severity:
+
+### High
+
+1. **Improper Initialization of Context**  
+   The `init` function incorrectly compares instead of initializing `_ctx.msgHash`, leaving context in an invalid state and causing unexpected reverts.
+
+2. **Unsafe Low-Level Call Execution**  
+   Arbitrary external calls in `_invokeMessageCall` lack proper gas and target validation, risking reentrancy or failures despite preventive modifiers.
+
+---
+
+### Medium
+
+1. **Unaccounted Ether Deposits**  
+   Direct Ether transfers to the contract bypass message validation, potentially disrupting internal accounting for message values and fees.
+
+2. **Insufficient Gas Griefing**  
+   Using `gasleft()` for message execution may lead to out-of-gas errors, forcing messages into retriable/failed states unnecessarily.
+
+---
+
+### Low
+
+1. **Ether Refund Failures**  
+   Using `sendEther` (likely `sendValue`) may revert if the recipient cannot accept Ether, blocking message processing.
+
+2. **Inconsistent DestChain Validation**  
+   The `sameChain` modifier enforces destination checks, but improper chain ID resolution in dependencies could allow cross-chain abuse.
+
+---
+
+### Informational
+
+1. **Bypassed Message Execution for Specific Addresses**  
+   Messages targeting `address(0)` or the contract itself skip invocation, potentially enabling value transfers without logic execution.
+
+2. **Context Handling Without Initialization**  
+   Initial `_ctx` state causes `context()` to revert until updated, which may confuse external integrations.
+
+---
+
+### Undetermined
+
+1. **External Signal Service Reliance**  
+   Security depends on the correctness of `ISignalService`, which is beyond the contract's control (e.g., proof validation or oracle manipulation).

@@ -1,0 +1,29 @@
+### **High**  
+1. **External Calls to Untrusted Contracts**  
+   - O código depende de várias interfaces externas, como `IVToken`, `IVBep20`, `IVBNB`, etc., que podem conter código malicioso ou comportamentos inesperados.  
+
+2. **Possível Reentrada (Reentrancy)**  
+   - Algumas funções externas, como `liquidateBorrow`, podem envolver transferências de tokens que podem ser exploradas em ataques de reentrada.  
+
+### **Medium**  
+3. **Falta de Validação de Entrada**  
+   - Não há verificações explícitas nos parâmetros de entrada das funções externas, o que pode levar a execuções inesperadas.  
+
+4. **Dependência de Endereços Externos**  
+   - Chamadas para contratos externos, como `vaiController()` e `markets()`, podem ser modificadas fora do controle do contrato, levando a possíveis exploits.  
+
+### **Low**  
+5. **Risco de Front-Running**  
+   - Algumas funções podem ser suscetíveis a ataques de front-running, especialmente as que envolvem liquidação de ativos.  
+
+6. **Ausência de Eventos para Auditoria**  
+   - Não há eventos para rastrear mudanças críticas no estado do contrato, dificultando a auditoria e detecção de anomalias.  
+
+### **Informational**  
+7. **Uso de Enum Pode Levar a Erros**  
+   - A enum `Action` pode causar comportamentos inesperados se os valores forem alterados em futuras implementações.  
+
+8. **Possível Falta de Suporte para Atualizações Seguras**  
+   - Como o contrato importa bibliotecas upgradeáveis, ele pode exigir um padrão de proxy bem estruturado para evitar quebras futuras.  
+
+Se precisar de um relatório mais detalhado ou recomendações de mitigação, posso fornecer. 🚀

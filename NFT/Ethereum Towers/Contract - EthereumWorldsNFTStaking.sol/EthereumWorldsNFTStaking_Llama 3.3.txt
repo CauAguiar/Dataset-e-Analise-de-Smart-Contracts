@@ -1,0 +1,27 @@
+Tempo de processamento: 9.92 segundos
+
+### Vulnerabilidades no Contrato EthereumWorldsNFTStaking
+
+Aqui estão as vulnerabilidades identificadas no contrato, categorizadas por nível de gravidade:
+
+#### High
+1. **Reentrancy**: Embora o contrato utilize o `ReentrancyGuard`, é importante garantir que todas as funções que interagem com contratos externos sejam protegidas contra reentrancy.
+2. **Uso de `tx.origin`**: O contrato não usa `tx.origin`, mas é importante mencionar que o uso de `tx.origin` pode ser perigoso e deve ser evitado.
+3. **Permissões excessivas**: O contrato concede permissões excessivas ao proprietário, o que pode ser um risco se o proprietário for comprometido.
+
+#### Medium
+1. **Falta de validação de entrada**: Algumas funções não validam as entradas de usuário, o que pode levar a comportamentos inesperados ou erros.
+2. **Uso de `block.timestamp`**: O contrato usa `block.timestamp` para registrar timestamps, o que pode ser vulnerável a ataques de tempo.
+3. **Falta de documentação**: O contrato não tem documentação suficiente, o que pode dificultar a compreensão e a auditoria do código.
+
+#### Low
+1. **Uso de `uint256` para índices**: O contrato usa `uint256` para índices de arrays, o que pode ser desnecessário e pode levar a problemas de desempenho.
+2. **Falta de otimização**: O contrato pode ser otimizado para reduzir o uso de gas e melhorar o desempenho.
+
+#### Undetermined
+1. **Uso de `ECDSA`**: O contrato usa `ECDSA` para verificação de assinaturas, o que pode ser seguro, mas depende da implementação e do uso correto.
+2. **Uso de `keccak256`**: O contrato usa `keccak256` para hash, o que é seguro, mas depende da implementação e do uso correto.
+
+#### Informational
+1. **Uso de `pragma solidity 0.8.9`**: O contrato usa uma versão específica do Solidity, o que pode ser uma boa prática, mas é importante manter a versão atualizada.
+2. **Uso de `UNLICENSED`**: O contrato usa a licença `UNLICENSED`, o que pode ser uma escolha deliberada, mas é importante considerar as implicações legais e de licenciamento.

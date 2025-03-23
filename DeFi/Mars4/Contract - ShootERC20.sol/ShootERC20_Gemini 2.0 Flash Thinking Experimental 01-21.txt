@@ -1,0 +1,26 @@
+Tempo de processamento: 13.83 segundos
+
+```
+1. Vulnerabilidades no Código Solidity
+
+**High**
+
+*   Nenhuma vulnerabilidade de alta severidade detectada. O código baseia-se na biblioteca OpenZeppelin, que é amplamente auditada e considerada segura para as funcionalidades implementadas neste contrato.
+
+**Medium**
+
+*   Nenhuma vulnerabilidade de média severidade detectada no código apresentado.
+
+**Low**
+
+*   **Centralização na Mint Inicial**:
+    *   **Descrição**: A totalidade do fornecimento de tokens é inicialmente cunhada para o endereço do deployer no momento da implantação do contrato. Isso centraliza a distribuição inicial e controle dos tokens nas mãos do deployer.
+
+**Informational**
+
+*   **Uso de Blocos `unchecked` para Otimização**:
+    *   **Descrição**: O contrato utiliza blocos `unchecked` em operações aritméticas críticas, como nas funções `transferFrom` e `decreaseAllowance`, visando otimizar o consumo de gás. Embora em contextos de operações aritméticas seguras após verificações, o uso de `unchecked` aumenta a complexidade da auditoria e requer garantia de que não haverá underflow/overflow em nenhuma circunstância, mesmo que precondições sejam violadas por erros lógicos ou interações externas.
+
+*   **Vulnerabilidade de Front-Running em `approve` (Padrão ERC20)**:
+    *   **Descrição**: A função `approve` do padrão ERC20 é inerentemente suscetível a front-running. Um observador da mempool pode antecipar a transação `approve` de um usuário e executar uma transação `transferFrom` antes que a aprovação pretendida seja efetivada, potencialmente explorando a janela entre a aprovação e o uso da permissão. Embora não seja uma vulnerabilidade específica desta implementação (pois é uma característica do padrão ERC20), é importante estar ciente e considerar o uso de `increaseAllowance` e `decreaseAllowance` como mitigação.
+```

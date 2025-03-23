@@ -1,0 +1,28 @@
+Tempo de processamento: 51.32 segundos
+
+**Security Audit of Signature Contract**
+
+**High Risk Vulnerabilities:**
+1. **Hash Collision via Packed Encoding**  
+   `abi.encodePacked` risk in `getMessageHash` and `getMessageHashNFT` may cause hash collisions due to ambiguous parameter encoding (e.g., address/uint256 concatenation).
+
+2. **Replay Attacks Due to Unhandled Nonces**  
+   No internal nonce tracking; verification depends on external contracts to manage nonces, creating replay attack risks in `verify`.
+
+3. **Signature Replay in verifyNFT Function**  
+   `getMessageHashNFT` lacks replay protection (e.g., nonce), enabling signature reuse for NFT operations.
+
+**Medium Risk Vulnerabilities:**
+1. **Inadequate v Parameter Validation**  
+   `splitSignature` does not validate `v` as 27 or 28, risking invalid signature recovery.
+
+2. **Signature Malleability Risk**  
+   Missing checks on the `s` value’s upper limit (per ECDSA standards), allowing malleable signatures.
+
+**Low Risk Vulnerabilities:**
+1. **Missing Signer Address Validation**  
+   No validation of `signer` address (e.g., non-zero check), potentially allowing unintended zero-address matches.
+
+**Informational:**
+1. **Dead Code Presence**  
+   Unused `verify` function (noted in comments) may remain post-compilation if not optimized.

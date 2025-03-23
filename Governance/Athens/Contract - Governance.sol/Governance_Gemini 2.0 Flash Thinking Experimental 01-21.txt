@@ -1,0 +1,9 @@
+Tempo de processamento: 6.04 segundos
+
+## Auditoria de Smart Contract - Vulnerabilidades
+
+Aqui estão as vulnerabilidades encontradas no código Solidity, listadas de forma breve, sem exemplos e categorizadas conforme solicitado:
+
+1.  **Título:** Potencial DoS por Limite de Gas em `transfers`
+    **Descrição:**  A função `transfers` pode falhar ao processar arrays muito grandes devido à iteração em loop, excedendo o limite de gás do bloco e potencialmente causando uma negação de serviço.
+    **Categoria:** Medium

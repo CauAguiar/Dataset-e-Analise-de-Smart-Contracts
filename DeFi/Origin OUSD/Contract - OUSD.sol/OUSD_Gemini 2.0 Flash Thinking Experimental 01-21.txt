@@ -1,0 +1,59 @@
+Tempo de processamento: 17.92 segundos
+
+```
+1.  **Título:** Inicialização Não Segura
+    **Descrição:** A função de inicialização pode ser chamada por qualquer pessoa antes que o Governador pretendido seja definido, a menos que o modificador `onlyGovernor` restrinja corretamente a chamada durante a fase de implantação e inicialização.
+    **Categoria:** Medium
+
+2.  **Título:** Falta de Validação de Entrada em `_initialCreditsPerToken`
+    **Descrição:** O parâmetro `_initialCreditsPerToken` na função `initialize` não é validado, o que pode levar a comportamento inesperado se valores inválidos forem fornecidos.
+    **Categoria:** Low
+
+3.  **Título:** Problemas de Precisão e Arredondamento em `balanceOf`
+    **Descrição:** Cálculo de saldo em `balanceOf` envolvendo divisão inteira e subtração pode introduzir erros de precisão, especialmente em cenários complexos de delegação de rendimento.
+    **Categoria:** Low
+
+4.  **Título:** Risco de Reentrância em `_adjustAccount`
+    **Descrição:** Funções chamadas dentro de `_adjustAccount` como `balanceOf` ou `_balanceToRebasingCredits`, se interagirem com contratos externos, podem abrir caminho para reentrância não intencional.
+    **Categoria:** Undetermined
+
+5.  **Título:** Acumulação de Erros de Arredondamento em Ajustes de Conta
+    **Descrição:** A lógica de conversão entre saldos e créditos em `_adjustAccount` pode levar ao acúmulo de erros de arredondamento ao longo do tempo devido à divisão inteira.
+    **Categoria:** Low
+
+6.  **Título:** Lógica Complexa e Riscos em Delegação de Rendimento em `_adjustAccount`
+    **Descrição:** A complexidade da lógica de delegação de rendimento dentro de `_adjustAccount` aumenta o risco de erros lógicos que podem levar a contabilidade incorreta.
+    **Categoria:** Medium
+
+7.  **Título:** Minting Não Controlado até o Fornecimento Máximo
+    **Descrição:** Se o `vaultAddress` ou a governança forem comprometidos, a função `mint` pode ser utilizada para criar tokens até o `MAX_SUPPLY`, levando à inflação.
+    **Categoria:** Medium
+
+8.  **Título:** Possível Erros de Lógica em `_autoMigrate`
+    **Descrição:** A lógica condicional complexa em `_autoMigrate` para migração automática pode conter erros sutis que resultam em comportamento inesperado.
+    **Categoria:** Low
+
+9.  **Título:** Verificação de Arredondamento em `_balanceToRebasingCredits`
+    **Descrição:** A estratégia de arredondamento em `_balanceToRebasingCredits` requer verificação para garantir que seja sempre correta e segura em todos os cenários possíveis.
+    **Categoria:** Low
+
+10. **Título:** Risco de Divisão por Zero em `changeSupply`
+    **Descrição:** A função `changeSupply` pode falhar devido a uma divisão por zero se `totalSupply` se tornar igual a `nonRebasingSupply`, levando a uma potencial negação de serviço.
+    **Categoria:** Medium
+
+11. **Título:** Risco de Manipulação de Fornecimento em `changeSupply`
+    **Descrição:** Se o controle sobre `vaultAddress` ou governança for comprometido, chamadas não autorizadas para `changeSupply` podem manipular o fornecimento de tokens.
+    **Categoria:** High
+
+12. **Título:** Complexidade Lógica e Riscos em `delegateYield`
+    **Descrição:** A alta complexidade da função `delegateYield`, com múltiplas verificações e alterações de estado, aumenta o risco de erros lógicos que podem afetar a delegação de rendimento.
+    **Categoria:** Medium
+
+13. **Título:** Risco de Reentrância em `delegateYield`
+    **Descrição:** Semelhante a `_adjustAccount`, se `balanceOf` ou `_balanceToRebasingCredits` chamadas dentro de `delegateYield` permitirem reentrância, pode haver riscos não intencionais.
+    **Categoria:** Undetermined
+
+14. **Título:** Riscos em Lógica de Desfazer Delegação em `undelegateYield`
+    **Descrição:** A função `undelegateYield`, ao desfazer a operação complexa de delegação, apresenta risco de conter erros lógicos na reversão das alterações de estado.
+    **Categoria:** Medium
+```

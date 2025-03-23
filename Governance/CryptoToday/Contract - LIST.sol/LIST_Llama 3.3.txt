@@ -1,0 +1,32 @@
+Tempo de processamento: 7.26 segundos
+
+Aqui está a lista de vulnerabilidades do contrato Solidity fornecido, separadas por categorias:
+
+### High
+
+1. **Reentrancy**: O contrato utiliza a função `transfer` do Solidity, que pode ser vulnerável a ataques de reentrância.
+2. **Unprotected Function**: A função `invest` não tem proteção contra ataques de reentrância, o que pode permitir que um atacante drene os fundos do contrato.
+3. **Use of Transfer**: A função `endSale` utiliza a função `transfer` para enviar ethers para o carteira da equipe, o que pode ser vulnerável a ataques de reentrância.
+
+### Medium
+
+1. **Timestamp Dependence**: O contrato depende do timestamp do bloco para controlar o início e o fim da venda, o que pode ser vulnerável a ataques dequine.
+2. **Reentrancy in `claimFutures`**: A função `claimFutures` chama a função `burnFrom` do contrato `LISTF`, o que pode ser vulnerável a ataques de reentrância.
+3. **Unvalidated User Input**: A função `invest` não valida se o endereço do investidor é válido, o que pode permitir que um atacante envie ethers para um endereço inválido.
+
+### Low
+
+1. **Use of Deprecated Functions**: O contrato utiliza a função `now` do Solidity, que é depreciada desde a versão 0.7.0.
+2. **Missing Event Emission**: A função `mintToEngine` não emite um evento quando os tokens são minerados, o que pode dificultar a auditoria do contrato.
+3. **Inconsistent Naming**: O contrato utiliza nomes de variáveis inconsistentes, o que pode dificultar a leitura e a manutenção do código.
+
+### Undetermined
+
+1. **Fairness of the Token Distribution**: O contrato distribui tokens de forma proporcional ao valor investido, mas não há garantias de que a distribuição seja justa e imparcial.
+2. **Security of the Off-Chain System**: O contrato depende de um sistema off-chain para gerenciar os bônus e as ações vestidas, mas não há informações sobre a segurança desse sistema.
+
+### Informational
+
+1. **Code Organization**: O contrato tem uma organização de código clara e fácil de seguir, o que facilita a leitura e a manutenção do código.
+2. **Use of Secure Libraries**: O contrato utiliza bibliotecas seguras e bem testadas, como a OpenZeppelin, o que ajuda a garantir a segurança do contrato.
+3. **Clear Documentation**: O contrato tem uma documentação clara e concisa, o que ajuda a entender o funcionamento do contrato.

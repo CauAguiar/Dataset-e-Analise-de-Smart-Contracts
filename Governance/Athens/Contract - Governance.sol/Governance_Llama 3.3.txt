@@ -1,0 +1,25 @@
+Tempo de processamento: 13.76 segundos
+
+### Vulnerabilidades no Contrato
+
+Aqui estão as vulnerabilidades identificadas no contrato de forma breve, sem exemplos, e separadas por categorias de gravidade:
+
+#### High
+- **Reentrancy**: O contrato pode ser vulnerável a ataques de reentrância, especialmente na função `transferFrom` e `transfer`, se os recipients forem contratos maliciosos.
+- **Front-Running**: A ordem de execução das transações pode ser manipulada, permitindo que atacantes antecipem e expliem transações.
+
+#### Medium
+- **Reuso de Não-resposta**: Se o contratoafdicao não seguir os padrões de inicialização adequados, pode haver problemas de inicialização.
+- **Lixeiras em Mappings**: Os mappings podem содержать dados inconsistentes ou não inicializados, afetando a lógica do contrato.
+
+#### Low
+- **Ineficiência de Gas**: A função `transfers` pode ser ineficiente em termos de custo de gas para grandes quantidades de transferências.
+- **Alertas de Compiler**: É importante verificar possíveis alertas do compilador para garantir que não há problemas de sintaxe ou de segurança não identificados.
+
+#### Undetermined
+- **Ataques de Economia**: A lógica do contrato pode ser explorada economicamente, especialmente em relação ao mecanismo de staking e lock de tokens.
+
+#### Informational
+- **Segurança de imports**: Verificar se as bibliotecas importadas estão atualizadas e seguras.
+- **Documentação**: Melhorias na documentação podem ajudar a evitar erros por parte dos desenvolvedores que utilizam o contrato.
+- **Testes**: É crucial realizar testes exhaustivos para garantir a segurança e a funcionalidade do contrato.

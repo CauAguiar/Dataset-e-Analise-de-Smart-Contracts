@@ -1,0 +1,28 @@
+### **Vulnerabilidades Identificadas**  
+
+#### **High**  
+1. **Dependência de Oracle Externa**  
+   - O contrato depende da `RESILIENT_ORACLE` para obter preços. Se o oracle for comprometido ou fornecer dados errados, pode levar a valores incorretos de precificação.  
+
+2. **Assunção de Paridade entre stETH e WETH**  
+   - O cálculo assume que `1 stETH = 1 WETH`, o que pode não ser sempre verdadeiro devido à variação de preços entre os ativos. Isso pode resultar em precificação incorreta.  
+
+#### **Medium**  
+3. **Ausência de Validação no Retorno do Oracle**  
+   - O contrato não valida se `RESILIENT_ORACLE.getPrice(WETH_ADDRESS)` retorna um valor válido (exemplo: maior que zero). Se o oracle falhar ou retornar um valor inesperado, pode causar problemas de cálculo.  
+
+4. **Uso de Revert com String Fixa**  
+   - A função `getPrice` reverte com `"wrong wstETH address"` caso o asset não seja `WSTETH_ADDRESS`. Ataques de DoS poderiam ser explorados ao chamar o contrato com inputs errados propositalmente.  
+
+#### **Low**  
+5. **Falta de Eventos para Monitoramento**  
+   - O contrato não emite eventos ao calcular preços, tornando mais difícil monitorar mudanças inesperadas no valor retornado.  
+
+#### **Informational**  
+6. **Uso de `immutable` sem Necessidade Crítica**  
+   - Embora `immutable` reduza consumo de gás, pode ser desnecessário para alguns endereços, especialmente se houver necessidade futura de atualização de oracles.  
+
+7. **Falta de Comentários Explicativos nos Cálculos**  
+   - Melhor documentação do raciocínio por trás do cálculo de preço poderia evitar erros de interpretação e manutenção mais difícil.  
+
+Se precisar de recomendações de mitigação, posso fornecer sugestões detalhadas! 🚀

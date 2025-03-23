@@ -1,0 +1,25 @@
+Tempo de processamento: 37.04 segundos
+
+Segue aqui as vulnerabilidades identificadas no contrato, categorizadas por nível de gravidade:
+
+**High:**
+- **Reentrancy em `withdrawFor`**: Embora o contrato utilize `ReentrancyGuardUpgradeable`, o uso de `list.transfer` dentro de `withdrawFor` ainda pode permitir reentrancy, pois o contrato `list` pode ser um contrato malicioso.
+- **Controle de acesso inadequado em `resolveVote`**: Apenas o proprietário pode chamar `resolveVote`, mas isso pode ser um problema se o proprietário for comprometido ou se houver uma disputa sobre a propriedade do contrato.
+- **Uso de `tx.origin` em `withdrawFor`**: O contrato utiliza `_msgSender()` que é seguro, mas é importante notar que o uso de `tx.origin` em outros contratos pode introduzir vulnerabilidades.
+
+**Medium:**
+- **Tratamento de exceções em `withdrawFor` e `deposit`**: As funções não tratam explicitamente exceções que podem ocorrer durante a transferência de tokens, o que pode levar a perda de fundos.
+- **Validação de entrada em `proposeVote` e `withdrawFor`**: As funções não validam se os parâmetros `rewardAmount` e `amount` são maiores que zero, o que pode levar a comportamentos inesperados.
+- **Uso de `keccak256` em `resolveVote`**: O uso de `keccak256` pode ser substituído por um método mais seguro, como `bytes32`.
+
+**Low:**
+- **Uso de `string` em `getVoteState`**: O uso de `string` pode ser ineficiente em termos de gas, especialmente para grandes cadeias de caracteres.
+- **Falta de documentação em `Signature`**: A falta de documentação em `Signature` pode dificultar a compreensão do contrato e sua funcionalidade.
+
+**Undetermined:**
+- **Uso de `IERC20` e `IERC721Enumerable`**: O contrato utiliza interfaces ERC20 e ERC721, mas não está claro se essas interfaces estão implementadas corretamente nos contratos que são utilizados.
+- **Comportamento em caso de emergência**: O contrato não define um comportamento claro em caso de emergência, como uma vulnerabilidade crítica ou uma disputa sobre a propriedade do contrato.
+
+**Informational:**
+- **Uso de `pragma solidity 0.8.12`**: O contrato utiliza uma versão específica do compilador Solidity, o que pode ser um problema se houver um bug na versão utilizada.
+- **Falta de testes**: O contrato não inclui testes, o que é importante para garantir a funcionalidade correta e a segurança do contrato.

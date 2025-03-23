@@ -1,0 +1,32 @@
+Tempo de processamento: 102.13 segundos
+
+### Vulnerabilities List
+
+#### High Risk
+1. **Excessive Owner Privileges**  
+   The contract owner has extensive control, including minting/burning tokens, pausing transactions, blacklisting addresses, and upgrading the contract, posing centralization risks.
+
+2. **Reliance on Trusted Upgraded Contract**  
+   If deprecated, the contract forwards calls to an external address. A malicious upgraded contract could lead to fund loss or arbitrary logic execution.
+
+#### Medium Risk
+1. **Insufficient Validation in Upgrade Mechanism**  
+   The `deprecate` function lacks safeguards to verify the new contract's integrity, risking improper state handling or logic errors if the upgraded contract is faulty.
+
+#### Low Risk
+_No low-risk vulnerabilities identified in the provided code._
+
+#### Informational
+1. **Centralized Control Mechanisms**  
+   Designed features (blacklisting, pausing, minting) require high trust in the owner, which may conflict with decentralization principles.
+
+2. **Legacy Upgrade Pattern Dependency**  
+   Use of a deprecated upgrade mechanism introduces complexity and potential maintenance risks compared to modern proxy patterns.
+
+#### Undetermined
+_No undetermined issues identified after initial analysis._
+
+---
+
+### Summary
+The contract prioritizes flexibility and control but introduces significant trust assumptions. Centralized functions and upgrade mechanisms are the primary concerns, demanding careful governance. Code-level protections (e.g., SafeMath, pausable modifiers) are correctly implemented, but reliance on owner integrity remains critical.

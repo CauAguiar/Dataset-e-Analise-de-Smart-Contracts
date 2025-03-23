@@ -1,0 +1,46 @@
+### Vulnerabilidades no Código Solidity
+
+#### **High**
+1. **Integer Overflow/Underflow**  
+   - O código usa operações aritméticas diretas (`+` e `-`) sem verificações explícitas de overflow. Embora Solidity 0.8+ previna isso nativamente, é uma boa prática garantir verificações manuais em cálculos críticos.
+
+2. **Reentrancy Attack**  
+   - O contrato não usa `ReentrancyGuard`, o que pode permitir ataques de reentrada em funções que manipulam `totalSupply` e rebasing credits.
+
+3. **Armazenamento de Dados Não Protegido**  
+   - A função `_rebaseOptIn` e `_rebaseOptOut` altera estados críticos da conta sem verificações adicionais, permitindo mudanças inesperadas no comportamento financeiro do contrato.
+
+4. **Delegação de Yield Sem Controle Adequado**  
+   - A função `delegateYield` pode ser explorada se chamada repetidamente ou de forma maliciosa, permitindo que um atacante redirecione rendimentos para contas não autorizadas.
+
+---
+
+#### **Medium**
+5. **Falta de Proteção Contra Endereços Maliciosos**  
+   - O contrato verifica se `_account != address(0)`, mas não valida se `_account` é um contrato malicioso que pode executar código inesperado ao ser chamado.
+
+6. **Dependência de Estados Globais Sem Sincronização Adequada**  
+   - O contrato ajusta variáveis globais (`_adjustGlobals`) sem garantir que os valores atualizados sejam consistentes entre diferentes chamadas de função.
+
+7. **Falta de Eventos em Algumas Mudanças de Estado Críticas**  
+   - Algumas funções que alteram estados importantes (`_rebaseOptIn`, `_rebaseOptOut`) não emitem eventos, dificultando auditoria e rastreamento.
+
+---
+
+#### **Low**
+8. **Uso de `require` Sem Mensagens Detalhadas**  
+   - Algumas verificações `require` poderiam fornecer mensagens de erro mais detalhadas para facilitar debugging e auditoria.
+
+9. **Possível Rounding Error em Cálculos de Rebasing**  
+   - A conversão entre créditos e tokens usa divisão inteira, podendo causar pequenas discrepâncias ao longo do tempo.
+
+---
+
+#### **Informational**
+10. **Código Pode Ser Otimizado**  
+   - Algumas funções fazem cálculos redundantes ou poderiam ser refatoradas para reduzir o consumo de gás.
+
+11. **Comentários Não Padronizados**  
+   - A documentação do código poderia ser mais detalhada e consistente para melhorar a compreensão.
+
+Essas vulnerabilidades devem ser analisadas e corrigidas conforme o impacto potencial no contrato.

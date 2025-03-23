@@ -1,0 +1,7 @@
+Tempo de processamento: 11.33 segundos
+
+Como um auditor de smart contracts, listo as vulnerabilidades encontradas no código Solidity fornecido:
+
+1.  **Título: Consumo de Gás Descontrolado no Airdrop em Massa (Potencial DoS)**
+    **Descrição:** A função `MassAirdrop` itera por um array de destinatários para distribuir tokens. Se o array `receivers` for muito grande, o custo de gás pode exceder os limites do bloco, causando a falha da transação e potencialmente impedindo a execução de outras funções importantes do contrato (Negação de Serviço - DoS).
+    **Categoria:** Medium

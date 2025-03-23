@@ -1,0 +1,11 @@
+Tempo de processamento: 14.77 segundos
+
+```
+1. **Potencial Denegação de Serviço (DoS) por Limite de Gás nos Blocos** - Cálculos complexos em funções cruciais podem consumir gás excessivo, possivelmente excedendo os limites de gás dos blocos e impedindo a execução de transações, especialmente com um grande número de stakers ou tokens staking. (High)
+2. **Possíveis Problemas de Precisão nos Cálculos de Recompensa** - A utilização de aritmética de ponto fixo pode introduzir pequenas perdas de precisão nos cálculos de recompensa ao longo do tempo, o que pode afetar ligeiramente a distribuição de recompensas para os utilizadores, especialmente em períodos prolongados. (Low)
+3. **Front-Running em `configureStakingToken`** - Um utilizador malicioso pode antecipar a transação `configureStakingToken` e executar ações (stake, claim) imediatamente antes da atualização dos parâmetros, potencialmente beneficiando-se de taxas antigas antes que estas sejam aumentadas. (Medium)
+4. **Falta de Limites de Reconfiguração** - Não existem restrições sobre a frequência ou magnitude das alterações nos parâmetros de staking através de `configureStakingToken`, o que pode gerar incerteza e instabilidade no sistema de recompensas se forem efetuadas mudanças drásticas com frequência. (Informational)
+5. **Potencial Griefing/DoS em `recoverToken`** - Se forem enviados grandes quantidades de tokens não staking para o contrato, a função `recoverToken` pode falhar ou consumir gás excessivo ao tentar devolver esses tokens, causando possivelmente um cenário de griefing ou DoS temporário na função de recuperação de tokens. (Low)
+6. **Dependência do Timestamp do Bloco** - O contrato utiliza `block.timestamp` para operações relacionadas com o tempo, que está sujeito a pequena manipulação por parte dos mineradores, embora o risco seja geralmente baixo para esta aplicação. (Informational)
+7. **Ausência de Validação de Entrada para Valores Zero em `stake` e `unstake`** - As funções `stake` e `unstake` não validam explicitamente se o `amount` é zero, o que pode levar a chamadas redundantes e leve desperdício de gás, embora não constitua uma vulnerabilidade crítica. (Informational)
+```

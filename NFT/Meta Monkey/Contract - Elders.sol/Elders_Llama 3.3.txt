@@ -1,0 +1,31 @@
+Tempo de processamento: 17.09 segundos
+
+Aqui está a lista de possíveis vulnerabilidades no contrato:
+
+**High:**
+
+1. **Reentrancy**: O contrato não utiliza o padrão de segurança de Reentrancy, o que pode permitir que um contrato mal-intencionado invoque funções do contrato várias vezes, levando a uma perda de fundos.
+2. **Unprotected Function**: Algumas funções, como `seturi` e `setPrice`, não têm proteção contra chamadas não autorizadas, o que pode permitir que um atacante modifique o estado do contrato.
+3. **Unsecured Use of Transfer**: A função `transferFrom` não verifica se o destinatário é um contrato que implementa a interface `IERC721Receiver`, o que pode levar a perda de tokens.
+
+**Medium:**
+
+1. **Use of Tx.origin**: O contrato utiliza `tx.origin` em vez de `msg.sender`, o que pode permitir que um atacante invoque funções do contrato em nome de outro usuário.
+2. **Missing Input Validation**: Algumas funções, como `PublicMint`, não validam os parâmetros de entrada, o que pode levar a comportamentos inesperados ou erros.
+3. **Insecure Use of Assembly**: O contrato utiliza assembly em algumas funções, o que pode ser perigoso se não for utilizado corretamente.
+
+**Low:**
+
+1. **Outdated Solidity Version**: O contrato utiliza uma versão desatualizada do Solidity, o que pode levar a vulnerabilidades conhecidas.
+2. **Unused Variables**: O contrato contém variáveis não utilizadas, o que pode aumentar o tamanho do contrato e torná-lo mais difícil de entender.
+3. **Code Organization**: O contrato tem uma organização de código confusa, o que pode dificultar a manutenção e a auditoria.
+
+**Undetermined:**
+
+1. **OperatorFilterer**: O contrato utiliza o `OperatorFilterer`, que pode ter vulnerabilidades desconhecidas.
+2. **IOperatorFilterRegistry**: O contrato utiliza a interface `IOperatorFilterRegistry`, que pode ter vulnerabilidades desconhecidas.
+
+**Informational:**
+
+1. **Contract Size**: O contrato é grande e complexo, o que pode aumentar o risco de vulnerabilidades.
+2. **Code Complexity**: O contrato tem uma complexidade de código alta, o que pode dificultar a manutenção e a auditoria.

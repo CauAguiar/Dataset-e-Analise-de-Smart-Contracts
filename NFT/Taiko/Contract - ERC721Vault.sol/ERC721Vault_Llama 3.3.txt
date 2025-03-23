@@ -1,0 +1,30 @@
+Tempo de processamento: 12.59 segundos
+
+Segue aqui as vulnerabilidades encontradas no contrato Solidity fornecido, categorizadas por nível de gravidade:
+
+### High
+
+1. **Reentrância**: O contrato não utiliza mecanismos para prevenir reentrância em todas as funções que realizam transferências de Ether, como `receiveToken` e `onMessageRecalled`.
+2. **Permissões excessivas**: A função `receiveToken` permite que qualquer contrato chame `ERC721Upgradeable(token).safeTransferFrom` em nome do contrato atual, potencialmente permitindo a extração de tokens.
+3. **Execução de código não verificado**: A função `_deployBridgedToken` executa código não verificado ao chamar `LibDeploy.deployERC1967Proxy`, o que pode levar a problemas de segurança se o contrato de deploy for vulnerável.
+
+### Medium
+
+1. **Uso de `tx.origin` em vez de `msg.sender`**: Embora o contrato use `msg.sender` em muitos lugares, é crucial garantir que não haja casos em que `tx.origin` seja utilizado por engano ou omisso, ainda que não esteja presente no código fornecido.
+2. **Falta de validação de entrada**: Algumas funções, como `receiveToken`, não validam completamente as entradas, o que pode levar a comportamentos inesperados ou ataques.
+3. **Uso de `unchecked`**: Embora o uso de `unchecked` possa melhorar a performance, ele deve ser usado com cautela para evitar overflow ou underflow, principalmente em operações que envolvem transferências de tokens ou Ether.
+
+### Low
+
+1. **Injeção de eventos**: Embora os eventos sejam uma forma comum de notificar sobre mudanças no estado do contrato, é importante garantir que os dados passados para os eventos sejam validados para evitar injeção de eventos maliciosos.
+2. **Potencial para DoS (Denial of Service)**: Funções que realizam loops sobre arrays grandes ou que dependem de chamadas externas podem ser vulneráveis a ataques de negação de serviço, especialmente se essas funções forem chamadas com grandes conjuntos de dados.
+
+### Undetermined
+
+1. **Dependência de bibliotecas externas**: O contrato utiliza várias bibliotecas e contratos externos (como `LibDeploy`, `BridgedERC721`, `IERC721ReceiverUpgradeable`), cuja segurança e funcionamento correto são cruciais para a segurança do contrato `ERC721Vault`. A vulnerabilidade dessas dependências não pode ser determinada sem análise adicional.
+2. **Configuração e inicialização**: A configuração inicial do contrato, incluindo a definição de endereços e parâmetros, pode afetar significativamente a segurança do contrato. Erros na configuração podem levar a vulnerabilidades.
+
+### Informational
+
+1. **Documentação e comentários**: Embora o contrato esteja bem documentado, é importante garantir que todos os comentários e documentações estejam atualizados e reflitam com precisão a funcionalidade do contrato.
+2. **Testes e auditorias**: Realizar testes rigorosos e auditorias de segurança regulares é fundamental para garantir que o contrato permaneça seguro ao longo do tempo.

@@ -1,0 +1,43 @@
+### **Auditoria de Segurança do Smart Contract `LibBytes`**
+
+Abaixo estão as vulnerabilidades identificadas no código analisado, categorizadas por nível de risco.
+
+---
+
+#### **High (Alto)**  
+1. **Acesso a Memória Não Segura**  
+   - O uso de assembly para acessar diretamente a memória (`mload` e `mstore`) pode resultar em leitura/gravação fora dos limites, podendo causar comportamento inesperado ou corrupção de memória.  
+
+---
+
+#### **Medium (Médio)**  
+2. **Falta de Verificação de Índice Antes do Acesso à Memória**  
+   - A verificação `require(newIndex <= data.length, "...")` ocorre após a leitura dos dados, permitindo que índices inválidos sejam acessados antes da validação.  
+
+3. **Manipulação Ineficiente de Arrays em `readBytes`**  
+   - A cópia manual dos dados em `readBytes` pode levar a acessos incorretos ou vazamento de dados de outras áreas da memória.  
+
+---
+
+#### **Low (Baixo)**  
+4. **Uso de `shr` sem `and` em `readFirstUint16`**  
+   - A operação `shr(240, word)` pode resultar em valores inesperados caso os bits superiores contenham dados residuais.  
+
+---
+
+#### **Informational (Informativo)**  
+5. **Comentários Desatualizados ou Imprecisos**  
+   - Alguns comentários do código contêm descrições incorretas, como `bool (8 bits)` na função `readUint8Uint8`, onde `bool` não é explicitamente tratado.  
+
+6. **Uso de `assembly` sem Necessidade Justificada**  
+   - Algumas operações podem ser implementadas sem `assembly`, melhorando a legibilidade e segurança do código.  
+
+---
+
+### **Recomendações Gerais**
+- **Inserir verificações de limites antes de acessar a memória.**  
+- **Evitar o uso desnecessário de `assembly`, a menos que seja estritamente necessário para otimização.**  
+- **Garantir que todas as operações de deslocamento de bits sejam seguras, aplicando máscaras `and` quando necessário.**  
+- **Revisar comentários para garantir precisão e clareza.**  
+
+A implementação de boas práticas pode melhorar a segurança e a robustez deste contrato.

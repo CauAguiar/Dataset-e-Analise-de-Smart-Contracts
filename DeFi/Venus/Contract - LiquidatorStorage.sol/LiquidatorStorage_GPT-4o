@@ -1,0 +1,13 @@
+### **High**  
+1. **Uninitialized Variables** – Algumas variáveis podem ser usadas sem inicialização explícita, levando a valores inesperados.  
+2. **Lacunas na Restrição de Acesso** – Nenhuma proteção explícita contra modificações indevidas dos estados críticos.  
+
+### **Medium**  
+3. **Manipulação de Endereços em Mappings** – O uso de `mapping(address => mapping(address => bool))` pode ser explorado se não houver controle adequado na adição e remoção de liquidadores.  
+4. **Armazenamento de Arrays Dinâmicos** – O array `pendingRedeem` pode sofrer crescimento descontrolado, impactando custos de gas.  
+
+### **Low**  
+5. **Uso de `uint256` para Flags Booleanas** – Algumas variáveis poderiam ser booleanas (`bool`), reduzindo consumo de gás.  
+
+### **Informational**  
+6. **Slot de Armazenamento Reservado (`__gap`)** – Melhor prática, mas pode ser revisado para garantir alinhamento correto ao expandir o contrato.

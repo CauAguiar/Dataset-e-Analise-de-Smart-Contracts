@@ -1,0 +1,21 @@
+Tempo de processamento: 8.62 segundos
+
+## Análise de Vulnerabilidades do Smart Contract AITECH
+
+Aqui estão as vulnerabilidades identificadas no código Solidity, listadas de forma breve e categorizadas por severidade:
+
+1.  **Título:** Distribuição Inicial de Fornecimento Centralizada
+    **Descrição:** Todo o fornecimento de tokens é cunhado para o endereço do implantador do contrato (`msg.sender`) durante a criação do contrato.
+    **Categoria:** Informational
+
+2.  **Título:** Falta de Mecanismos de Controle de Acesso Específicos
+    **Descrição:** O contrato não implementa controle de acesso para funções além das funcionalidades padrão ERC20 e ERC20Burnable, dependendo da lógica inerente dessas bibliotecas para controle básico (e.g., `transfer` depende da posse de tokens).
+    **Categoria:** Informational
+
+3.  **Título:** Fornecimento Total Fixo na Implantação
+    **Descrição:** O fornecimento total de tokens é definido e cunhado durante a implantação do contrato e é imutável além da funcionalidade de `burn`.
+    **Categoria:** Informational
+
+4.  **Título:** Privilégios Limitados do Proprietário (Implantador)
+    **Descrição:** Os privilégios do proprietário (implantador) se limitam a ser o detentor inicial de todo o fornecimento e a capacidade de queimar tokens, assim como qualquer outro detentor de tokens que possua tokens `AITECH`. Não há funções administrativas adicionais ou especiais.
+    **Categoria:** Informational

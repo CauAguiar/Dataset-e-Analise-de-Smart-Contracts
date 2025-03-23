@@ -1,0 +1,24 @@
+Tempo de processamento: 10.22 segundos
+
+Aqui está a lista de vulnerabilidades no código Solidity fornecido, categorizadas por nível de gravidade:
+
+### High
+- **Reentrância em liquidationRestricted**: O contrato pode ser vulnerável a ataques de reentrância se não for implementada uma lógica de controle adequada na alteração dos estados.
+- **Manipulação de `treasuryPercentMantissa`**: Um ator mal-intencionado pode manipular a porcentagem de tesouro para ganhos ilícitos se houver falta de controle de acesso ou validação.
+- **Vulnerabilidades na gestão de `allowedLiquidatorsByAccount`**: A falta de restrições adequadas na gestão de liquidadores permitidos pode levar a ataques de privilégio elevado.
+
+### Medium
+- **Unprotected Function**: Funções que modificam o estado do contrato (`liquidationRestricted`, `allowedLiquidatorsByAccount`, etc.) podem ser vulneráveis se não estiverem devidamente protegidas contra acessos não autorizados.
+- **Integer Overflow em `treasuryPercentMantissa` ou `minLiquidatableVAI`**: Embora a versão do Solidity (0.8.13) já inclua proteções contra overflow, é sempre uma boa prática garantir que esses valores sejam validados adequadamente para evitar comportamentos inesperados.
+- **Uso de `address[] public pendingRedeem`**: O uso de arrays públicos pode potencialmente levar a problemas de desempenho ou até mesmo a ataques se não forem gerenciados corretamente.
+
+### Low
+- **Inicialização de `pendingRedeemChunkLength`**: A variável `pendingRedeemChunkLength` é declarada como `internal`, o que significa que ela não pode ser acessada diretamente por outros contratos. No entanto, sua inicialização não é mostrada no exemplo; se não for inicializada corretamente, pode haver comportamentos inesperados.
+- ** Gap de Herança (`__gap`)**: Embora o uso do gap de herança seja uma boa prática para evitar problemas de layout de estado em contratos herdados, sua presença aqui não introduce necessariamente uma vulnerabilidade, mas pode ser considerada uma característica de design.
+
+### Undetermined
+- **Visibilidade e Controle de Acesso de Variáveis**: A visibilidade de várias variáveis como `public` pode indicar uma falta de controle de acesso, mas depende do contexto e do design geral do sistema.
+
+### Informational
+- **Uso de Pragmas de Versão**: O contrato utiliza `pragma solidity 0.8.13`, o que significa que ele pode ser compilado com uma versão específica do compilador Solidity. É uma boa prática manter a versão atualizada, mas isso depende das necessidades específicas do projeto.
+- **Comentários e Documentação**: O contrato apresenta comentários que ajudam na compreensão do seu funcionamento. Embora não seja uma vulnerabilidade, a adequada documentação é crucial para a segurança e manutenção do contrato.

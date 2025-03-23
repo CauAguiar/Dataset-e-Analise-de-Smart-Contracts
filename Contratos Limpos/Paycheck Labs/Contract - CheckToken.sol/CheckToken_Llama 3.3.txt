@@ -1,0 +1,31 @@
+Tempo de processamento: 14.94 segundos
+
+Aqui está a lista de vulnerabilidades no contrato CheckToken:
+
+### High
+- **Permissão excessiva**: 
+  Descrição: O contrato pode conceder permissões excessivas a alguns endereços, permitindo que eles realizem ações não intencionais.
+- **Ataques de reentrância**:
+  Descrição: O contrato pode estar vulnerável a ataques de reentrância devido ao uso de funções que interagem com outros contratos.
+
+### Medium
+- **Uso de bibliotecas não atualizadas**:
+  Descrição: O contrato utiliza bibliotecas que podem não estar atualizadas, o que pode introduzir vulnerabilidades de segurança conhecidas.
+- **Falta de validação de dados**:
+  Descrição: O contrato pode não realizar validação adequada de dados de entrada, o que pode levar a comportamentos inesperados.
+
+### Low
+- **Falta de documentação**:
+  Descrição: O contrato carece de documentação adequada, o que pode dificultar a sua compreensão e manutenção.
+- **Nomenclatura de variáveis**:
+  Descrição: O contrato utiliza nomenclaturas de variáveis que podem não seguir as convenções de codificação, o que pode dificultar a leitura e manutenção do código.
+
+### Undetermined
+- **Limitações de segurança da rede**:
+  Descrição: O contrato pode estar sujeito a limitações de segurança da rede subjacente, que podem afetar a sua segurança.
+
+### Informational
+- **Uso de licenças**:
+  Descrição: O contrato utiliza a licença MIT, que pode ter implicações legais e de segurança que devem ser consideradas.
+- **Compatibilidade com padrões**:
+  Descrição: O contrato segue os padrões ERC20, ERC20Permit e ERC20Burnable, o que é uma boa prática, mas é importante garantir que esses padrões sejam seguros e atualizados.

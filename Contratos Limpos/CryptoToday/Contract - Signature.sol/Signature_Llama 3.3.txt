@@ -1,0 +1,28 @@
+Tempo de processamento: 27.59 segundos
+
+Aqui estão as vulnerabilidades identificadas no contrato:
+
+### High
+
+* **Uso de função `ecrecover` sem proteção contra re.play**: A função `ecrecover` pode ser vulnerável a ataques de re.play se não for utilizado um nonce adequado.
+* **Falta de validação de parâmetros**: Algumas funções não validam os parâmetros de entrada, o que pode levar a comportamentos inesperados ou ataques.
+
+### Medium
+
+* **Uso de `assembly`**: O uso de código assembly pode ser perigoso se não for feito com cuidado, pois pode introduzir vulnerabilidades difíceis de detectar.
+* **Falta de eventos**: O contrato não emite eventos para notificar sobre a ocorrência de ações importantes, o que pode dificultar a auditoria e o monitoramento.
+
+### Low
+
+* **Funções não utilizadas**: As funções `getMessageHash` e `verify` são marcadas como não utilizadas, mas ainda estão presentes no contrato.
+* **Nomeação de funções**: Algumas funções têm nomes que não seguem as convenções de nomenclatura do Solidity.
+
+### Undetermined
+
+* **Uso de `keccak256`**: O uso de `keccak256` pode ser vulnerável a colisões se não for utilizado corretamente.
+* **、どう lidar com assinaturas inválidas**: O contrato não define como lidar com assinaturas inválidas ou malformadas.
+
+### Informational
+
+* **Falta de documentação**: O contrato não tem documentação suficiente sobre como funciona e como deve ser utilizado.
+* **Uso de versão antiga do Solidity**: O contrato utiliza a versão 0.8.12 do Solidity, que pode não ser a mais recente ou segura.

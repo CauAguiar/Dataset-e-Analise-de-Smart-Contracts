@@ -1,0 +1,26 @@
+### **Auditoria do Smart Contract**
+
+#### **Vulnerabilidades Identificadas**
+
+##### **High**
+1. **Possível Race Condition na Função `approve`**  
+   - O contrato inclui a função `approve`, mas não implementa proteção contra a vulnerabilidade de race condition descrita na EIP-20. Um atacante pode explorar essa falha para gastar um valor maior do que o pretendido pelo usuário.
+
+##### **Medium**
+2. **Renúncia de Propriedade Irreversível (`renounceOwnership`)**  
+   - A função `renounceOwnership` permite que o dono renuncie à propriedade do contrato sem possibilidade de recuperação. Isso pode levar à perda de controle sobre funções críticas.
+
+3. **Gestão de Pausadores sem Restrição de Remoção**  
+   - No contrato `PauserRole`, um usuário pode adicionar novos pausadores, mas não há uma restrição para impedir que um administrador malicioso remova todos os pausadores, potencialmente bloqueando qualquer ação futura no contrato.
+
+##### **Low**
+4. **Uso de Solidity 0.5.8 (Versão Antiga e Possivelmente Insegura)**  
+   - O contrato usa Solidity 0.5.8, que não contém as melhorias de segurança das versões mais recentes da linguagem. O ideal seria atualizar para uma versão mais recente, como 0.8.x.
+
+##### **Undetermined**
+5. **Funções de Transferência e Aprovação Não Protegidas por `whenNotPaused`**  
+   - Como o código fornecido não contém a implementação completa do token ERC-20, não é possível verificar se funções críticas como `transfer`, `approve` e `transferFrom` são protegidas pelo modificador `whenNotPaused`, o que poderia permitir movimentações indevidas mesmo durante um estado de pausa.
+
+##### **Informational**
+6. **Eventos Não Emitidos em Algumas Funções Críticas**  
+   - Algumas funções de gestão de papéis (`addPauser`, `removePauser`) e transferência de propriedade não possuem eventos explicitamente emitidos, o que pode dificultar auditorias on-chain.

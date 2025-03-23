@@ -1,0 +1,21 @@
+Tempo de processamento: 13.72 segundos
+
+## Auditoria de Smart Contract - Vulnerabilidades
+
+Aqui estão as vulnerabilidades encontradas no código Solidity fornecido, listadas em formato de Título e Descrição, com a respectiva categoria de severidade:
+
+1. **Título:** Dependência não especificada da versão OpenZeppelin.
+   **Descrição:** O contrato depende da biblioteca OpenZeppelin, mas não especifica uma versão exata. Isso pode levar a comportamentos inesperados se a OpenZeppelin lançar atualizações incompatíveis com versões anteriores.
+   **Categoria:** Informational
+
+2. **Título:** Falta de propriedade ou controle administrativo.
+   **Descrição:** O contrato é implantado sem funções de administrador ou proprietário. Isso impede atualizações, pausas ou qualquer tipo de gestão do contrato após a implantação. Isso pode ser problemático se bugs forem descobertos ou se forem necessárias mudanças no futuro.
+   **Categoria:** Medium
+
+3. **Título:** Potencial mal-entendido do parâmetro 'supply'.
+   **Descrição:** Usuários podem não entender que o parâmetro `supply` é expresso na menor unidade do token (wei), levando a implantações com quantidades de tokens incorretas.
+   **Categoria:** Low
+
+4. **Título:** Visibilidade dos argumentos do construtor.
+   **Descrição:** Os argumentos do construtor, como nome, símbolo e fornecimento, são visíveis publicamente antes da implantação, o que pode, teoricamente, levar a front-running.
+   **Categoria:** Informational

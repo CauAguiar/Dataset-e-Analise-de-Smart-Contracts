@@ -1,0 +1,28 @@
+Tempo de processamento: 25.46 segundos
+
+Aqui está a lista de vulnerabilidades identificadas no contrato Solidity:
+
+**High**
+
+* **Reentrância**: O contrato não utiliza um padrão de reentrância seguro, o que pode permitir que um atacante realize uma reentrância eexecute código não autorizado.
+* **Controle de acesso insuficiente**: A função `burnFrom` pode ser chamada por qualquer conta, o que pode permitir que um atacante queime tokens de outras contas.
+
+**Medium**
+
+* **Injeção de código**: O uso de `unchecked` na função `burnFrom` pode permitir que um atacante execute código não autorizado se a subtração `currentAllowance - amount` resultar em um valor negativo.
+* **Falta de validação de entrada**: A função `burnFrom` não valida se a conta `account` tem permissão para queimar tokens.
+
+**Low**
+
+* **Uso de versão de Solidity obsoleta**: A versão de Solidity utilizada (0.8.12) pode conter vulnerabilidades conhecidas que foram corrigidas em versões mais recentes.
+* **Falta de documentação**: O contrato não fornece documentação suficiente sobre as funções e variáveis, o que pode dificultar a compreensão e a auditoria do código.
+
+**Undetermined**
+
+* **Uso de bibliotecas de terceiros**: O contrato utiliza bibliotecas de terceiros (OpenZeppelin), que podem conter vulnerabilidades desconhecidas ou não documentadas.
+* **Comportamento em caso de exceção**: O contrato não define um comportamento claro em caso de exceção, o que pode levar a resultados imprevisíveis.
+
+**Informational**
+
+* **Hardcode de valores**: O contrato hardcodea valores (como o nome e o símbolo do token), o que pode dificultar a manutenção e a atualização do contrato.
+* **Falta de testes**: O contrato não fornece testes unitários ou de integração, o que pode dificultar a detecção de erros e vulnerabilidades.

@@ -1,0 +1,21 @@
+Tempo de processamento: 10.57 segundos
+
+## Análise de Auditoria de Contrato Inteligente: BlackCardCoin (BCCoin)
+
+Aqui estão as vulnerabilidades encontradas no código Solidity do contrato BlackCardCoin (BCCoin), listadas de forma breve e categorizadas por severidade.
+
+1. **Título:** Centralização de Propriedade
+    **Descrição:** A função `setOwner` permite que o proprietário atual mude o proprietário do contrato para qualquer outro endereço. Isso centraliza o controle do contrato nas mãos do proprietário, que pode potencialmente afetar o comportamento do contrato (embora neste contrato específico as funções do proprietário sejam limitadas - apenas a função `setOwner`).
+    **Categoria:** Low
+
+2. **Título:** Endereços Críticos Hardcoded
+    **Descrição:** Os endereços para o proprietário (`_owner`), liquidez (`_liquidityAddress`) e recompensas (`_rewardsAddress`) são definidos diretamente no código do contrato. Isto pode ser menos flexível e levantar preocupações de segurança se estes endereços forem comprometidos ou precisarem ser alterados.
+    **Categoria:** Low
+
+3. **Título:** Ausência de Mecanismos de Governança ou Atualização
+    **Descrição:** O contrato não possui mecanismos de governança ou atualização. Qualquer alteração ou correção de bugs exigiria a implantação de um novo contrato, com potenciais complicações na migração de tokens e usuários.
+    **Categoria:** Informational
+
+4. **Título:**  Limitações de Controle de Acesso (Além da Propriedade)
+    **Descrição:** O controle de acesso é primariamente baseado na propriedade para a função `setOwner`. Não existem outros níveis de permissões ou funções baseadas em papéis definidos no contrato, o que pode limitar a flexibilidade operacional em cenários mais complexos, embora seja adequado para um contrato ERC20 básico.
+    **Categoria:** Informational

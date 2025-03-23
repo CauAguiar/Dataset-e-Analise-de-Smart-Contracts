@@ -1,0 +1,19 @@
+Tempo de processamento: 129.40 segundos
+
+**1. List of Vulnerabilities by Category**
+
+**High Risk:**
+- **Incorrect Enforcement of Wallet Mint Limits**: The `PublicMint` function tracks the receiver's (`_to`) address for mint limits, allowing anyone to mint tokens to another address and potentially exhaust their limit, leading to denial of service.
+
+**Medium Risk:**
+- **Unsafe Minting in Mass Airdrop**: The `MassAirdrop` function uses `_mint` instead of `_safeMint`, which could result in tokens being locked in non-ERC721-compliant contracts.
+
+**Low Risk:**
+- **Reentrancy Risk in Public Mint**: Lack of reentrancy guard in `PublicMint` despite state changes before `_safeMint`, which includes a callback. However, state updates prior to minting may mitigate risk.
+
+**Informational:**
+- **Missing Event Emissions**: Critical parameter changes (price, supply, URI) do not emit events, reducing transparency.
+- **Centralized Control**: Owner retains significant control over contract functions, typical but requires trust.
+
+**Undetermined:**
+- **Minting Limits Design Clarity**: The intended behavior of wallet limits (per minter vs. per receiver) needs clarification to assess correctness.

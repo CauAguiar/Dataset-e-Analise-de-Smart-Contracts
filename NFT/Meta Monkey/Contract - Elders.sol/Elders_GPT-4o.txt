@@ -1,0 +1,38 @@
+### **Auditoria de Smart Contract - ERC721A**  
+
+#### **Vulnerabilidades Identificadas**  
+
+##### **High**  
+1. **Reentrada em `onERC721Received`**  
+   - Se um contrato malicioso for o destinatário de um token, ele pode executar código durante a chamada para `onERC721Received`, potencialmente explorando vulnerabilidades de reentrada.  
+
+2. **Falta de Verificação Completa em `transferFrom`**  
+   - A função `transferFrom` pode permitir a movimentação de tokens sem verificações completas de segurança, como verificar se `msg.sender` é um operador autorizado ou o real proprietário.  
+
+3. **Mintagem Ilimitada com `_mintERC2309`**  
+   - A função `_mintERC2309` permite a mintagem em lote, o que pode ser explorado caso não haja um limite adequado, resultando em consumo excessivo de gás ou overflow de supply.  
+
+##### **Medium**  
+4. **Falta de Controle de Overflow no Armazenamento de Dados**  
+   - O contrato usa packing de bits para armazenar dados dos tokens. Se não for bem gerenciado, pode levar a problemas de overflow e corrupção de dados.  
+
+5. **Aprovação Global de Operadores (`setApprovalForAll`)**  
+   - A funcionalidade `setApprovalForAll` pode ser explorada caso um usuário aprove um endereço malicioso, permitindo roubo de tokens.  
+
+##### **Low**  
+6. **Falta de Restrição para Endereço Zero**  
+   - Algumas funções, como `mint`, podem não impedir a emissão de tokens para o endereço zero, potencialmente tornando-os inacessíveis.  
+
+7. **Falta de Eventos em Algumas Operações Sensíveis**  
+   - Algumas operações internas críticas não emitem eventos, dificultando a rastreabilidade de mudanças de estado.  
+
+##### **Informational**  
+8. **Comentários e Documentação Incompletos**  
+   - Algumas funções não possuem documentação completa, dificultando a auditoria e entendimento do contrato.  
+
+##### **Undetermined**  
+9. **Possível Manipulação de ExtraData**  
+   - O campo `extraData` pode ser usado de forma indevida se não houver verificações adequadas, mas sem mais contexto, o impacto exato não pode ser determinado.  
+
+### **Conclusão**  
+O contrato segue a implementação otimizada do ERC721A, mas apresenta riscos significativos, especialmente relacionados a reentrada, aprovações e mintagem em lote. Recomenda-se revisar as funções de transferência, limitar a mintagem e reforçar verificações de segurança para evitar possíveis exploits.

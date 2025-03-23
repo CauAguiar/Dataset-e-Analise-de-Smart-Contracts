@@ -1,0 +1,35 @@
+### **Auditoria de Smart Contract: Token (ERC20)**  
+
+#### **Vulnerabilidades Identificadas**  
+
+---
+
+### **High**  
+- **Nenhuma vulnerabilidade crítica identificada**  
+
+---
+
+### **Medium**  
+1. **Falta de Verificação do Supply Inicial**  
+   - O contrato permite que qualquer valor seja passado como `supply` no construtor, o que pode resultar em valores absurdamente altos ou baixos sem restrições.  
+
+---
+
+### **Low**  
+1. **Possível Ataque de Phishing por Nome/Símbolo Similar**  
+   - Como o nome e o símbolo do token são definidos no momento da implantação sem validação, um atacante pode criar um token semelhante a outro legítimo, induzindo usuários a erro.  
+
+---
+
+### **Informational**  
+1. **Contrato Sem Função de Queima ou Administração**  
+   - Embora mencionado na documentação, a ausência de funções de queima (`burn`) ou administração pode limitar o uso do token em alguns cenários.  
+2. **Uso da Última Versão do OpenZeppelin (v5)**  
+   - O contrato se baseia em OpenZeppelin v5, que é a versão mais recente. No entanto, atualizações futuras podem introduzir melhorias ou requisitos adicionais de segurança.  
+3. **Documentação Explicativa Clara**  
+   - O contrato inclui comentários detalhados, facilitando a compreensão do seu funcionamento.  
+
+---
+
+### **Conclusão**  
+O contrato é simples e bem estruturado, sem vulnerabilidades críticas. Contudo, a ausência de restrições no `supply` inicial e a possibilidade de phishing por nome/símbolo similar são pontos a serem considerados. Se o contrato for destinado a um projeto público, recomenda-se implementar uma verificação mínima de `supply` e um processo rigoroso de listagem para evitar tokens fraudulentos.

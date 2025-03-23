@@ -1,0 +1,32 @@
+Tempo de processamento: 124.16 segundos
+
+### High Severity
+
+1. **Arbitrary Delegatecall via simulateAndRevert**  
+   The `simulateAndRevert` function allows arbitrary delegatecalls to external contracts, enabling potential self-destruct or unintended state changes in the multisig contract.
+
+2. **Lack of EIP-1271 Support**  
+   Contract owners (non-EOAs) cannot validate signatures via EIP-1271, leading to failed approvals if contract-based owners are used.
+
+### Medium Severity
+
+3. **Gas Limit in Owner Loop**  
+   The loop in `checkNApprovals` may exceed gas limits when processing a large number of owners, causing transaction failures.
+
+4. **Insufficient Gas Price Handling**  
+   The `handlePayment` function may under-calculate refunds when actual gas prices exceed the provided `gasPrice`, leading to insufficient reimbursements.
+
+### Low Severity
+
+5. **ERC20 Token Handling Flaws**  
+   `transferToken` may incorrectly assume success for non-compliant ERC20 tokens, leading to silent failures in refunds.
+
+### Informational
+
+6. **Unused Data Parameter**  
+   The `data` parameter in `checkApprovals` and `checkNApprovals` is unused, suggesting potential code redundancy or incomplete logic.
+
+### Undetermined
+
+7. **SignatureSplit Bounds Checks**  
+   The `signatureSplit` function relies on external bounds checks for `pos`, but its safety depends on undisclosed caller implementations.

@@ -1,0 +1,67 @@
+Tempo de processamento: 40.42 segundos
+
+### Vulnerabilities Audit Summary
+
+---
+
+#### **High Severity**
+1. **Incorrect Collateral Token Handling**  
+   Unvalidated `vTokenCollateral` in `liquidateBorrow`/`liquidateVAI` could lead to misuse of unauthorized or malicious collateral tokens.
+
+2. **Insufficient Access Controls**  
+   Missing access restrictions on critical functions (e.g., liquidation, reserve updates) allowing unauthorized actions.
+
+3. **Reentrancy Risks**  
+   External calls (e.g., token transfers) without reentrancy guards in implementations of the interfaces.
+
+4. **Native Token Handling Flaws**  
+   Incorrect BNB value management in `IVBNB::liquidateBorrow`, risking fund loss or locked ETH.
+
+---
+
+#### **Medium Severity**
+1. **Unvalidated Function Parameters**  
+   Lack of input checks (e.g., zero address for `borrower`, invalid `repayAmount`) in critical functions.
+
+2. **External Contract Dependency Risks**  
+   Reliance on unverified/upgradable external contracts (e.g., `IVToken`, `IVAIController`) introduces trust assumptions.
+
+3. **Upgradeable Contract Risks**  
+   Use of upgradeable OZ libraries without clear safeguards against proxy pitfalls (e.g., storage collisions).
+
+4. **Paused Action Bypass**  
+   Missing checks for `IComptroller::actionPaused`, enabling execution of disabled actions.
+
+---
+
+#### **Low Severity**
+1. **Return Value Ignorance**  
+   Unchecked return values from `IVToken::redeem` or `liquidateBorrow` may lead to silent failures.
+
+2. **Incorrect Liquidation Incentives**  
+   Miscalculations using `IComptroller::liquidationIncentiveMantissa` without validation.
+
+3. **Market Status Assumptions**  
+   Interactions with non-listed or inactive markets due to unverified `IComptroller::markets` state.
+
+---
+
+#### **Undetermined**
+1. **Protocol Reserve Manipulation**  
+   Risks in `IProtocolShareReserve::updateAssetsState` depend on implementation-specific permission checks.
+
+2. **VAI Repay Amount Accuracy**  
+   Potential inaccuracies in `IVAIController::getVAIRepayAmount` affecting liquidation logic.
+
+---
+
+#### **Informational**
+1. **Interface-Only Code**  
+   The provided code defines interfaces only; vulnerabilities depend on implementation details.
+
+2. **ERC20 Approval Risks**  
+   Inherited `SafeERC20Upgradeable` functions require proper approval handling to prevent front-running.
+
+--- 
+
+**Note:** Actual risk severity depends on the implementation of the interfaces and integration with external protocols. Further review of the full contract logic is recommended.

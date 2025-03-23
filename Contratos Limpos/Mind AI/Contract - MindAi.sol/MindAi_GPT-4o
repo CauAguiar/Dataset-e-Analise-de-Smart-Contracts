@@ -1,0 +1,14 @@
+### **High**  
+1. **Centralized Minting Authority** – O contrato permite a criação inicial de tokens para um único endereço sem controle ou governança descentralizada. Isso pode levar a riscos de centralização e manipulação.  
+
+### **Medium**  
+2. **Imutabilidade do Supply Inicial** – O contrato não prevê mecanismos para ajuste de supply, o que pode ser problemático se houver necessidade de expansão ou ajuste do tokenomics.  
+
+### **Low**  
+3. **Dependência de OpenZeppelin sem Modificações** – Embora a biblioteca OpenZeppelin seja segura, não há verificações adicionais ou customizações para adaptar-se a cenários específicos do projeto.  
+
+### **Informational**  
+4. **Ausência de Função de Recuperação de Tokens Perdidos** – O contrato não fornece uma função para recuperar tokens enviados acidentalmente para o endereço do contrato.  
+5. **Falta de Documentação Sobre Governança** – Não há informações sobre como o token será gerenciado a longo prazo ou se haverá upgrades no futuro.  
+
+O código parece relativamente seguro, mas depende de uma boa governança e práticas externas para evitar riscos.

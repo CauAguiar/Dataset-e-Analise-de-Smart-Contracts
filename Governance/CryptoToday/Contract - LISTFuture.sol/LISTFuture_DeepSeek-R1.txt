@@ -1,0 +1,27 @@
+Tempo de processamento: 47.53 segundos
+
+### Vulnerabilidades por Categoria:
+
+**High:**
+- **Falta de Controle de Tempo para Conversão:** Não há implementação que restrinja a conversão dos tokens futuros para após um ano, contrariando a lógica de negócio declarada.
+
+---
+
+**Medium:**
+- **Validação Ausente de Endereços no Construtor:** A mintagem inicial não verifica se os endereços recebedores são válidos (ex: endereço zero), podendo resultar em perda irreversível de tokens.
+- **Funcionalidade de Pausa Incompleta:** Herda `Pausable`, mas não expõe funções para pausar/despausar, tornando a funcionalidade inacessível ao `owner`.
+
+---
+
+**Low:**
+- **Uso Desnecessário de `unchecked` em `burnFrom`:** A operação `unchecked` é aplicada após verificação de segurança, o que não é um risco direto, mas pode indicar código não otimizado.
+
+---
+
+**Informational:**
+- **Falta de Eventos na Mintagem Inicial:** A distribuição inicial de tokens não emite eventos (ex: `Transfer`), reduzindo a transparência e rastreabilidade.
+
+---
+
+**Undetermined:**
+- **Possível Falta de Integração com ERC20Burnable:** O contrato sobrescreve `burnFrom`, mas não herda explicitamente de `ERC20Burnable`, o que pode afetar a compatibilidade esperada do padrão ERC20.

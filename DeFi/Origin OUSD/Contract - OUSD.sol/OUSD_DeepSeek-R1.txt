@@ -1,0 +1,20 @@
+**1. List of Vulnerabilities and Issues**
+
+**High Severity:**
+- **Division by Zero in Supply Adjustment**: The `changeSupply` function may divide by zero if `totalSupply - nonRebasingSupply` is zero, causing transaction reverts or contract lockup.
+- **Unchecked Yield Delegation State Transitions**: Improper handling of delegation state transitions could corrupt account states or enable unauthorized yield redirection.
+
+**Medium Severity:**
+- **Rounding Errors in Credit Conversions**: Use of rounding in `_balanceToRebasingCredits` without proper validation may lead to cumulative balance inaccuracies.
+- **Front-Runnable Approvals**: The `approve` function lacks protection against front-running attacks when modifying existing non-zero allowances.
+- **Forced Non-Rebasing Migration for Contracts**: Automatic opt-out of rebasing for contract accounts may cause unexpected behavior if contracts assume rebasing participation.
+
+**Low Severity:**
+- **Deprecated Storage Variable**: Presence of unused `__deprecated_isUpgraded` storage variable indicates legacy code, risking future upgrade conflicts.
+
+**Informational:**
+- **Upgradeable Storage Gaps**: Use of storage gaps (`_gap[]`) for upgradeability introduces risks if future upgrades mishandle storage layout.
+- **Complex Rebasing Logic**: High complexity in rebasing and delegation mechanisms increases audit difficulty and risk of undetected edge cases.
+
+**Undetermined:**
+- **Governance Privilege Escalation**: Potential risks in the `Governable` parent contract (not shown) could allow unauthorized governance actions if privileges are misconfigured.

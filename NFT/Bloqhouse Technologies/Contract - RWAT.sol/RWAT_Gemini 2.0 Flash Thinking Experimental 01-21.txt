@@ -1,0 +1,53 @@
+Tempo de processamento: 13.51 segundos
+
+Aqui estão as vulnerabilidades encontradas no contrato Solidity, listadas no formato solicitado:
+
+1.  **Título:** Falta de Validação do Contrato ICNR no Inicialize.
+    **Descrição:** O endereço do contrato `ICNR` fornecido para `CNR` durante a inicialização não é validado para garantir que é um contrato. Isso pode levar a chamadas para um endereço não contrato, causando comportamento inesperado.
+    **Categoria:** Medium
+
+2.  **Título:** Replay Attacks em `userMintUnits` e `claimUnits` sem Expiração de Nonce.
+    **Descrição:** Os nonces internos são incrementados, prevenindo reutilização direta da mesma assinatura. No entanto, não há um mecanismo de expiração ou limite para os nonces, o que poderia, em teoria, permitir ataques de replay se um invasor conseguir obter uma assinatura válida e esperar por um tempo muito longo antes de usá-la, dependendo da lógica fora da chain que gera as assinaturas. Embora improvável em muitos cenários, a ausência de expiração é uma vulnerabilidade potencial.
+    **Categoria:** Low
+
+3.  **Título:** Risco de Negação de Serviço (DoS) em Funções de Whitelist com Grandes Listas de `_users`.
+    **Descrição:** As funções `setWhitelisted` iteram sobre a lista `_users`.  Se um ADMIN ou WHITELISTER malicioso fornecer uma lista extremamente grande de endereços, a execução da transação pode consumir uma quantidade excessiva de gas, potencialmente levando a um DoS, impedindo que outras funções sejam chamadas dentro do mesmo bloco ou excedendo os limites de gas.
+    **Categoria:** Medium
+
+4.  **Título:** Funções de Bloqueio Irreversível sem Mecanismo de Desbloqueio.
+    **Descrição:** As funções `lockNameAndSymbol`, `lockWhitelistedTransfers`, `lockPausedTransfers`, `disableReclaimUnits` e `lockAssetCap` bloqueiam funcionalidades de forma irreversível. Se houver um erro na lógica ou uma necessidade futura de reverter essas configurações, não há um mecanismo para desfazer esses bloqueios, o que pode levar a um estado indesejado do contrato sem possibilidade de correção.
+    **Categoria:** Medium
+
+5.  **Título:** Centralização Excessiva e Dependência de Chave Privada Servidor para Mint e Claim de Usuário.
+    **Descrição:** As funcionalidades `userMintUnits` e `claimUnits` dependem da validação de assinaturas ECDSA geradas por uma chave privada do servidor (`serverPubKey`). Isso centraliza o processo de mint e claim, dependendo da segurança da chave privada do servidor. Se a chave privada for comprometida, um atacante poderia mintar tokens ou reivindicar tokens de forma não autorizada. Além disso, a dependência de um servidor externo introduz um ponto único de falha e confiança fora da blockchain.
+    **Categoria:** High
+
+6.  **Título:** Falta de Verificação de Dono Antes do Burn em `burnUnits`.
+    **Descrição:** A função `burnUnits` verifica se o remetente da mensagem (`msg.sender`) é o dono ou o contrato (`address(this)`), mas não verifica se `msg.sender` é de fato o dono dos tokens _ANTES_ da chamada da função.  Embora a função `_burn` em si possa ter verificações,  é uma boa prática verificar explicitamente se o chamador possui autorização para queimar os tokens antes de iterar sobre eles, especialmente em funções que iteram sobre arrays de tokens, para falhar rapidamente e economizar gas no caso de um usuário não autorizado tentar queimar os tokens de outro usuário (mesmo que a queima em si falhe na função `_burn` por falta de autorização).
+    **Categoria:** Low
+
+7.  **Título:**  Potencial Confusão na Lógica de Limites de Asset com `assetLastId` e `assetTokensBurned`.
+    **Descrição:** A lógica para calcular `assetLastId` e os limites de asset envolve a adição de `assetTokensBurned`. Isso pode levar a confusão e erros se a gestão dos tokens queimados e o recálculo do limite máximo de forma dinâmica não forem cuidadosamente considerados em todas as partes do código, especialmente em upgrades ou modificações futuras. Uma documentação mais clara sobre como o limite de asset é mantido, especialmente em relação a tokens queimados, seria benéfica.
+    **Categoria:** Low
+
+8.  **Título:** Ausência de Validação de Entrada em `setNameAndSymbol`.
+    **Descrição:** A função `setNameAndSymbol` permite alterar o nome e o símbolo do token, mas não há validação das strings de entrada (`_newName`, `_newSymbol`). Isso poderia permitir que um ADMIN defina nomes ou símbolos vazios ou strings excessivamente longas, o que pode não ser desejável ou pode causar problemas com algumas integrações e plataformas que consomem metadados de tokens.
+    **Categoria:** Informational
+
+9.  **Título:** Uso Potencialmente Desnecessário de `onlyRoles` em vez de `onlyRole` em Algumas Funções.
+    **Descrição:** A modifier `onlyRoles(role1, role2)` é usado em `mintUnitsTo` e `setWhitelisted`. Se a intenção é que apenas um dos roles (ADMIN ou HANDLER para `mintUnitsTo`, e ADMIN ou WHITELISTER para `setWhitelisted`) seja suficiente para executar a função, `onlyRole` poderia tornar o código mais claro e talvez ligeiramente mais barato em gas em alguns cenários ao simplificar a lógica de controle de acesso, a menos que haja uma razão específica para o design com dois roles.
+    **Categoria:** Informational
+
+10. **Título:**  Visibilidade Interna para Funções Acessadas Externamente em `ICNR`.
+    **Descrição:**  A interface `ICNR` é importada, e a linha `return ICNR(CNR).getNFTURI(address(this), _tokenId);` sugere que `getNFTURI` é uma função externa no contrato `ICNR`. No entanto, a convenção de nomenclatura Solidity para interfaces geralmente usa `external` ou `public` para funções que devem ser chamadas externamente. Se `getNFTURI` em `ICNR` for acidentalmente `internal` ou `private`, a chamada falhará. É importante verificar se a visibilidade da função `getNFTURI` na interface `ICNR` corresponde à intenção de uso externo.
+    **Categoria:** Informational
+
+**Categorias de Severidade Resumidas:**
+
+*   **High:** 2 (Centralização Excessiva e Dependência de Chave Privada Servidor)
+*   **Medium:** 4 (Falta de Validação do Contrato ICNR, Risco de DoS em Whitelist, Funções de Bloqueio Irreversível)
+*   **Low:** 3 (Replay Attacks sem Expiração de Nonce, Falta de Verificação de Dono Antes do Burn, Confusão na Lógica de Limites de Asset)
+*   **Informational:** 3 (Ausência de Validação de Entrada em `setNameAndSymbol`, Uso Potencialmente Desnecessário de `onlyRoles`, Visibilidade Interna para Funções Acessadas Externamente em `ICNR`)
+*   **Undetermined:** 0
+
+Este relatório fornece uma visão geral das vulnerabilidades potenciais identificadas no código do contrato. Recomenda-se uma revisão e teste mais aprofundados para confirmar e mitigar essas questões.

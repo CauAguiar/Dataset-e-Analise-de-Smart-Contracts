@@ -1,0 +1,30 @@
+Tempo de processamento: 20.78 segundos
+
+Aqui estão algumas vulnerabilidades identificadas no contrato:
+
+### High
+
+1. **Reentrancy**: O contrato `BGBPToken` é vulnerável a ataques de reentrância devido à ordem das chamadas em suas funções `transfer`, `transferFrom`, `approve`, `increaseAllowance` e `decreaseAllowance`. 
+2. **Front-Running**: A função `issue` pode ser explorada por meio de ataques de front-running, onde um atacante pode fazer uma transação entre a avaliação e a execução da transação, resultando em ganhos injustos.
+
+### Medium
+
+1. **Denial of Service (DoS)**: A função `addBlackList` pode ser usada para adicionar um endereço à lista negra, potencialmente causando uma negação de serviço para o endereço afetado.
+2. **Use of Obsolete Library**: O contrato utiliza a biblioteca `SafeMath` que é considerada obsoleta e foi substituída pela biblioteca `SafeMath` mais recente.
+3. **Unprotected Function**: Algumas funções, como `issue` e `redeem`, não têm proteção contra chamadas não autorizadas.
+
+### Low
+
+1. **Information Exposure**: A função `getBlackListStatus` expõe informações sobre o status de um endereço na lista negra.
+2. **Use of Outdated Solidity Version**: O contrato utiliza a versão 0.5.8 do Solidity, que é considerada obsoleta.
+
+### Undetermined
+
+1. **Potential for Unintended Behavior**: A lógica das funções `deprecate` e `issue` pode levar a comportamentos inesperados se não for bem compreendida e testada.
+2. **Potential for Reentrancy in `UpgradedStandardToken`**: A ausência de implementação para as funções da `UpgradedStandardToken` torna difícil avaliar se há vulnerabilidades de reentrância.
+
+### Informational
+
+1. **Lack of Input Validation**: Algumas funções não validam seus parâmetros de entrada, o que pode levar a comportamentos inesperados.
+2. **Use of Magic Numbers**: O contrato utiliza números mágicos, como `0x0`, em vez de constantes nomeadas.
+3. **Inadequate Comments**: Alguns trechos do contrato carecem de comentários adequados, dificultando a compreensão do código.

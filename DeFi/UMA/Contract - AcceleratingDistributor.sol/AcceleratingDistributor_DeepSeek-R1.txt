@@ -1,0 +1,21 @@
+Tempo de processamento: 45.89 segundos
+
+**1. Lista de Vulnerabilidades e Categorias:**
+
+**High Risk:**
+- **Incompatibilidade com Tokens que Cobram Taxas de Transferência:** O contrato não lida com tokens que aplicam taxas durante transferências, resultando em discrepâncias entre `cumulativeStaked` e o saldo real do contrato. Isso pode permitir a recuperação indevida de tokens pelo owner ou cálculos incorretos de recompensas.
+
+**Medium Risk:**
+- **Potencial Underflow na Recuperação de Tokens:** Se o saldo real do contrato for menor que `cumulativeStaked` (por exemplo, devido a taxas), a função `recoverToken` pode sofrer underflow na linha `amount -= stakingTokens[token].cumulativeStaked`, levando a falhas ou negação de serviço.
+- **Manipulação de `averageDepositTime`:** O cálculo do `averageDepositTime` pode ser suscetível a distorções se depósitos/retiradas forem feitos estrategicamente, afetando o multiplicador de recompensas.
+
+**Low Risk:**
+- **Dependência de `block.timestamp`:** O uso de `block.timestamp` para cálculos de tempo pode ser levemente manipulado por miners, embora o impacto seja limitado no contexto atual.
+- **Alterações Arbitrárias de Parâmetros pelo Owner:** O owner pode modificar `baseEmissionRate`, `maxMultiplier`, ou `secondsToMaxMultiplier`, potencialmente reduzindo recompensas de usuários sem aviso prévio.
+
+**Informational:**
+- **Falta de Verificação de Tokens não ERC20 Compatíveis:** O contrato confia que o owner adicione apenas tokens compatíveis com ERC20 sem taxas ou comportamentos não padrão, mas não há mecanismos automatizados para essa validação.
+- **Documentação Insuficiente sobre Mecanismos de Recompensa:** A lógica de cálculo do multiplicador e do `averageDepositTime` não é detalhada, aumentando o risco de erros na implementação de atualizações futuras.
+
+**Undetermined:**
+- **Erros de Precisão em Cálculos Aritméticos:** Embora sejam usadas escalas de 1e18, a complexidade dos cálculos (ex.: `getAverageDepositTimePostDeposit`) merece auditoria específica para garantir que não haja perda de precisão em cenários extremos.

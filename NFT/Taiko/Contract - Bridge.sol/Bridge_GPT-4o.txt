@@ -1,0 +1,24 @@
+### **High**  
+1. **Reentrancy Attack Risk** – The contract uses `call` to send Ether, which can be reentered if the receiving contract is malicious.  
+2. **Access Control Issues** – Some functions lack proper access restrictions, potentially allowing unintended users to execute them.  
+3. **Incorrect Initialization** – The `init` function incorrectly uses `==` instead of `=` when setting `_ctx.msgHash`. This prevents proper initialization.  
+4. **Gas Limit Handling Issues** – The contract does not properly verify gas limits, potentially leading to failed transactions or vulnerability to gas exhaustion attacks.  
+5. **Lack of Rate-Limiting** – There is no mechanism to prevent spam or denial-of-service (DoS) attacks on `sendMessage` or `processMessage`.  
+
+### **Medium**  
+6. **Untrusted External Calls** – The contract calls unverified external addresses (`message.to.call{}`), which could lead to execution of malicious contracts.  
+7. **Insufficient Validation of `message.destChainId`** – The contract allows sending messages to invalid or unsupported chains without full validation.  
+8. **Unverified Merkle Proofs** – The contract depends on `_proveSignalReceived`, but does not enforce strong validation on provided proofs.  
+
+### **Low**  
+9. **Lack of Event Emission for Critical Actions** – Some state-changing operations (e.g., `recallMessage`) do not emit relevant events, making it harder to track changes.  
+10. **Unnecessary `assert` Statement** – The `assert(message.from != address(this))` statement could be redundant and should be replaced with proper validation.  
+11. **Potential Front-Running Risks** – The contract does not implement any protection against transaction ordering manipulation, which could lead to MEV (Maximal Extractable Value) attacks.  
+
+### **Informational**  
+12. **Improper Commenting** – Some comments in the contract do not match the function logic, which could mislead developers during audits.  
+13. **Use of Magic Constants** – Hardcoded values like `uint256 internal constant PLACEHOLDER = type(uint256).max` should be replaced with named constants for clarity.  
+14. **Redundant Checks** – Several functions perform unnecessary checks, like rechecking `message.srcChainId` multiple times.  
+
+### **Undetermined**  
+15. **Lack of Full Specification for External Calls** – Without verifying the implementation of `ISignalService` and `IRecallableSender`, it is unclear whether they introduce additional security risks.

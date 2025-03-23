@@ -1,0 +1,61 @@
+Tempo de processamento: 22.19 segundos
+
+## Auditoria de Smart Contract - ERC20Vault
+
+Aqui está uma lista de vulnerabilidades encontradas no contrato `ERC20Vault`, formatada conforme solicitado:
+
+**1. changeBridgedToken**
+
+*   **Título:** Potencial Inconsistência de Propriedade do Bridged Token no `changeBridgedToken`.
+*   **Descrição:** A função `changeBridgedToken` verifica se o `btokenNew` tem o mesmo `owner()` do contrato `ERC20Vault`. No entanto, se a lógica de inicialização do `BridgedERC20` for complexa ou permitir que outra entidade defina o owner inicialmente (mesmo que temporariamente), pode ser possível registrar um `btokenNew` malicioso ou inesperado se aproveitando de uma janela de oportunidade na implantação ou inicialização.
+*   **Categoria:** Medium
+
+
+**2. sendToken**
+
+*   **Título:** Risco de Reentrância no Receptor de Ether em `sendToken`.
+*   **Descrição:** A função `sendToken` envia Ether de volta para o remetente (`msg.sender - op.fee`). Se o `msg.sender` for um contrato malicioso que implementa um fallback ou receive function que consome muito gás ou tenta reentrar no `ERC20Vault` ou no Bridge, pode haver um ataque de Denial of Service (DoS) ou comportamento inesperado, mesmo que o contrato `ERC20Vault` em si seja não reentrante.
+*   **Categoria:** Low
+
+**3. receiveToken**
+
+*   **Título:** Risco de Reentrância no Receptor de Ether em `receiveToken`.
+*   **Descrição:** Semelhante ao `sendToken`, `receiveToken` também envia Ether para `_to.sendEther(msg.value)`. Se `_to` for um contrato malicioso, pode haver problemas de reentrância ou DoS. Embora o Vault seja não reentrante, a interação com contratos externos ainda pode apresentar riscos.
+*   **Categoria:** Low
+
+*   **Título:**  Falta de Validação Rigorosa dos Dados `CanonicalERC20` em `receiveToken`.
+*   **Descrição:**  Embora haja verificações implícitas através do uso do token canonical, o contrato `ERC20Vault` confia que os dados `CanonicalERC20` fornecidos em `receiveToken` são válidos e correspondem ao token correto na cadeia de origem. Se houver uma falha na ponte ou alguma forma de manipulação dos dados da mensagem, um chamador malicioso pode potencialmente tentar usar um `CanonicalERC20` incorreto ou malicioso para interagir com o contrato.
+*   **Categoria:** Medium
+
+**4. onMessageRecalled**
+
+*   **Título:** Risco de Reentrância no Receptor de Ether em `onMessageRecalled`.
+*   **Descrição:**  Novamente, `onMessageRecalled` também envia Ether para `message.owner.sendEther(message.value)`, expondo ao mesmo risco de reentrância nos contratos receptores.
+*   **Categoria:** Low
+
+*   **Título:** Possível Falha de Segurança na Descodificação de `message.data` em `onMessageRecalled`.
+*   **Descrição:** A função `onMessageRecalled` decodifica `message.data[4:]` assumindo um formato específico (CanonicalERC20, address, address, uint256). Se a mensagem for maliciosamente construída para não seguir este formato, ou se a decodificação falhar de alguma forma silenciosa, o comportamento subsequente do contrato pode ser imprevisível, potencialmente levando a estados inconsistentes ou falhas inesperadas. É importante ter tratamento de erros e validação após a decodificação dos dados.
+*   **Categoria:** Medium
+
+**5. _handleMessage**
+
+*   **Título:** Dependência da Aprovação Prévia de `transferFrom` para Canonical Tokens.
+*   **Descrição:** A função `_handleMessage` utiliza `ERC20(token).transferFrom` para transferir canonical tokens para o vault. Isso requer que o contrato `ERC20Vault` tenha sido previamente aprovado para gastar tokens em nome do `msg.sender`. Se os usuários não realizarem a aprovação antes de chamar `sendToken`, a transação `transferFrom` falhará, resultando em falha da função `sendToken`. Embora não seja uma vulnerabilidade de segurança *no contrato em si*, é uma dependência importante e uma possível fonte de confusão ou falhas para os usuários.
+*   **Categoria:** Informational
+
+**6. _getOrDeployBridgedToken & _deployBridgedToken**
+
+*   **Título:**  Potencial Risco na Inicialização do Proxy `BridgedERC20`.
+*   **Descrição:**  As funções `_getOrDeployBridgedToken` e `_deployBridgedToken` implementam a lógica de deploy de um proxy ERC1967 para `BridgedERC20`. Se houver alguma vulnerabilidade ou comportamento inesperado na lógica de inicialização dentro da função `BridgedERC20.init` ou no próprio contrato `BridgedERC20` referenciado por `resolve("bridged_erc20", false)`, isso pode ser explorado no momento do deploy do proxy. A segurança depende fortemente do contrato `BridgedERC20` e de sua correta inicialização via `init`.
+*   **Categoria:** Medium
+
+
+**Resumo das Categorias:**
+
+*   **High:** Nenhuma encontrada neste escopo de análise do código `ERC20Vault`.
+*   **Medium:** Potencial Inconsistência de Propriedade do Bridged Token,  Falta de Validação Rigorosa dos Dados `CanonicalERC20` em `receiveToken`, Possível Falha de Segurança na Descodificação de `message.data` em `onMessageRecalled`, Potencial Risco na Inicialização do Proxy `BridgedERC20`.
+*   **Low:** Risco de Reentrância no Receptor de Ether (em `sendToken`, `receiveToken` e `onMessageRecalled`).
+*   **Undetermined:** Nenhuma no escopo analisado.
+*   **Informational:** Dependência da Aprovação Prévia de `transferFrom` para Canonical Tokens.
+
+**Nota Importante:** Esta auditoria é baseada apenas no código fornecido do contrato `ERC20Vault`. Uma auditoria de segurança completa exigiria a análise do contrato `BridgedERC20.sol`, `BaseVault.sol`, `IBridge.sol`, `LibAddress`, `LibDeploy`, `AddressResolver` , dos contratos OpenZeppelin utilizados e da infraestrutura geral da bridge, incluindo os mecanismos de segurança da própria ponte e a forma como as mensagens são verificadas e processadas. A severidade das vulnerabilidades listadas pode mudar dependendo do contexto e da implementação dos contratos/sistemas externos.

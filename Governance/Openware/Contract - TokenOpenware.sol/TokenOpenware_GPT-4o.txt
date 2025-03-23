@@ -1,0 +1,39 @@
+### **High Severity**  
+1. **Blacklist Bypass via Approval & Allowance**  
+   - The contract prevents blacklisted accounts from using `transfer` and `transferFrom`, but does not prevent an approved spender from transferring tokens on behalf of a blacklisted account. This allows blacklisted users to bypass restrictions by approving another address before being blacklisted.
+
+2. **Blacklist Fund Burning Centralization Risk**  
+   - The `burnBlacklisted` function allows the `DEFAULT_ADMIN_ROLE` to burn all tokens of blacklisted accounts. This introduces a centralization risk where an admin can arbitrarily seize user funds, leading to potential abuse or governance issues.
+
+---
+
+### **Medium Severity**  
+3. **Delayed Activation Risk**  
+   - The contract requires explicit activation before minting can occur, but there is no enforcement on when activation should happen. If activation is delayed indefinitely, it could create uncertainty in token distribution.
+
+4. **Role-Based Access Risks**  
+   - Roles such as `DEFAULT_ADMIN_ROLE` and `COMPLIANCE_ROLE` have significant control over key functionalities. If these roles are compromised or misused, it could lead to arbitrary blacklisting, fund seizures, or governance manipulation.
+
+---
+
+### **Low Severity**  
+5. **Lack of Event Emission for Role Changes**  
+   - Functions that grant or revoke roles (`_grantRole`, `_revokeRole`) do not emit custom events, making it harder to track administrative changes on-chain.
+
+6. **Hardcoded Decimal Override**  
+   - The contract overrides the decimals to `8`, which is non-standard for ERC20 tokens (default is `18`). While not a vulnerability, this could cause compatibility issues with third-party integrations expecting `18` decimals.
+
+---
+
+### **Informational**  
+7. **Lack of Explicit Reentrancy Protection**  
+   - While the contract does not contain direct reentrancy risks, functions modifying balances (`mint`, `burn`, `burnBlacklisted`) could benefit from OpenZeppelin’s `ReentrancyGuard` to prevent any unforeseen edge cases.
+
+8. **Insufficient Documentation for Governance Transfer**  
+   - The contract mentions that the `DEFAULT_ADMIN_ROLE` will be transferred to a DAO but does not enforce this transition programmatically. Clarity on governance transfer mechanisms would improve transparency.
+
+---
+
+### **Undetermined Severity**  
+9. **Potential Compliance Issues with Blacklist Logic**  
+   - The blacklist mechanism is centralized and lacks transparency on governance or appeal mechanisms. Depending on the jurisdiction, forcibly burning user funds could raise legal concerns.

@@ -1,0 +1,45 @@
+Tempo de processamento: 11.70 segundos
+
+## Auditoria de Smart Contract - Vulnerabilidades no Código Solidity
+
+Aqui estão as vulnerabilidades encontradas no código Solidity, listadas por título, descrição e categoria de severidade.
+
+1.  **Título:** Falta de Validação do Contrato Lossless no Constructor
+    **Descrição:** O endereço do contrato `lossless` é passado como argumento no construtor, mas não há validação para garantir que seja um contrato válido ou que implemente a interface `ILssController`. Isso pode levar a erros de execução se um endereço incorreto ou um contrato incompatível for fornecido.
+    **Categoria:** Medium
+
+2.  **Título:** Possível DoS em `transferOutBlacklistedFunds` para Grandes Listas `from`
+    **Descrição:** A função `transferOutBlacklistedFunds` itera sobre a lista `from`. Se um administrador malicioso fornecer uma lista extremamente longa, a execução da função pode consumir muito gás e potencialmente exceder o limite de gás do bloco, levando a uma negação de serviço (DoS).
+    **Categoria:** Low
+
+3.  **Título:** Risco de Reentrada em Funções Modificadas por Lossless (`lssApprove`, `lssTransfer` etc.)
+    **Descrição:** Os modificadores `lssApprove`, `lssTransfer`, etc., chamam funções externas no contrato `lossless`. Se o contrato `lossless` (ou um contrato malicioso implementando `ILssController`) tiver uma vulnerabilidade de reentrada, ele pode ser explorado durante essas chamadas, potencialmente levando a comportamentos inesperados ou roubo de fundos.
+    **Categoria:** Medium
+
+4.  **Título:**  Falta de Validação de `newAdmin` em `setLosslessAdmin` Além da Igualdade com `admin` Atual
+    **Descrição:** A função `setLosslessAdmin` impede a definição do mesmo endereço `admin`, mas não valida se o `newAdmin` é um endereço válido ou se é um contrato. Uma validação adicional poderia ser implementada para confirmar se o novo administrador é realmente o pretendido.
+    **Categoria:** Low
+
+5.  **Título:** Falta de Limite Superior para `timelockPeriod`
+    **Descrição:** O valor de `timelockPeriod` é definido pelo administrador durante a criação do contrato e não há limite superior imposto. Um administrador malicioso pode definir um período de timelock excessivamente longo, potencialmente prejudicando a capacidade de alternar o Lossless em situações de emergência.
+    **Categoria:** Low
+
+6.  **Título:** Manipulação Insegura de Allowance em `burnFrom`
+    **Descrição:** Na função `burnFrom`, o `allowance` é reduzido e o resultado é usado diretamente em `_approve` dentro de um bloco `unchecked`. Embora a lógica de redução pareça correta, a utilização de `unchecked` neste contexto pode ser questionável, embora o risco seja baixo devido à verificação prévia de `currentAllowance >= amount`. A remoção do `unchecked` tornaria o código mais seguro e legível, dependendo da versão do Solidity.
+    **Categoria:** Informational - Low (dependendo da versão do Solidity e preferência por segurança explícita)
+
+7.  **Título:** Variável `recoveryAdminKeyHash` Declarada como `string` em Vez de `bytes32`
+    **Descrição:** A variável `recoveryAdminKeyHash` é declarada como `string` quando deveria ser `bytes32` para armazenar o hash da chave. Embora funcione, é semanticamente incorreto e pode gerar confusão sobre o tipo de dado esperado.
+    **Categoria:** Informational
+
+8.  **Título:**  Função `acceptRecoveryAdminOwnership` Permite Reivindicar a Administração por Qualquer Endereço Após Proposta
+    **Descrição:** Depois que um `recoveryAdminCandidate` é proposto, qualquer endereço que possua a `key` correta pode chamar `acceptRecoveryAdminOwnership` e se tornar o novo `recoveryAdmin`. Se a `key` for comprometida ou acidentalmente tornada pública antes da aceitação, qualquer pessoa com a chave pode se tornar o Recovery Admin.
+    **Categoria:** Medium
+
+9.  **Título:**  Falta de Evento para `setLosslessAdmin`
+    **Descrição:** A função `setLosslessAdmin` emite um evento `NewAdmin`, que nomeia o novo administrador como  `admin`.  Seria mais preciso e consistente emitir um evento  `NewLosslessAdmin` ou similar para diferenciar esta ação da potencial troca do `admin` geral (se existir um conceito separado de administrador geral no contexto maior).
+    **Categoria:** Informational
+
+10. **Título:**  Possível Confusão Semântica entre `admin` e `recoveryAdmin`
+    **Descrição:** Existem dois papéis de administrador, `admin` e `recoveryAdmin`, com funções distintas, mas a nomenclatura pode ser um pouco confusa.  Clarificar os papéis (por exemplo, renomear `admin` para `losslessAdmin` para maior clareza) e documentar explicitamente suas responsabilidades distintas pode melhorar a clareza do contrato.
+    **Categoria:** Informational

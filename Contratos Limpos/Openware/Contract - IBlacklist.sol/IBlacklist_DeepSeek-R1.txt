@@ -1,0 +1,18 @@
+Tempo de processamento: 32.75 segundos
+
+**High:**
+1. **Centralized Control Risk** - All critical functions (blacklist, removeBlacklisted, burnBlacklisted) depend on a single role (`COMPLIANCE_ROLE`), contradicting the stated separation-of-duties principle.  
+2. **Missing Access Control Separation** - No distinct roles for blacklisting vs. burning, allowing a single entity to control both actions.  
+3. **Unvalidated Burn Targets** - The `burnBlacklisted` function lacks explicit validation (in this interface) to ensure the target is blacklisted before burning.  
+
+**Medium:**  
+1. **Inconsistent Event Logging** - The `BlacklistedBurnt` event includes an `amount` parameter, but the interface does not define how this value is determined or enforced.  
+
+**Low:**  
+1. **Incomplete Role Management Definition** - The interface does not specify how `COMPLIANCE_ROLE` is assigned/revoked, risking opaque governance in implementations.  
+
+**Undetermined:**  
+1. **Lack of Safeguards Against Abuse** - No visible mechanisms (e.g., timelocks, multi-sig) to prevent malicious use of compliance functions. Actual risk depends on implementation.  
+
+**Informational:**  
+1. **Documentation-Implementation Mismatch** - Comments emphasize separating roles for blacklisting and burning, but the interface uses a unified role, creating ambiguity.

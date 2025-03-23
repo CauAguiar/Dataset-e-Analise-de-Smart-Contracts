@@ -1,0 +1,18 @@
+**1. Vulnerabilities List**
+
+**High Risk:**
+- Nenhuma vulnerabilidade de alto risco identificada.
+
+**Medium Risk:**
+- Nenhuma vulnerabilidade de médio risco identificada.
+
+**Low Risk:**
+- Nenhuma vulnerabilidade de baixo risco identificada.
+
+**Undetermined:**
+- **Possível configuração indesejada de `supply`:** O parâmetro `supply` pode ser definido como `0`, resultando em nenhum token cunhado, o que pode ser inconsistente com a intenção declarada do contrato. No entanto, isso depende do contexto de implantação.
+
+**Informational:**
+- **Validação de entrada ausente:** Nome/símbolo podem ser strings vazias, e `supply` pode ser zero, o que pode levar a tokens não funcionais ou confusão.
+- **Versão flutuante do compilador:** O uso de `^0.8.20` pode introduzir riscos de compatibilidade com versões futuras do Solidity.
+- **Documentação incompleta:** Falta clareza sobre o tratamento de casos extremos (ex.: `supply = 0`) na documentação NatSpec.

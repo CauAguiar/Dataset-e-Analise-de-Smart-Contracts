@@ -1,0 +1,11 @@
+### High  
+- **Centralização da emissão** – O deployer recebe todo o suprimento inicial, o que pode levantar preocupações sobre centralização e riscos de rug pull.  
+
+### Medium  
+- **Possível falta de controle de mintagem adicional** – O código não especifica se há uma função de mint adicional ou se é restrita ao construtor, o que pode ser uma preocupação caso a classe base permita futuras emissões sem controle adequado.  
+
+### Low  
+- **Uso de `decimals()` herdado sem verificação** – Embora OpenZeppelin geralmente implemente de forma segura, confiar implicitamente na função `decimals()` pode causar inconsistências se a implementação for alterada futuramente.  
+
+### Informational  
+- **Falta de eventos de monitoramento** – O contrato poderia incluir eventos adicionais para rastrear movimentações relevantes, melhorando transparência e auditoria.

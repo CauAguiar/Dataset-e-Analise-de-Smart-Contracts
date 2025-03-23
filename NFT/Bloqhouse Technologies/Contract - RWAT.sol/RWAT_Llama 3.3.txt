@@ -1,0 +1,31 @@
+Tempo de processamento: 17.05 segundos
+
+Segue aqui uma lista de vulnerabilidades identificadas no contrato:
+
+### High
+
+1. **Reentrancy**: O contrato não utiliza a técnica de "checks-effects-interactions" em todas as funções, o que pode permitir ataques de reentrancy.
+2. **Unprotected Function**: A função `initialize` não está protegida contra chamadas múltiplas, o que pode permitir que um atacante inicialize o contrato novamente.
+3. **Use of tx.origin**: O contrato não utiliza `tx.origin` explicitamente, mas é importante verificar se o contrato não está vulnerável a ataques de phishing.
+
+### Medium
+
+1. **Unsecured Use of Signature**: A função `userMintUnits` e `claimUnits` utilizam assinaturas ECDSA, mas não há verificação se a assinatura é válida para o contrato.
+2. **Insecure Randomness**: O contrato não utiliza um gerador de números aleatórios seguro, o que pode permitir que um atacante preveja os resultados.
+3. **Use of Outdated Library**: O contrato utiliza a biblioteca `@openzeppelin/contracts-upgradeable` em uma versão específica, mas não há garantia de que essa versão esteja atualizada e segura.
+
+### Low
+
+1. **Missing Input Validation**: Algumas funções não validam os parâmetros de entrada, o que pode permitir que um atacante forneça valores inválidos.
+2. **Inconsistent Naming Conventions**: O contrato utiliza convenções de nomenclatura inconsistentes, o que pode dificultar a leitura e manutenção do código.
+3. **Unused Variables**: O contrato contém variáveis não utilizadas, o que pode indicar um problema de manutenção ou refatoração.
+
+### Undetermined
+
+1. **Complexidade do Contrato**: O contrato é complexo e possui muitas funções e variáveis, o que pode dificultar a análise e a detecção de vulnerabilidades.
+2. **Interoperabilidade com Outros Contratos**: O contrato pode interagir com outros contratos, o que pode introduzir vulnerabilidades não identificadas.
+
+### Informational
+
+1. **Ausência de Documentação**: O contrato não possui documentação adequada, o que pode dificultar a compreensão do seu funcionamento e das suas vulnerabilidades.
+2. **Falta de Testes**: O contrato não possui testes automatizados, o que pode dificultar a detecção de vulnerabilidades e a garantia de que o contrato funciona corretamente.

@@ -1,0 +1,35 @@
+Tempo de processamento: 13.13 segundos
+
+## Auditoria de Smart Contract - Vulnerabilidades Potenciais
+
+Aqui estão as potenciais vulnerabilidades identificadas nas interfaces Solidity fornecidas, listadas no formato Título e Descrição, categorizadas por severidade.
+
+**1. Reentrância em Funções de Liquidação**
+* **Título:** Reentrância em `liquidateBorrow` e `liquidateVAI`
+* **Descrição:** As funções de liquidação, ao interagirem com contratos externos para resgate de garantia ou transferência de ativos, podem ser suscetíveis a ataques de reentrância, onde um chamador malicioso pode re-entrar na função antes que os efeitos originais sejam concluídos, potencialmente drenando fundos ou causando estados inconsistentes.
+* **Categoria:** High
+
+**2. Lógica de Liquidação e Cálculos Incorretos**
+* **Título:** Cálculos Incorretos em Lógica de Liquidação
+* **Descrição:** Erros na lógica de cálculo de valores de resgate (`repayAmount`), incentivos de liquidação ou garantia a ser apreendida em `liquidateBorrow` e `liquidateVAI` podem resultar em perdas financeiras para o protocolo ou para os usuários, incluindo liquidadores e mutuários.
+* **Categoria:** High
+
+**3. Falta de Validação de Acesso em Funções Críticas**
+* **Título:** Controle de Acesso Insuficiente em `IProtocolShareReserve.updateAssetsState`
+* **Descrição:** Se a função `updateAssetsState` em `IProtocolShareReserve` não tiver restrições de acesso adequadas, entidades não autorizadas podem manipular o estado da reserva do protocolo, levando a potenciais roubos ou contabilidade incorreta.
+* **Categoria:** Medium
+
+**4. Risco de Negação de Serviço (DoS) via Mecanismo de Pausa**
+* **Título:** Potencial DoS via `IComptroller.actionPaused`
+* **Descrição:** Uma implementação inadequada ou controle centralizado da função `actionPaused` em `IComptroller` pode ser explorada para pausar indevidamente funções críticas do protocolo (MINT, REDEEM, BORROW, etc.), resultando em negação de serviço para os usuários.
+* **Categoria:** Medium
+
+**5. Manipulação de Preços em Liquidações (Front-Running)**
+* **Título:** Suscetibilidade a Front-Running em Liquidações
+* **Descrição:** As transações de liquidação, por natureza envolvendo oportunidade de lucro, podem ser alvos de ataques de front-running. Liquidadores maliciosos podem observar transações pendentes e as antecipar para maximizar seus lucros ou realizar outras ações exploratórias antes da liquidação legítima.  Embora não seja uma vulnerabilidade no código da interface *per se*, é um vetor de ataque relevante no processo de liquidação.
+* **Categoria:** Low
+
+**6. Dependência de Contratos Externos e Risco de Implementação Incorreta**
+* **Título:** Risco de Dependência de Contratos Externos
+* **Descrição:** A segurança deste sistema depende fortemente da correção e segurança dos contratos externos definidos nas interfaces (IERC20Upgradeable, IVToken, IVBep20, IVBNB, IVAIController, IComptroller, IProtocolShareReserve, IWBNB). Vulnerabilidades ou implementações incorretas nesses contratos externos podem comprometer todo o sistema.
+* **Categoria:** Informational

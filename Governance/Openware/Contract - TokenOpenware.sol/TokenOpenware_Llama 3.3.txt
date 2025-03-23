@@ -1,0 +1,25 @@
+Tempo de processamento: 33.97 segundos
+
+Aqui está a lista de vulnerabilidades identificadas no contrato:
+
+### High
+1. **Reentrancy Attack**: O contrato não utiliza a técnica de Checks-Effects-Interactions para prevenir ataques de reentrancy em funções como `transfer` e `transferFrom`.
+2. **Reentrancy Attack em Burn**: A função `burnFrom` pode ser vulnerável a ataques de reentrancy se a conta que está queimando tokens tiver uma função de callback que permita reentrar no contrato.
+3. **Arbitrage**: A função `mint` pode ser utilizada para obter tokens a um preço mais baixo e então vendê-los a um preço mais alto, criando um risco de arbitrage.
+
+### Medium
+1. **Falta de Autenticação**: A função `burn` pode ser chamada por qualquer conta, o que pode permitir que contas mal-intencionadas queimem tokens de outras contas se tiverem permissão para fazer isso.
+2. **Permissões em Funções**: Algumas funções, como `blacklist` e `removeBlacklisted`, requerem arole `COMPLIANCE_ROLE`, mas não há uma forma de garantir que o papel foi atribuído corretamente.
+3. **Falta de Validação de Inputs**: Algumas funções, como `transfer` e `transferFrom`, não validam se o endereço de destino é zero ou não.
+
+### Low
+1. **Utilização de Funções Obsoletas**: O contrato utiliza a função `now` que está obsoleta desde a versão 0.7.6 do Solidity.
+2. **Falta de Documentação**: Algumas funções, como `_requireAccountNotBlacklisted`, não têm documentação clara sobre seu propósito.
+
+### Undetermined
+1. **Impacto da blacklist**: O contrato não define explicitamente o que acontece com as contas blacklisted em termos de funcionalidade e acesso a outros contratos da plataforma.
+2. **Governo do token**: O contrato menciona que o papel `DEFAULT_ADMIN_ROLE` será transferido para uma DAO, mas não há detalhes sobre como isso será feito ou como o governo do token será exercido.
+
+### Informational
+1. **Compliance com Padrões**: O contrato utiliza o padrão ERC20, mas não há informações sobre se ele é compatível com outras versões do padrão ou se há planos para atualizações.
+2. **Segurança em Funções de Autenticação**: As funções de autenticação, como `onlyRole`, não são explicadas em detalhes, o que pode dificultar a auditoria e teste do contrato.

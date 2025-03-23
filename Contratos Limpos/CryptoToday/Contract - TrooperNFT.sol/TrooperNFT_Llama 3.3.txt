@@ -1,0 +1,23 @@
+Tempo de processamento: 8.28 segundos
+
+**Vulnerabilidades no Contrato TrooperNFT**
+
+### High
+1. **Reutilização de Assinaturas**: Descrição - A função `claimTrooper` permite que um usuário reutilize uma assinatura válida para reivindicar múltiplos NFTs, desde que a assinatura seja válida para o proprietário e o remetente.
+2. **Controle de Acesso Inadequado**: Descrição - A função `airdrop` permite que o proprietário minte NFTs para qualquer endereço, potencialmente permitindo a criação de NFTs falsos ou não autorizados.
+
+### Medium
+1. **Falta de Validacão de Entradas**: Descrição - A função `claimTrooper` não valida se a assinatura é válida para o NFT específico que está sendo reivindicado.
+2. **Uso de Funções Não Reentrantes**: Descrição - A função `_mint` é chamada dentro da função `claimTrooper`, o que pode permitir ataques de reentrada se a função `_mint` for modificada no futuro.
+
+### Low
+1. **Exposição de Informações**: Descrição - O mapeamento `claimed` é público, permitindo que qualquer um veja quais endereços já reivindicaram um NFT.
+2. **Uso de Versão de Compilador Obsoleta**: Descrição - A versão do compilador Solidity utilizada (0.8.12) pode conter vulnerabilidades conhecidas que foram corrigidas em versões mais recentes.
+
+### Undetermined
+1. **Comportamento da Função `verifyNFT`**: Descrição - O comportamento da função `verifyNFT` não é claro, o que pode levar a vulnerabilidades se não for implementada corretamente.
+2. **Uso de Bibliotecas Externas**: Descrição - O contrato utiliza bibliotecas externas (`@openzeppelin/contracts`), que podem conter vulnerabilidades ou comportamentos inesperados.
+
+### Informational
+1. **Licença do Código**: Descrição - A licença do código (WTFPL) pode não ser adequada para uso comercial ou distribuição.
+2. **Comentários e Documentação**: Descrição - O contrato carece de comentários e documentação adequados, o que pode dificultar a compreensão e manutenção do código.

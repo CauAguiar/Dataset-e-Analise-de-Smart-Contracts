@@ -1,0 +1,24 @@
+Tempo de processamento: 5.16 segundos
+
+Aqui estão as vulnerabilidades identificadas no código Solidity fornecido, categorizadas por nível de gravidade:
+
+**High:**
+- Reentrancy: Possibilidade de ataques de reentrancy devido ao uso de funções não seguras.
+- Privilege Escalation: Possibilidade de elevação de privilégios devido à falta de controle de acessos.
+
+**Medium:**
+- Lack of Input Validation: Falta de validação de entradas, o que pode levar a comportamentos indesejados.
+- Use of Obsolete Functions: Uso de funções obsoletas que podem conter vulnerabilidades conhecidas.
+
+**Low:**
+- Lack of Event Emission: Falta de emissão de eventos para notificar outros contratos ou aplicativos da execução de ações específicas.
+- Inefficient Use of Gas: Uso ineficiente de gas, o que pode aumentar os custos de execução do contrato.
+
+**Undetermined:**
+- Lack of Upgradeability: Falta de mecanismos de atualização do contrato, o que pode dificultar a correção de vulnerabilidades ou a adição de novas funcionalidades.
+- Unprotected Function: Funções não protegidas que podem ser chamadas por qualquer usuário.
+
+**Informational:**
+- Outdated Solidity Version: Versão do Solidity utilizada pode estar desatualizada, sendo recomendável a utilização da versão mais recente para garantir a segurança.
+- Missing Contract Metadata: Falta de metadados do contrato, como o endereço do criador ou a versão do contrato.
+- Use of Unaudited Libraries: Uso de bibliotecas não auditadas, como o OpenZeppelin, que podem conter vulnerabilidades.

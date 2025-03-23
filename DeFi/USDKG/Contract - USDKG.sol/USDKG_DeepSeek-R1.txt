@@ -1,0 +1,47 @@
+Tempo de processamento: 43.06 segundos
+
+### High Risk Vulnerabilities:
+- **Blacklist Bypass for Recipients**  
+  Transfers do not check if the recipient is blacklisted, allowing blacklisted users to receive tokens.
+
+- **ERC20 Approve Front-Running**  
+  The `approve` function is susceptible to front-running attacks, allowing old allowances to be used before updating.
+
+- **Centralized Control Risks**  
+  Owner and compliance addresses have excessive privileges (e.g., minting, burning, pausing, blacklisting) without safeguards against compromise.
+
+---
+
+### Medium Risk Vulnerabilities:
+- **Missing Transfer Event on Mint**  
+  The `issue` function mints tokens but does not emit a `Transfer` event, breaking ERC20 compatibility expectations.
+
+- **Insufficient Fee Precision Handling**  
+  Fee calculation truncates decimal values due to integer division, potentially leading to cumulative precision loss.
+
+- **Unrestricted Allowance Update Logic**  
+  The `transferFrom` function allows spending even if the allowance is not explicitly set to `type(uint256).max`, risking unexpected behavior.
+
+---
+
+### Low Risk Vulnerabilities:
+- **Immutable Ownership**  
+  No mechanism exists to transfer ownership, creating a single point of failure if the owner's key is compromised.
+
+- **Lack of Address Validation in Blacklist**  
+  Blacklist functions do not prevent zero-address modifications, though no direct exploit exists.
+
+---
+
+### Informational:
+- **Non-Standard ERC20 Implementation**  
+  Custom fee logic and blacklist features deviate from the standard ERC20 template, which may affect integrations.
+
+- **Potential Governance Risks**  
+  Centralized functions (e.g., `issue`, `destroyBlackFunds`) rely on trusted actors, which is inherent to the design but could require documentation.
+
+---
+
+### Undetermined:
+- **Fee Parameter Safety**  
+  The impact of `basisPointsRate` depends on future use; enabling fees could introduce risks if not audited again.

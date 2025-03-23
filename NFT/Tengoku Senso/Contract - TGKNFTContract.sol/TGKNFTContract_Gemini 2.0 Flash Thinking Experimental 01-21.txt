@@ -1,0 +1,13 @@
+Tempo de processamento: 8.22 segundos
+
+## Auditoria de Smart Contract - TGKNFTContract
+
+Aqui estão as vulnerabilidades encontradas no contrato TGKNFTContract, listadas por título, descrição e categoria de severidade.
+
+1.  **Título:** Função de Mint Irrestrita
+    *   **Descrição:** A função `mintNFT` é `public`, permitindo que qualquer pessoa mint NFTs sem controle de acesso ou permissões.
+    *   **Categoria:** High
+
+2.  **Título:** Alocação de ID de Token Arbitrário durante a Mintagem
+    *   **Descrição:** A função `mintNFT` permite que o chamador defina o `_newItemID`, o que pode levar a conflitos de ID ou comportamentos inesperados caso não seja gerenciado corretamente.
+    *   **Categoria:** Medium

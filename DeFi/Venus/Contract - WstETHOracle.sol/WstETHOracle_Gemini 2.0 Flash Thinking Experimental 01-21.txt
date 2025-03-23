@@ -1,0 +1,13 @@
+Tempo de processamento: 10.06 segundos
+
+## Auditoria de Smart Contract: WstETHOracle
+
+Aqui estão as vulnerabilidades encontradas no contrato `WstETHOracle`, listadas em formato de Título e Descrição e categorizadas por severidade.
+
+1.  **Título:** Dependência de Oráculo Externo
+    **Descrição:** O contrato depende da precisão e disponibilidade de um oráculo externo (`RESILIENT_ORACLE`) para obter o preço do WETH. Falhas ou manipulações no oráculo externo podem afetar o preço retornado pelo `WstETHOracle`.
+    **Categoria:** Medium
+
+2.  **Título:** Aproximação no Cálculo de Preço (Assunção 1 stETH = 1 WETH)
+    **Descrição:** O cálculo do preço assume que 1 stETH tem o mesmo valor que 1 WETH ao utilizar o preço de WETH do `RESILIENT_ORACLE`. Essa aproximação pode gerar imprecisões no preço do wstETH, especialmente se a paridade entre stETH e WETH variar significativamente.
+    **Categoria:** Medium

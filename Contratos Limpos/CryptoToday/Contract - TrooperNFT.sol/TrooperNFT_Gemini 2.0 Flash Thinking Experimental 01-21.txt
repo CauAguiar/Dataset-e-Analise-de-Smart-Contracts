@@ -1,0 +1,25 @@
+Tempo de processamento: 12.19 segundos
+
+## Auditoria de Smart Contract - Vulnerabilidades Encontradas
+
+Aqui estão as vulnerabilidades encontradas no contrato Solidity `TrooperNFT`, listadas por título, descrição breve e categoria de severidade:
+
+1. **Título:** Vulnerabilidade na Verificação de Assinatura
+    **Descrição:** Se a função `verifyNFT` no contrato `Signature.sol` for implementada incorretamente, pode permitir que assinaturas inválidas sejam consideradas válidas, possibilitando o acesso não autorizado à função `claimTrooper`.
+    **Categoria:** High
+
+2. **Título:** Ataque de Replay Potencial na Função `claimTrooper`
+    **Descrição:** A função `claimTrooper` pode ser suscetível a ataques de replay se o mecanismo de assinatura em `Signature.sol` não incluir proteções adequadas contra reutilização de assinaturas.
+    **Categoria:** Medium
+
+3. **Título:** Falta de Validação de Input na Função `airdrop`
+    **Descrição:** A função `airdrop` mintará NFTs com o `id` fornecido sem validação. Isso pode levar a erros operacionais se IDs inválidos ou não intencionados forem usados.
+    **Categoria:** Informational
+
+4. **Título:** Risco de Centralização (Função `Ownable`)
+    **Descrição:** A dependência do contrato `Ownable` introduz um risco de centralização, pois apenas o proprietário pode chamar a função `airdrop`, controlando a distribuição de NFTs adicionais.
+    **Categoria:** Informational
+
+5. **Título:** Potencial Negação de Serviço (DoS) em `claimTrooper`
+    **Descrição:** Se a função `verifyNFT` for excessivamente complexa computacionalmente, chamadas repetidas para `claimTrooper` com assinaturas inválidas podem consumir gás e potencialmente causar um ataque de negação de serviço (DoS).
+    **Categoria:** Low

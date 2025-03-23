@@ -1,0 +1,71 @@
+### **Auditoria de Smart Contract - ERC20Vault**
+
+#### **Vulnerabilidades Identificadas**
+
+---
+
+### **High**  
+
+1. **Falta de Verificação de Endereço de Bridge**  
+   - O contrato assume que `resolve("bridge", false)` retorna um endereço confiável sem verificações adicionais, permitindo possíveis ataques caso a resolução seja comprometida.
+
+2. **Problema de Reentrada em `receiveToken`**  
+   - A transferência de tokens ocorre antes da emissão do evento, o que pode permitir ataques de reentrada caso um token malicioso seja usado.
+
+3. **Manipulação de Endereço na Migração de Tokens**  
+   - O contrato permite a alteração de tokens bridged sem verificações rigorosas, o que pode resultar em substituições maliciosas ou perda de fundos.
+
+---
+
+### **Medium**  
+
+4. **Falta de Validação de Token na _handleMessage**  
+   - O contrato assume que `bridgedToCanonical[token]` existe sem validações adicionais, podendo permitir registros inválidos.
+
+5. **Risco de Bloqueio de Fundos em `onMessageRecalled`**  
+   - Se `bridgedToCanonical[token]` não for encontrado, pode haver perda de fundos, pois o token pode não ser recuperado corretamente.
+
+6. **Confiança Excessiva em `addressManager` e `resolve`**  
+   - Funções como `_deployBridgedToken` dependem de `resolve("bridged_erc20", false)`, sem verificações que garantam que o endereço retornado seja válido.
+
+---
+
+### **Low**  
+
+7. **Uso de `transferFrom` Sem Checagem de Sucesso**  
+   - A função `_handleMessage` usa `transferFrom`, mas não verifica explicitamente se a transferência foi bem-sucedida.
+
+8. **Possível Problema na Cálculo de `_balanceChange`**  
+   - A lógica de cálculo da mudança de saldo pode ser enganada por tokens que cobram taxa na transferência.
+
+9. **Eventos Após Transferência de Fundos**  
+   - Em algumas funções, como `sendToken`, os eventos são emitidos após transferências, o que pode dificultar o rastreamento de problemas.
+
+---
+
+### **Undetermined**  
+
+10. **Dependência de `IBridgedERC20` sem Código Visível**  
+   - A lógica de `IBridgedERC20` não é clara, então não é possível garantir que `burn`, `mint` e `changeMigrationStatus` sejam seguras.
+
+11. **Impacto da Função `resolve`**  
+   - A implementação de `resolve` não está disponível, podendo representar um risco se não for segura.
+
+---
+
+### **Informational**  
+
+12. **Uso de `__gap` sem Explicação**  
+   - O array `uint256[46] private __gap;` existe, mas sem explicação sobre seu propósito.  
+
+13. **Comentários e Documentação Incompletos**  
+   - Algumas funções críticas, como `_deployBridgedToken`, não possuem explicações detalhadas sobre os riscos envolvidos.  
+
+---
+
+### **Recomendações Gerais**  
+
+- Implementar verificações rigorosas nos endereços retornados por `resolve`.  
+- Reordenar a sequência das transferências de tokens para mitigar ataques de reentrada.  
+- Adicionar verificações explícitas em todas as funções que lidam com tokens e cálculos de saldo.  
+- Melhorar a documentação para descrever claramente os riscos e suposições do contrato.

@@ -1,0 +1,61 @@
+### **Auditoria do Smart Contract "Liquidator"**  
+
+Abaixo estão as vulnerabilidades identificadas no contrato, categorizadas por nível de risco.  
+
+---
+
+## **High** (Alto Risco)  
+
+### **1. Uso de Variáveis `immutable` em um Contrato Upgradável**  
+O contrato utiliza variáveis `immutable` (`vBnb`, `comptroller`, `vaiController`, `wBNB`), o que pode causar problemas em futuras atualizações, pois essas variáveis não podem ser modificadas após a implantação.  
+
+### **2. Possível Ataque de Reentrância**  
+Apesar de `ReentrancyGuardUpgradeable` ser importado, não está claro se todas as funções críticas de liquidação e transferência de fundos estão protegidas contra reentrância.  
+
+### **3. Restrição de Liquidação Pode ser Manipulada**  
+A função `restrictLiquidation()` permite que administradores bloqueiem liquidações para determinados endereços. Isso pode ser explorado para impedir a liquidação de contas inadimplentes, favorecendo certos usuários.  
+
+---
+
+## **Medium** (Médio Risco)  
+
+### **4. Falta de Verificação de Endereço Zero em Algumas Funções**  
+Embora `ensureNonzeroAddress()` seja usada no construtor, outras funções administrativas podem permitir a configuração de endereços críticos para `address(0)`, potencialmente bloqueando operações.  
+
+### **5. Dependência Externa Não Validada**  
+O contrato interage com múltiplos contratos externos (`IComptroller`, `IVToken`, `IVAIController`), mas não há verificações robustas para garantir que esses contratos sejam confiáveis e compatíveis.  
+
+### **6. Erro de Parâmetro Duplicado**  
+As funções `addToAllowlist()` e `removeFromAllowlist()` possuem dois parâmetros chamados `borrower`, o que pode causar falhas na compilação ou execução inesperada.  
+
+---
+
+## **Low** (Baixo Risco)  
+
+### **7. Falta de Eventos para Algumas Funções Administrativas**  
+Nem todas as funções administrativas emitem eventos. Isso dificulta a auditoria on-chain de mudanças importantes, como modificações na lista de liquidação permitida.  
+
+### **8. Possível Problema com `msg.value` em `liquidateBorrow()`**  
+A função `liquidateBorrow()` menciona que `msg.value` deve ser igual a `repayAmount` para BNB, mas não há garantias explícitas de que isso será sempre validado corretamente.  
+
+---
+
+## **Undetermined** (Não Determinado)  
+
+### **9. Possível Falta de Validação do `treasuryPercentMantissa_`**  
+O contrato contém verificações para esse valor, mas sem verificação adequada, pode permitir a configuração de uma taxa excessiva, afetando os incentivos dos liquidadores.  
+
+---
+
+## **Informational** (Informativo)  
+
+### **10. Comentários e Documentação Incompletos**  
+Embora o contrato possua documentação razoável, algumas funções não estão bem descritas, o que pode dificultar a compreensão do seu comportamento esperado.  
+
+### **11. Uso de `reinitializer(2)` sem Explicação**  
+O uso de `reinitializer(2)` no método `initialize()` sugere que houve uma versão anterior, mas não há indicação clara de qual foi a mudança e quais riscos ela pode trazer.  
+
+---
+
+### **Conclusão**  
+O contrato "Liquidator" apresenta boas práticas de segurança, mas há vulnerabilidades significativas relacionadas à governança, reentrância e compatibilidade com contratos externos. Recomenda-se corrigir os problemas de alto risco antes da implantação.

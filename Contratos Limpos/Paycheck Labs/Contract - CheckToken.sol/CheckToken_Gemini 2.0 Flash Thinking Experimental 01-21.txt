@@ -1,0 +1,13 @@
+Tempo de processamento: 8.94 segundos
+
+## Análise de Vulnerabilidades do Smart Contract `CheckToken`
+
+Aqui estão as vulnerabilidades identificadas no contrato `CheckToken`, listadas de forma breve com título e descrição, e categorizadas por severidade:
+
+**1. Título:** Centralização Inicial de Fornecimento
+   **Descrição:** Todo o fornecimento máximo de tokens é cunhado para o endereço do deployer do contrato durante a construção. Isso confere ao deployer controle total inicial sobre o fornecimento de tokens, o que representa um ponto de centralização.
+   **Categoria:** High
+
+**2. Título:** Funcionalidade de Queima de Tokens Expõe Método Público 'burn'
+   **Descrição:** O contrato herda de ERC20Burnable, o que permite que qualquer detentor de tokens chame a função 'burn' para destruir seus próprios tokens. Esta é uma funcionalidade padrão de ERC20Burnable.
+   **Categoria:** Informational

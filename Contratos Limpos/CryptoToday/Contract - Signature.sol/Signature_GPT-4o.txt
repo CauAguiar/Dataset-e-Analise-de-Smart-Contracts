@@ -1,0 +1,27 @@
+### **Auditoria de Segurança do Smart Contract `Signature`**  
+
+#### **🛑 High (Alto)**  
+1. **Falta de Controle de Acesso**  
+   - Todas as funções são `internal`, mas se herdadas por outro contrato sem restrições apropriadas, podem ser utilizadas de forma indevida.  
+
+2. **Uso de `ecrecover` sem Verificação Rigorosa de `s` e `v`**  
+   - O parâmetro `s` não é validado para estar dentro do intervalo seguro (evitando assinaturas maliciosas).  
+   - O parâmetro `v` não é validado para estar dentro do conjunto `{27, 28}`, o que pode permitir assinaturas inválidas.  
+
+#### **⚠️ Medium (Médio)**  
+3. **Assinatura Não Inclui o Endereço do Contrato**  
+   - O hash assinado não inclui o endereço do contrato, o que pode permitir ataques de replay em diferentes contratos que utilizam a mesma lógica.  
+
+#### **🔹 Low (Baixo)**  
+4. **Uso de `abi.encodePacked` Pode Levar a Colisões de Hash**  
+   - `abi.encodePacked(to, amount, nonce)` pode gerar colisões se tipos de dados forem concatenados de forma inesperada.  
+
+#### **❓ Undetermined (Indeterminado)**  
+5. **Possível Falta de Controle sobre Nonces**  
+   - O contrato não gerencia `nonce`, cabendo ao chamador garantir sua unicidade, o que pode ser explorado caso a lógica externa não seja robusta.  
+
+#### **ℹ️ Informational (Informacional)**  
+6. **Licença `WTFPL`**  
+   - A licença usada (`WTFPL`) pode não ser apropriada para todos os projetos, especialmente em ambientes empresariais.  
+7. **Comentários Desatualizados**  
+   - O comentário menciona a remoção de funções pelo otimizador, mas a forma como o Solidity otimiza pode mudar.

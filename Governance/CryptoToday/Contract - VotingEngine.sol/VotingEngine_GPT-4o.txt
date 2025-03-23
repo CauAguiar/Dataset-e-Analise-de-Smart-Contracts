@@ -1,0 +1,28 @@
+### **High Severity**  
+1. **Signature Replay Attack** – O contrato não impede reutilização de assinaturas, permitindo que um atacante reutilize uma assinatura válida para múltiplos saques.  
+2. **Falta de Validação de Transferência ERC20** – O contrato não verifica se `transfer` e `transferFrom` da ERC20 retornam `true`, podendo resultar em perdas de fundos caso o token siga um padrão ERC20 não compatível.  
+
+---
+
+### **Medium Severity**  
+3. **Centralização no Proprietário** – O dono do contrato tem controle total sobre a resolução de votos (`resolveVote`) e pode manipular os resultados.  
+4. **Possível Bloqueio de Fundos** – Se o contrato for pausado pelo dono, usuários não poderão depositar ou sacar seus fundos.  
+5. **Falta de Eventos em Algumas Funções** – A função `resolveVote` não emite um evento antes de modificar `_voteResolutionHash`, dificultando auditoria on-chain.  
+
+---
+
+### **Low Severity**  
+6. **Uso Desnecessário de SafeMath** – O Solidity 0.8 já tem checagens de overflow/underflow nativas, tornando o uso de `SafeMathUpgradeable` redundante.  
+7. **Mensagens de Erro Pouco Informativas** – A mensagem `"Invalid nonce"` na função `withdrawFor` poderia ser mais detalhada para facilitar debugging.  
+
+---
+
+### **Informational**  
+8. **Licença SPDX Incomum** – A licença `WTFPL` pode não ser apropriada para contratos empresariais ou institucionais.  
+9. **Código Não Usa `onlyOwner` em Algumas Funções** – Algumas funções críticas, como `proposeVote`, podem ser chamadas por qualquer usuário sem restrições.  
+10. **Variáveis Internas Poderiam Ser Privadas** – `_voteResolutionHash` e `_voteCounter` poderiam ser `private` em vez de `internal`, reduzindo a superfície de ataque.  
+
+---
+
+### **Undetermined**  
+11. **Potencial Problema com `Signature`** – A implementação do contrato `Signature` não foi fornecida, então não é possível verificar se a verificação está corretamente implementada e segura contra ataques como `ECDSA malleability`.

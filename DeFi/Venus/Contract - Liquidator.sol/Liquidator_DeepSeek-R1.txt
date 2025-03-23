@@ -1,0 +1,20 @@
+Tempo de processamento: 61.20 segundos
+
+### High Risk Vulnerabilities:
+1. **Unsafe Token Approval Handling**: Resetting approval to zero before setting a new value may not be compatible with tokens requiring specific allowance changes.
+2. **Potential Front-Running Initialization**: If upgradeable contracts are not properly initialized, they might be susceptible to front-running attacks, though `_disableInitializers` in the constructor mitigates this.
+
+### Medium Risk Vulnerabilities:
+1. **Incorrect Handling of BEP20 Transfer Fees**: Functions like `_transferBep20` account for actual transferred amounts but may fail if underlying tokens apply transfer fees, affecting liquidation logic.
+2. **Dependent on External Contract State**: Reliance on dynamic values from the Comptroller (e.g., `liquidationIncentiveMantissa()`) could introduce inconsistencies if updated mid-transaction.
+3. **Pending Redeem Array Manipulation**: If the `pendingRedeem` array grows excessively, it could cause gas issues during redemption, despite chunk processing.
+
+### Low Risk Vulnerabilities:
+1. **Rounding Errors in Fund Distribution**: Splitting seized funds using division may lead to rounding errors, disproportionately affecting treasury or liquidator shares.
+2. **Unchecked Loop Iterations in Reserves Reduction**: Although chunk-limited, looping over `pendingRedeem` might still face gas limits if not properly managed.
+3. **Lack of Reentrancy Guards in Ancillary Functions**: Functions like `_reduceBnbReserves` lack explicit reentrancy protection, though `nonReentrant` is used in main entry points.
+
+### Informational:
+1. **Insufficient Validation in Protocol Share Reserve Update**: `setProtocolShareReserve` uses `onlyOwner` without additional access control checks, relying on admin trust.
+2. **Event Emission After State Changes**: Events like `ProtocolLiquidationIncentiveTransferred` are emitted post-transfer, ensuring accurate logging.
+3. **Potential VAI Liquidation Race Conditions**: Force VAI liquidation logic might interfere with normal operations if parameters are misconfigured.

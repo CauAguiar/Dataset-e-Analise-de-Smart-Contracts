@@ -1,0 +1,29 @@
+Tempo de processamento: 7.89 segundos
+
+Aqui estão as vulnerabilidades listadas por categoria:
+
+### High
+
+1. **Reentrancy**: A função `transferFrom` não protege contra reentrancy, permitindo que um contrato malicioso execute código arbitrário.
+2. **Unprotected Function**: A função `changeSupply` não tem ninguna proteção contra chamadas não autorizadas, permitindo que qualquer um altere o total supply.
+3. **Unsecured Use of Tx_ORIGIN**: A função `delegateYield` e `undelegateYield` usam `tx.origin` em vez de `msg.sender`, o que pode levar a problemas de segurança.
+
+### Medium
+
+1. **Use of Deprecated Functions**: A função `_deprecated_isUpgraded` é marcada como depreciada, mas ainda é usada no contrato.
+2. **Unprotected Variable**: A variável `vaultAddress` não é protegida contra alterações não autorizadas.
+3. **Integer Overflow**: A função `_balanceToRebasingCredits` não protege contra overflow de inteiros.
+
+### Low
+
+1. ** Missing Input Validation**: Algumas funções não validam os inputs corretamente, o que pode levar a comportamentos indesejados.
+2. **Inefficient Code**: Algumas partes do contrato têm código ineficiente, o que pode aumentar o consumo de gás.
+
+### Undetermined
+
+1. ** Complexidade do Contrato**: O contrato é muito complexo e difícil de entender, o que pode levar a problemas de segurança e bugs.
+
+### Informational
+
+1. **Uso de Bibliotecas Desatualizadas**: O contrato usa bibliotecas desatualizadas, como `@openzeppelin/contracts/utils/math/SafeCast`.
+2. **Falta de Documentação**: O contrato não tem documentação suficiente, o que pode dificultar a compreensão e a auditoria do código.

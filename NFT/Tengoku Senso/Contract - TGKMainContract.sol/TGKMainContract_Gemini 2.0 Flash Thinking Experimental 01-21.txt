@@ -1,0 +1,25 @@
+Tempo de processamento: 14.89 segundos
+
+## Auditoria de Smart Contract - TGKMainContract
+
+Aqui estão as vulnerabilidades encontradas no smart contract `TGKMainContract`, listadas em formato de título e descrição breve, separadas por categorias de severidade:
+
+1. **Título:** Risco de Reentrância em `withdraw`
+    **Descrição:**  Possibilidade de reentrância durante a transferência de Ether para endereço externo.
+    **Categoria:** Low
+
+2. **Título:** Risco de DoS em `withdraw`
+    **Descrição:**  Função `withdraw` pode ser bloqueada por reversões no contrato receptor.
+    **Categoria:** Medium
+
+3. **Título:** Risco de Reentrância em `transferERC20`
+    **Descrição:**  Possibilidade de reentrância durante a transferência de tokens ERC20 (mitigado pela biblioteca SafeERC20).
+    **Categoria:** Low
+
+4. **Título:** Risco de Reentrância em `transferNFT`
+    **Descrição:**  Possibilidade de reentrância durante a transferência de NFTs (mitigado por `safeTransferFrom`).
+    **Categoria:** Low
+
+5. **Título:** Validação de Endereço Ausente em `nftContractAddress`
+    **Descrição:**  O endereço `nftContractAddress` não é validado para garantir que seja um contrato.
+    **Categoria:** Low

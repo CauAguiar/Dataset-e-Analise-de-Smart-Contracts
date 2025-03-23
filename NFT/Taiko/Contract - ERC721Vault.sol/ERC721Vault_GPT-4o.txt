@@ -1,0 +1,58 @@
+### Auditoria de Segurança do Smart Contract `ERC721Vault`
+
+#### **High (Alto)**
+1. **Falta de Verificação de Permissões em `_handleMessage`**  
+   - O contrato permite a queima e transferência de tokens sem verificar se a chamada é autorizada, o que pode levar à perda de ativos.
+
+2. **Possível Problema de Reentrada em `receiveToken`**  
+   - A função `receiveToken` executa transferências de ETH via `sendEther`, o que pode permitir reentrância se o destinatário for um contrato malicioso.
+
+3. **Falta de Validação Rigorosa de `msg.value`**  
+   - O contrato assume que `msg.value` é sempre suficiente para cobrir os custos, mas não há uma validação explícita para evitar perdas de fundos.
+
+4. **Uso de `unchecked` Sem Necessidade**  
+   - O uso de `unchecked` pode mascarar erros de estouro/arrombamento de variáveis, especialmente em loops e cálculos de índices.
+
+---
+
+#### **Medium (Médio)**
+5. **Falta de Validação de Endereços em `_deployBridgedToken`**  
+   - O contrato não verifica se o `btoken` já foi implantado corretamente antes de armazená-lo, o que pode resultar em inconsistências.
+
+6. **Possível Perda de Fundos ao Enviar Mensagem para `IBridge.sendMessage`**  
+   - Se `resolve("bridge", false)` retornar um endereço inválido ou se a chamada falhar, os fundos podem ser perdidos.
+
+7. **Uso de `resolve` Sem Controle de Retornos**  
+   - A função `resolve` é usada para obter endereços de contratos, mas não há verificação para garantir que o endereço retornado seja válido.
+
+---
+
+#### **Low (Baixo)**
+8. **Eventos Podem Ser Manipulados por Usuários Maliciosos**  
+   - Alguns eventos, como `TokenSent` e `TokenReceived`, usam dados fornecidos pelo usuário sem validação, o que pode permitir manipulação de logs.
+
+9. **Falta de Controle sobre o Nome do Contrato (`name()`)**  
+   - A função `name()` retorna um valor fixo, o que pode ser problemático se o contrato precisar ser reutilizado para diferentes propósitos.
+
+---
+
+#### **Undetermined (Indeterminado)**
+10. **Dependência em `IBridge` para Segurança**  
+   - A segurança do contrato depende fortemente da implementação de `IBridge`, que não está visível no código.
+
+11. **Possível Ataque de Replay entre Chains**  
+   - Se não houver um controle rigoroso sobre mensagens entre chains, um atacante pode tentar reproduzir uma transação já processada.
+
+---
+
+#### **Informational (Informacional)**
+12. **Comentários de Código Incompletos ou Desatualizados**  
+   - Algumas funções, como `_deployBridgedToken`, não explicam completamente os riscos e comportamentos esperados.
+
+13. **Uso de `// SPDX-License-Identifier: MIT` sem Confirmação de Licença**  
+   - A licença MIT está especificada, mas pode não refletir corretamente os direitos e restrições de uso do código.
+
+---
+
+### **Conclusão**
+O contrato `ERC721Vault` apresenta boas práticas de segurança, como uso de `nonReentrant` e `whenNotPaused`. No entanto, há vulnerabilidades críticas relacionadas a permissões, reentrância e validação de entradas que devem ser corrigidas antes da implementação em produção.

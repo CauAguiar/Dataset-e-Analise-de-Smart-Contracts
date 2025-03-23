@@ -1,0 +1,31 @@
+Tempo de processamento: 16.02 segundos
+
+Aqui está a lista de vulnerabilidades identificadas no contrato Solidity:
+
+### High
+
+1. **Reentrancy**: O contrato não utiliza a técnica de "checks-effects-interactions" para prevenir reentrancy em funções como `transfer` e `transferFrom`.
+2. **Unprotected Function**: A função `transferOutBlacklistedFunds` pode ser chamada por qualquer contrato, desde que seja o contrato `lossless`, o que pode ser um ponto de ataque se o contrato `lossless` for comprometido.
+3. **Privilege Escalation**: A função `setLosslessAdmin` pode ser utilizada para elevar privilégios de um endereço, desde que o endereço atual seja o `recoveryAdmin`.
+
+### Medium
+
+1. **Use of Tx.origin**: O contrato utiliza `msg.sender` em vez de `tx.origin`, o que é uma boa prática, mas em alguns casos, como na função `transferOutBlacklistedFunds`, o contrato `lossless` pode ser chamado por um contrato mal-intencionado.
+2. **Unsecured Use of Transfer**: A função `transfer` não verifica se o destinatário é um contrato ou uma carteira, o que pode levar a problemas se o destinatário for um contrato mal-intencionado.
+3. **Lack of Input Validation**: Algumas funções, como `increaseAllowance` e `decreaseAllowance`, não validam os valores de entrada, o que pode levar a problemas de overflow ou underflow.
+
+### Low
+
+1. **Use of Unnecessary Variables**: O contrato utiliza variáveis desnecessárias, como `recoveryAdminCandidate` e `recoveryAdminKeyHash`, que podem ser removidas para simplificar o contrato.
+2. **Code Organization**: O contrato tem uma estrutura de código desorganizada, com funções relacionadas a diferentes funcionalidades misturadas.
+3. **Lack of Comments**: O contrato não tem comentários suficientes para explicar a lógica por trás das funções e variáveis.
+
+### Undetermined
+
+1. **Lossless Contract**: O contrato `lossless` não está disponível para análise, o que torna difícil determinar se há vulnerabilidades relacionadas a essa parte do código.
+2. **Reentrancy in Lossless Contract**: Não é possível determinar se o contrato `lossless` é vulnerável a reentrancy sem analisar o seu código.
+
+### Informational
+
+1. **Outdated Solidity Version**: O contrato utiliza a versão `^0.8.0` do Solidity, que é uma versão mais antiga. É recomendável atualizar para uma versão mais recente.
+2. **Unused Imports**: O contrato não utiliza a interface `ILssController` em todos os lugares, o que pode indicar que há código desnecessário.

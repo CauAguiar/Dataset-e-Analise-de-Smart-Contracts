@@ -1,0 +1,27 @@
+Tempo de processamento: 12.45 segundos
+
+```
+1. Título: Potencial de Reentrância durante o Claim
+   Descrição: Existe um potencial de reentrância se o contrato do token transferido tiver um callback malicioso, pois a transferência ocorre antes da atualização do estado da claim.
+   Categoria: Medium
+
+2. Título: Ausência de Limite de Taxa de Claims
+   Descrição: Não há limitação na quantidade de claims que podem ser feitas, o que pode levar à exaustão de gás e negação de serviço (DoS).
+   Categoria: Low
+
+3. Título: Vulnerabilidade na Geração Off-chain da Merkle Proof
+   Descrição: A segurança depende da geração correta das Merkle proofs fora da chain. Configurações incorretas no script off-chain podem permitir claims inválidos.
+   Categoria: Informational (Dependência Crítica Off-chain)
+
+4. Título: Potencial de Recuperação de Valor Zero
+   Descrição: Se todos os tokens forem claimados antes do `lockTime`, a função de recuperação poderá transferir zero tokens, resultando em uma recuperação sem valor.
+   Categoria: Informational
+
+5. Título: Dependência do `lockTime` no Timestamp do Bloco
+   Descrição: O `lockTime` utiliza `block.timestamp`, que pode ser ligeiramente influenciado por mineradores.
+   Categoria: Informational
+
+6. Título: Mensagem de Erro Genérica na Recuperação
+   Descrição: A mensagem de erro para falha na recuperação é genérica, dificultando o diagnóstico específico do problema.
+   Categoria: Informational
+```

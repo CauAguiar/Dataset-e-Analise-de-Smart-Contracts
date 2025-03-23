@@ -1,0 +1,29 @@
+Tempo de processamento: 19.94 segundos
+
+Aqui está a lista de vulnerabilidades no código Solidity fornecido, categorizadas por nível de gravidade:
+
+**High**
+
+1. **Reentrancy**: Embora o contrato utilize o `ReentrancyGuard`, há possibilidades de reentrancy em funções como `stake` e `unstake` se o token staking tiver uma função de transferência que execute lógica exterior.
+2. **Transferência de tokens não segura**: A função `recoverToken` pode ser usada para transferir tokens de um usuário para outro, se o dono do contrato tiver permissão para fazer isso.
+
+**Medium**
+
+1. **Manipulação de timestamp**: A função `getCurrentTime` utiliza `block.timestamp`, que pode ser manipulada por mineradores, o que pode afetar a lógica de recompensa.
+2. **Overflows**: Embora o contrato utilize bibliotecas seguras, como `SafeERC20`, há possibilidades de overflows em cálculos que envolvam valores grandes.
+3. **Front-running**: As funções `stake` e `unstake` podem ser vulneráveis a front-running, pois não há mecanismos para prevenir que outros usuários executem transações antes.
+
+**Low**
+
+1. **Informações de depósito duplicadas**: A função `getAverageDepositTimePostDeposit` pode retornar informações de depósito duplicadas se o usuário tiver feito vários depósitos.
+2. **reemento de recompensa desnecessário**: A função `_updateReward` pode realizar cálculos desnecessários se o usuário não tiver recompensas pendentes.
+
+**Undetermined**
+
+1. **Lógica de recompensa complexa**: A lógica de recompensa é complexa e pode conter erros ou comportamentos inesperados que não são facilmente identificáveis.
+2. **Interoperabilidade com outros contratos**: A compatibilidade com outros contratos e tokens não é clara e pode ser fonte de problemas.
+
+**Informational**
+
+1. **Comentários e documentação**: A documentação e os comentários no código são claros e ajudam a entender a lógica do contrato.
+2. **Utilização de bibliotecas seguras**: O contrato utiliza bibliotecas seguras, como `SafeERC20` e `ReentrancyGuard`, o que é uma boa prática.

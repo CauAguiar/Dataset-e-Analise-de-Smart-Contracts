@@ -1,0 +1,23 @@
+Tempo de processamento: 7.32 segundos
+
+Aqui está a lista de vulnerabilidades do contrato Solidity:
+
+**High**
+- **Controle Centralizado**: O contrato permite que uma única entidade, com o papel de `COMPLIANCE_ROLE`, controle a blacklist e queime tokens, o que pode levar a abusos de poder.
+- **Permissão Excessiva**: A função `burnBlacklisted` pode ser usada para queimar todos os tokens de uma conta sem uma limitação clara, potencialmente permitindo a eliminação de fundos legítimos.
+- **Falta de Validación**: Não há verificações claras para garantir que o endereço da conta a ser blacklistada seja válido ou que as operações sejam feitas dentro dos limites esperados.
+
+**Medium**
+- **Dependência de Papéis**: A funcionalidade do contrato depende fortemente da atribuição correta de papéis, o que pode ser difícil de gerenciar em ambientes descentralizados.
+- **Falta de Transparência**: O contrato não oferece mecanismos claros para que as partes interessadas saibam por que uma conta foi blacklisted ou queimada, o que pode levar a desconfiança e litígios.
+- **Custo de Gas**: As operações de blacklist e queima podem ser caras em termos de custo de gas, especialmente se forem executadas frequentemente.
+
+**Low**
+- **Potencial para Spam**: Embora menos crítico, a capacidade de criar múltiplas solicitações de blacklist ou queima pode sobrecarregar a rede, especialmente se não houver mecanismos para prevenir spam.
+
+**Undetermined**
+- **Impacto Regulatório**: A implementação desse contrato pode ter implicações regulatórias não claras, dependendo da jurisdição e do quadro legal aplicável, o que pode afetar sua adopção e uso.
+
+**Informational**
+- **Auditoria e Testes**: É importante realizar auditorias e testes regulares para garantir que o contrato atenda aos requisitos de segurança e funcionalidade esperados, especialmente dado o seu potencial impacto sobre contas de usuários.
+- **Documentação**: Manter uma documentação clara e atualizada sobre o uso, as intenções e as limitações do contrato pode ajudar a evitar mal-entendidos e uso indevido.

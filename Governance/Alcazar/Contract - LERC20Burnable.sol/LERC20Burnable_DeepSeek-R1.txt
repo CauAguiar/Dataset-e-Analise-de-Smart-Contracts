@@ -1,0 +1,32 @@
+Tempo de processamento: 82.44 segundos
+
+**1. Lista de Vulnerabilidades e Categorias:**
+
+#### **High Risk:**
+- **Reentrancy in Lossless Modifiers**  
+  Os modificadores interagem com um contrato externo (`ILssController`) antes de atualizar os estados internos, permitindo potencialmente reentrância durante operações críticas (como transferências ou aprovações).
+
+- **Incorrect Balance Handling in transferOutBlacklistedFunds**  
+  Se o endereço do contrato `lossless` estiver incluído na lista `from`, seu saldo poderá ser incorretamente zerado e readicionado, causando inconsistências ou perda de fundos.
+
+#### **Medium Risk:**
+- **Missing Zero-Address Checks for Critical Addresses**  
+  O construtor e a função `setLosslessAdmin` não verificam se `admin` ou `recoveryAdmin` são endereços válidos (não zero), permitindo configurações inválidas.
+
+- **Front-Risk in Recovery Admin Ownership Acceptance**  
+  A função `acceptRecoveryAdminOwnership` utiliza uma chave enviada em `calldata`, que pode ser interceptada via front-running, permitindo que um atacante assuma o controle.
+
+#### **Low Risk:**
+- **Unchecked Return Value for External Calls**  
+  As chamadas para `ILssController` não verificam se o contrato externo executou corretamente, podendo levar a comportamentos inesperados se o controlador falhar silenciosamente.
+
+#### **Informational:**
+- **Centralization Risks**  
+  O `recoveryAdmin` tem poderes excessivos (e.g., desligar o mecanismo Lossless, alterar o `admin`), criando um ponto único de falha.
+
+- **Lack of Timelock for Admin Changes**  
+  Alterações no `admin` ou `recoveryAdmin` são executadas imediatamente, sem período de espera, aumentando riscos de erro humano ou ataque.
+
+#### **Undetermined:**
+- **Dependency on External Lossless Controller**  
+  A segurança do contrato depende inteiramente do contrato `ILssController` externo, cuja implementação não é auditada aqui. Vulnerabilidades nele podem afetar este contrato.

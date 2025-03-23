@@ -1,0 +1,48 @@
+Tempo de processamento: 128.94 segundos
+
+**Audit Report: WstETHOracle Contract Vulnerabilities**
+
+---
+
+### **High Severity**
+
+1. **Incorrect Price Assumption (Assumes 1 stETH = 1 WETH)**  
+   The oracle assumes stETH and WETH are always pegged 1:1. If stETH depegs (e.g., due to protocol issues), the reported price for wstETH will be inaccurate, leading to systemic risks in dependent protocols.
+
+2. **Potential Decimal Scaling Mismatch**  
+   The calculation assumes `RESILIENT_ORACLE` returns WETH’s price scaled to 1e18. If the external oracle uses a different scaling (e.g., 1e8), the computed wstETH price will be incorrect, causing significant valuation errors.
+
+---
+
+### **Medium Severity**
+
+1. **External Oracle Dependency**  
+   The contract relies entirely on `RESILIENT_ORACLE` for WETH’s price. Compromise or misconfiguration of the external oracle directly impacts the accuracy of wstETH pricing.
+
+2. **Lack of Price Freshness Check**  
+   No validation of the timestamp from the external oracle’s price data, risking reliance on stale prices (e.g., during oracle downtime or delays).
+
+---
+
+### **Low Severity**
+
+1. **Inefficient Error Reporting**  
+   Reverts with a string error message (`"wrong wstETH address"`) instead of gas-efficient custom errors. Increases gas costs for invalid calls.
+
+---
+
+### **Informational**
+
+1. **Centralized Dependency on External Contracts**  
+   Correct functionality depends on the integrity and proper configuration of external contracts (e.g., `STETH`, `RESILIENT_ORACLE`). Changes or failures in these dependencies may compromise the oracle.
+
+---
+
+### **Undetermined**
+
+No undetermined risks identified in the provided code.
+
+---
+
+**Summary**:  
+The primary risks stem from assumptions about asset pegs and scaling, alongside reliance on external oracles. Mitigation requires validating price dependencies, ensuring decimal consistency, and implementing freshness checks.

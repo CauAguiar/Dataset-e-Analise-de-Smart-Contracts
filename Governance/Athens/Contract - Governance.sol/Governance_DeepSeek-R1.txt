@@ -1,0 +1,14 @@
+Tempo de processamento: 92.93 segundos
+
+**Audit Report: Governance Contract Vulnerabilities**
+
+**High Severity:**
+1. **Incorrect Initial Ownership Setup**  
+   The `initialize` function mints tokens to the `owner_` parameter but assigns contract ownership (via `OwnableUpgradeable`) to the deployer (`msg.sender`). This creates a privilege mismatch, as `owner_` receives tokens but lacks admin control over the contract.
+
+**Medium Severity:**  
+*(No medium-severity issues identified.)*
+
+**Low Severity:**  
+1. **Potential Underflow in `unlockedBalanceOf`**  
+   The `unlockedBalanceOf` function subtracts `lockedBalanceOf` from `balanceOf` without explicit validation, risking underflow if `locked

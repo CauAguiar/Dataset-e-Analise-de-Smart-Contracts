@@ -1,0 +1,29 @@
+### **High Severity Vulnerabilities**
+1. **Missing Constructor Supply Assignment**  
+   - The contract does not allocate tokens to the contract deployer in the constructor, which may result in an unintended token distribution.
+
+2. **Lack of Access Control on Token Minting**  
+   - There is no function to mint new tokens, but if one is added in the future without proper access control, it could lead to unauthorized minting.
+
+### **Medium Severity Vulnerabilities**
+3. **Hardcoded Owner Address**  
+   - The `_owner` is initially set to a specific address, which is not assigned dynamically. This reduces flexibility and could be problematic if ownership needs to be transferred securely.
+
+4. **Insecure `transferFrom` Implementation**  
+   - The `transferFrom` function does not correctly handle the case where `allowance` is set to `type(uint256).max`, which is a common optimization in ERC20 tokens to save gas.
+
+### **Low Severity Vulnerabilities**
+5. **Lack of Events for Balance Changes in Internal `_transfer` Function**  
+   - The `_transfer` function updates balances but does not emit an event when balances are decreased, making it harder to track fund movements off-chain.
+
+6. **Use of `require` for Errors Without Custom Error Messages**  
+   - Instead of using Solidity's new custom errors (since Solidity 0.8.4), the contract relies on `require` with string messages, which increases gas costs.
+
+### **Informational Issues**
+7. **Missing `increaseAllowance` and `decreaseAllowance` Functions**  
+   - Standard ERC20 implementations include these functions to prevent potential race conditions when updating allowances.
+
+8. **No `Ownable` or Role-Based Access Control**  
+   - The contract does not use OpenZeppelin’s `Ownable` or `AccessControl`, which would provide a more structured approach to managing ownership and privileges.
+
+Would you like me to suggest fixes for these vulnerabilities?

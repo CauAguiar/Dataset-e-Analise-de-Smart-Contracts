@@ -1,0 +1,27 @@
+Tempo de processamento: 18.24 segundos
+
+### Lista de Vulnerabilidades
+
+#### High
+
+1. **Reentrância**: O contrato `ShootERC20` não protege contra reentrância em suas funções que interagem com outros contratos.
+2. **Permissões excessivas**: O contrato `ShootERC20` concede permissões excessivas ao endereço do criador do contrato, permitindo que ele minte tokens ilimitadamente.
+
+#### Medium
+
+1. **Falta de validação de entrada**: As funções `transfer` e `transferFrom` não validam se o endereço de destino é um contrato, o que pode levar a problemas de compatibilidade.
+2. **Uso de `transfer` em vez de `safeTransfer`**: A função `transfer` pode falhar se o destinatário não suportar a transferência de tokens.
+
+#### Low
+
+1. **Falta de documentação**: O contrato `ShootERC20` não tem documentação suficiente sobre as funções e variáveis.
+2. **Uso de constantes mágicas**: O contrato `ShootERC20` usa constantes mágicas, como `1_000_000_000 ether`, em vez de defini-las como constantes nomeadas.
+
+#### Undetermined
+
+1. **Comportamento não especificado**: O contrato `ShootERC20` não especifica o comportamento em caso de erros ou exceções.
+
+#### Informational
+
+1. **Uso de contrato herdado**: O contrato `ShootERC20` herda do contrato `ERC20` da OpenZeppelin, o que pode ser uma boa prática para segurança e compatibilidade.
+2. **Uso de funções virtuais**: O contrato `ShootERC20` usa funções virtuais, o que permite que os contratos derivados as sobrescrevam e personalizem o comportamento.

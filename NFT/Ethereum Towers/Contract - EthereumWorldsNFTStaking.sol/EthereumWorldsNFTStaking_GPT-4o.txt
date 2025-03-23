@@ -1,0 +1,18 @@
+### **High**  
+1. **Reentrancy Attack Risk** – Apesar do uso de `ReentrancyGuard`, funções como `emergencyUnstake` não protegem contra reentrância caso futuras modificações incluam transferências externas.  
+2. **Signature Replay Attack** – A validação da assinatura pode ser explorada caso os nonces não sejam armazenados e validados corretamente.  
+3. **Centralized Control via `onlyOwner`** – O proprietário pode modificar parâmetros críticos e pausar contratos, criando um ponto único de falha e risco de abuso.  
+4. **Lack of Emergency Withdraw Mechanism** – O contrato não permite que usuários retirem fundos em casos de comprometimento do proprietário.  
+
+### **Medium**  
+5. **Lack of Input Validation** – Algumas funções não validam adequadamente os parâmetros de entrada, o que pode levar a comportamentos inesperados.  
+6. **Integer Overflow/Underflow Risks** – Embora `SafeCast` seja usado, conversões de `uint256` para menores tamanhos (`uint16`, `uint32`, `uint96`) podem causar truncamento indesejado.  
+7. **Missing Event Emissions** – Algumas funções que modificam o estado do contrato não disparam eventos, dificultando auditorias off-chain.  
+
+### **Low**  
+8. **Gas Inefficiencies** – O contrato pode otimizar loops (`for`) e armazenamento de dados para reduzir custos de gás.  
+9. **Storage Slot Inefficiency** – A estrutura de dados pode ser reorganizada para reduzir o uso de armazenamento e otimizar acessos.  
+
+### **Informational**  
+10. **Lack of Documentation** – Algumas funções críticas não possuem documentação clara, dificultando auditorias e revisões futuras.  
+11. **Redundant Code** – Há repetição de lógica na verificação de assinaturas que pode ser abstraída para reduzir duplicação.

@@ -1,0 +1,30 @@
+Tempo de processamento: 14.18 segundos
+
+**1. Lista de Vulnerabilidades**
+
+**High**
+
+* **Dependência Crítica da Assinatura Fora da Cadeia:** Título: Dependência Crítica da Assinatura Fora da Cadeia. Descrição: A segurança do contrato depende fortemente da corretude e segurança do processo de assinatura fora da cadeia e da função `verify`. Qualquer falha na geração ou verificação de assinaturas pode comprometer a segurança dos saques.
+
+**Medium**
+
+* **Centralização e Confiança no Proprietário (Owner):** Título: Centralização e Confiança no Proprietário (Owner). Descrição: Muitas funções críticas, como pausar o contrato, resolver votações e autorizar saques, dependem exclusivamente do Proprietário (Owner). A segurança e o funcionamento do sistema dependem da confiança e da segurança da chave do Proprietário.
+* **Risco Potencial em `Signature.sol` (Não Avaliado):** Título: Risco Potencial em `Signature.sol` (Não Avaliado). Descrição: A segurança da função `verify` em `Signature.sol` é crucial. Vulnerabilidades nesta função (não incluída no código fornecido) podem permitir saques não autorizados ou outras explorações.
+
+**Low**
+
+* **Falta de Validação do Hash IPFS:** Título: Falta de Validação do Hash IPFS. Descrição: A função `resolveVote` não valida o formato ou conteúdo da string IPFS fornecida, apenas garante que não foi definida anteriormente. Isso poderia levar ao armazenamento de dados inesperados ou maliciosos, embora a integridade do conteúdo no IPFS em si seja protegida por hash.
+* **Potencial Front-Running em `proposeVote`:** Título: Potencial Front-Running em `proposeVote`. Descrição:  Um usuário malicioso pode tentar realizar front-running na transação `proposeVote` para obter um `voteId` potencialmente mais baixo, embora o impacto prático seja provavelmente baixo.
+
+**Informational**
+
+* **Dependência de Sistema Fora da Cadeia para Lógica de Votação:** Título: Dependência de Sistema Fora da Cadeia para Lógica de Votação. Descrição: A lógica central de votação é implementada fora da cadeia. O contrato depende da integridade, disponibilidade e segurança deste sistema fora da cadeia para o funcionamento correto do processo de votação.
+* **Nenhuma Gestão On-Chain de Saldos Individuais (Além de Saques):** Título: Nenhuma Gestão On-Chain de Saldos Individuais (Além de Saques). Descrição: O contrato não mantém um registro on-chain dos saldos individuais dos usuários depositados ou ganhos, fora do controle de `nonceMap` e `withdrawn` para prevenção de saques duplicados. A gestão completa dos saldos e recompensas parece ser feita fora da cadeia.
+
+**2. Categorias de Vulnerabilidades**
+
+* **High**: Dependência Crítica da Assinatura Fora da Cadeia
+* **Medium**: Centralização e Confiança no Proprietário (Owner), Risco Potencial em `Signature.sol` (Não Avaliado)
+* **Low**: Falta de Validação do Hash IPFS, Potencial Front-Running em `proposeVote`
+* **Informational**: Dependência de Sistema Fora da Cadeia para Lógica de Votação, Nenhuma Gestão On-Chain de Saldos Individuais (Além de Saques)
+* **Undetermined:** Nenhuma

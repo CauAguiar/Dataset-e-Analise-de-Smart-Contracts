@@ -1,0 +1,29 @@
+### **Auditoria de Smart Contract**  
+
+#### **Vulnerabilidades Identificadas**  
+
+##### **High**  
+1. **Falta de Controle de Acesso na Função `mintNFT`**  
+   - Qualquer usuário pode chamar `mintNFT`, permitindo a criação ilimitada de NFTs sem restrição. Isso pode levar a abusos e perda de valor do contrato.  
+
+##### **Medium**  
+2. **Possível Reutilização de `_newItemID`**  
+   - O contrato permite que qualquer ID seja usado para mintar NFTs, o que pode resultar em colisões ou reuso de IDs já existentes.  
+
+##### **Low**  
+3. **Falta de Verificação de Existência do Token na `tokenURI`**  
+   - A função `tokenURI` não verifica se o `tokenId` existe, o que pode levar a retornos inválidos ou erros inesperados.  
+
+##### **Informational**  
+4. **Uso de `UNLICENSED` na SPDX**  
+   - A ausência de uma licença explícita pode dificultar a reutilização e distribuição do código.  
+
+5. **Eventos Poderiam Registrar Mais Informações**  
+   - O evento `NFTCreated` poderia incluir a URI do token para facilitar rastreamento e auditoria on-chain.  
+
+##### **Undetermined**  
+6. **Possível Problema com `_beforeTokenTransfer`**  
+   - A implementação pode não estar garantindo a correta execução dos hooks de `ERC721` e `ERC721Enumerable`. Isso pode afetar a rastreabilidade de tokens, mas requer mais testes para confirmar.  
+
+### **Conclusão**  
+O contrato apresenta um problema crítico relacionado à falta de controle de acesso na função `mintNFT`, além de vulnerabilidades de média e baixa gravidade que podem impactar a segurança e a funcionalidade do NFT. Recomenda-se a implementação de restrições de acesso, validação de IDs e melhorias na emissão de eventos.

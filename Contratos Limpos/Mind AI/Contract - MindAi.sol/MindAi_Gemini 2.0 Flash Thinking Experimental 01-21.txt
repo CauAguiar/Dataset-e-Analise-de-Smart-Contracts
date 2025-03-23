@@ -1,0 +1,28 @@
+Tempo de processamento: 9.27 segundos
+
+## Auditoria de Smart Contract - Vulnerabilidades
+
+**1. Lista de Vulnerabilidades (Título e Descrição Breve):**
+
+* **Título:** Endereço de Mintagem e Quantidade Hardcoded.
+    * **Descrição:** O contrato define um endereço específico e uma quantidade fixa de tokens para mintagem no construtor, tornando a distribuição inicial inflexível e centralizada.
+
+* **Título:** Distribuição Centralizada de Tokens.
+    * **Descrição:** Todos os tokens iniciais são enviados para um único endereço no momento da criação, concentrando o poder de posse e potencialmente a governança.
+
+* **Título:** Ausência de Controle de Mintagem Pós-Implantação.
+    * **Descrição:** Não existe nenhuma função para cunhar novos tokens após a implantação do contrato, o que pode ser limitante caso seja necessário aumentar o fornecimento no futuro.
+
+* **Título:** Dependência de Biblioteca Externa (OpenZeppelin).
+    * **Descrição:** O contrato depende da biblioteca OpenZeppelin, introduzindo riscos potenciais relacionados a vulnerabilidades encontradas na biblioteca ou em suas versões.
+
+* **Título:** Ausência de Mecanismo de Atualização.
+    * **Descrição:** O contrato não possui um mecanismo de atualização, o que significa que quaisquer bugs descobertos ou funcionalidades futuras não podem ser adicionadas ou corrigidas após a implantação.
+
+**2. Categorização das Vulnerabilidades:**
+
+* Endereço de Mintagem e Quantidade Hardcoded. - **High**
+* Distribuição Centralizada de Tokens. - **High**
+* Ausência de Controle de Mintagem Pós-Implantação. - **Informational**
+* Dependência de Biblioteca Externa (OpenZeppelin). - **Informational**
+* Ausência de Mecanismo de Atualização. - **Medium**

@@ -1,0 +1,30 @@
+Tempo de processamento: 13.18 segundos
+
+## Auditoria de Smart Contract: LISTFuture
+
+Aqui estão as vulnerabilidades encontradas no contrato Solidity `LISTFuture`, categorizadas por severidade e apresentadas no formato solicitado:
+
+**Categoria: Medium**
+
+**Título:** Falta de Controle de Acesso Específico na Função `burnFrom`
+**Descrição:** A função `burnFrom` é pública e permite que qualquer pessoa com aprovação (allowance) queime tokens em nome de outro endereço. Dependendo da intenção do contrato, isso pode ser indesejável, pois não há restrições adicionais sobre quem pode realizar a queima de tokens. Se a intenção é que apenas papéis específicos ou o proprietário do contrato possam realizar queimas em nome de outros, essa função deveria ter controles de acesso mais restritos.
+
+**Categoria: Low**
+
+**Título:** Risco Potencial na Distribuição Inicial de Tokens no Construtor
+**Descrição:** O construtor do contrato permite a distribuição inicial de tokens diretamente para uma lista de endereços fornecida. Se a lista de endereços ou os montantes a serem distribuídos forem comprometidos ou gerenciados incorretamente durante a implantação, pode ocorrer uma distribuição de tokens não intencional ou inadequada, embora o limite máximo de fornecimento (`cap`) proteja contra a criação excessiva de tokens.
+
+**Categoria: Informational**
+
+**Título:** Uso de `unchecked` na Subtração de `allowance` em `burnFrom`
+**Descrição:** A função `burnFrom` utiliza um bloco `unchecked` para a operação de subtração ao reduzir o `allowance` de um spender. Embora em Solidity 0.8.12 verificações de underflow sejam nativas, o uso de `unchecked` suprime explicitamente qualquer verificação de overflow/underflow (embora o underflow seja improvável neste contexto específico). É uma prática menos segura em geral e pode ser evitada para maior clareza e segurança, ainda que o risco aqui seja mínimo.
+
+**Categoria: Informational**
+
+**Título:** Dependência da Configuração Correta do `cap` no Construtor
+**Descrição:** O fornecimento total máximo de tokens é definido pelo parâmetro `cap` fornecido no construtor. A configuração incorreta deste valor pode levar a problemas com a tokenomics pretendida do token LISTFuture. Embora não seja uma vulnerabilidade de código em si, é uma configuração crítica que deve ser definida corretamente no momento da implantação.
+
+**Categoria: Informational**
+
+**Título:** Dependência de Bibliotecas OpenZeppelin
+**Descrição:** O contrato depende de bibliotecas OpenZeppelin para funcionalidades ERC20, Ownable e Pausable. Embora as bibliotecas OpenZeppelin sejam amplamente auditadas e consideradas seguras, existe sempre um risco inerente ao depender de bibliotecas de terceiros. Quaisquer vulnerabilidades descobertas no futuro nas bibliotecas OpenZeppelin podem afetar indiretamente este contrato.

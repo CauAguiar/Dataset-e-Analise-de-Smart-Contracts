@@ -1,0 +1,23 @@
+## Auditoria de Smart Contract - Contrato BNB
+
+Aqui estão as vulnerabilidades encontradas no contrato Solidity, listadas por título, descrição e categoria de severidade.
+
+1.  **Título:** Uso de `assert` em SafeMath
+    **Descrição:** A biblioteca `SafeMath` utiliza `assert` para verificar condições de overflow/underflow. Em caso de falha, `assert` consome todo o gás restante e reverte a transação. Em contratos de produção, é recomendado usar `require` ou `revert` com mensagens de erro para um melhor tratamento de erros e gestão de gás.
+    **Categoria:** Low
+
+2.  **Título:** Falta de Evento `Approval`
+    **Descrição:** O contrato não emite o evento `Approval` quando a função `approve` é chamada. A especificação ERC20 requer a emissão deste evento para notificar os observadores sobre alterações nas autorizações de gastos.
+    **Categoria:** Informational
+
+3.  **Título:**  Falta de Verificação de Endereço Zero no Construtor
+    **Descrição:** O construtor do contrato não verifica se o `msg.sender` (criador do contrato) é o endereço zero. Embora improvável de ser um problema neste caso, é uma boa prática evitar potenciais problemas em cenários de inicialização mais complexos.
+    **Categoria:** Informational
+
+4.  **Título:** Potencial Reentrância em `withdrawEther`
+    **Descrição:**  Embora improvável neste caso simples, a função `withdrawEther` realiza uma chamada externa para `owner.transfer(amount)`. Se o `owner` fosse um contrato malicioso, poderia haver um risco de reentrância. É recomendável seguir o padrão checks-effects-interactions, especialmente em funções que realizam transferências de Ether ou chamadas para endereços externos.
+    **Categoria:** Low
+
+5.  **Título:** Controle de Acesso Básico em `withdrawEther`
+    **Descrição:** A função `withdrawEther` utiliza uma verificação simples (`msg.sender != owner`) para controle de acesso. Para contratos mais complexos e sensíveis, podem ser necessários mecanismos de controle de acesso mais robustos e flexíveis. No contexto deste contrato simples, pode ser suficiente.
+    **Categoria:** Informational

@@ -1,0 +1,35 @@
+Tempo de processamento: 33.52 segundos
+
+**Audit Report for ZENQIRA ERC20 Contract**
+
+---
+
+### **High Risk Vulnerabilities**
+- **None Identified**: The contract uses audited OpenZeppelin libraries with no custom logic introducing critical risks.
+
+---
+
+### **Medium Risk Vulnerabilities**
+- **OpenZeppelin Version Specification Mismatch**: The contract declares compatibility with OpenZeppelin `^5.0.0` but imports `5.0.2`. While likely safe, minor version mismatches could introduce unexpected behavior if breaking changes exist.
+
+---
+
+### **Low Risk Vulnerabilities**
+- **Lack of Upgradeability Mechanism**: The contract is immutable, which is secure by design but limits future adjustments if required (e.g., bug fixes or feature additions).
+
+---
+
+### **Undetermined Risk**
+- **Potential Dependency Risks**: Risks depend on external factors (e.g., OpenZeppelin vulnerabilities in imported versions, though none are currently known).
+
+---
+
+### **Informational**
+1. **Large Initial Supply Minting**: A fixed supply of 500 million tokens (with 18 decimals) is minted to the deployer. While intentional, this should be clearly documented.
+2. **Fixed Token Metadata**: Name (`ZENQIRA`) and symbol (`ZENQ`) are hardcoded and immutable.
+3. **Decimals Default**: Inherits the ERC20 default of 18 decimals, which may not align with project expectations if a different value is needed.
+4. **Compiler Version Flexibility**: Uses `^0.8.20`, allowing newer patch versions, which is standard but could introduce unforeseen compiler-level issues.
+
+---
+
+**Summary**: The contract is minimal and secure for its intended purpose, leveraging audited standards. Key considerations are documentation of design choices (fixed supply, immutability) and verifying OpenZeppelin version compatibility.

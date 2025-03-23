@@ -1,0 +1,40 @@
+Tempo de processamento: 38.17 segundos
+
+**Audit Report for CheckToken Smart Contract**
+
+---
+
+### **High Risk Vulnerabilities**
+- **None Identified**
+
+---
+
+### **Medium Risk Vulnerabilities**
+- **None Identified**
+
+---
+
+### **Low Risk Vulnerabilities**
+- **None Identified**
+
+---
+
+### **Undetermined Risk Vulnerabilities**
+- **None Identified**
+
+---
+
+### **Informational**
+1. **Centralization of Initial Supply**  
+   All tokens are minted to the deployer (`msg.sender`), creating a single point of control over the entire supply. Users must trust the deployer's distribution plan.
+
+2. **Reliance on External Libraries**  
+   The contract depends on OpenZeppelin's ERC20 implementations. While generally secure, the specific library version used should be verified for compatibility with Solidity 0.8.26 and audited for known issues.
+
+3. **No Explicit Ownership Management**  
+   The contract lacks explicit ownership transfer or renouncement mechanisms, which may complicate future upgrades or governance changes.
+
+--- 
+
+### **Summary**  
+The contract is minimal and follows standard ERC20 practices with permit and burnable functionalities. No critical vulnerabilities were identified. Key considerations revolve around trust assumptions in the deployer and ensuring dependencies are up-to-date.

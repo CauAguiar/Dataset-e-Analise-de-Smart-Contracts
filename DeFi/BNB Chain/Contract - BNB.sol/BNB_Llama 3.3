@@ -1,0 +1,29 @@
+Aqui está a lista de vulnerabilidades identificadas no contrato Solidity fornecido, separadas por categorias de gravidade:
+
+### High
+
+1. **Reentrancy**: O contrato não implementa mecanismos de segurança para prevenir ataques de reentrância, que podem permitir que um atacante execute código arbitrário.
+2. **Uso de `throw`**: O contrato usa a palavra-chave `throw` para gerenciar erros, que pode ser problemática e foi removida a partir da versão 0.4.13 do Solidity.
+3. **Uso de `transfer`**: O contrato usa a função `transfer` para enviar ethers, que pode falhar se o destinatário for um contrato que não suporta a função `transfer`.
+
+### Medium
+
+1. **Falta de validação de entrada**: O contrato não valida adequadamente as entradas de usuário, o que pode permitir que um atacante forneça dados inválidos ou maliciosos.
+2. **Uso de `assert`**: O contrato usa a função `assert` para verificar condições, que pode ser problemática se a condição não for atendida.
+3. **Falta de controle de acesso**: O contrato não implementa controles de acesso adequados, o que pode permitir que usuários não autorizados acessem funções sensíveis.
+
+### Low
+
+1. **Uso de `uint256`**: O contrato usa `uint256` para representar valores numéricos, que pode ser desnecessário e aumentar o tamanho do contrato.
+2. **Falta de comentários**: O contrato não tem comentários suficientes para explicar a lógica e o propósito de cada função e variável.
+3. **Uso de `pragma`**: O contrato usa a diretiva `pragma` com uma versão específica do Solidity, que pode tornar o contrato incompatível com versões futuras do Solidity.
+
+### Undetermined
+
+1. **Segurança da função `withdrawEther`**: A segurança da função `withdrawEther` depende do contexto em que o contrato é usado e das medidas de segurança implementadas para proteger o proprietário do contrato.
+2. **Segurança da função `freeze` e `unfreeze`**: A segurança dessas funções depende do contexto em que o contrato é usado e das medidas de segurança implementadas para proteger os tokens congelados.
+
+### Informational
+
+1. **Compatibilidade com a versão do Solidity**: O contrato foi submetido para verificação no Etherscan em 2017, o que significa que pode não ser compatível com as versões mais recentes do Solidity.
+2. **Uso de padrões de codificação antigos**: O contrato usa padrões de codificação antigos, como a função `assert`, que podem ter sido substituídos por abordagens mais modernas e seguras.

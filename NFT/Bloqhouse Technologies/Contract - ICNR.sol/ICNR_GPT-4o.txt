@@ -1,0 +1,17 @@
+### **Vulnerabilidades Encontradas**  
+
+#### **High**  
+- **Falta de Controle de Acesso em `changeBaseURI`**  
+  O método `changeBaseURI` não possui nenhuma restrição de acesso, permitindo que qualquer usuário altere o Base URI dos NFTs.
+
+#### **Medium**  
+- **Possível Manipulação de `getNFTURI`**  
+  Se a implementação do contrato permitir que o `BaseURI` seja alterado de forma arbitrária, isso pode levar a ataques de phishing ou enganosos ao alterar os metadados do NFT.
+
+#### **Low**  
+- **Falta de Eventos para Mudanças de Estado**  
+  A função `changeBaseURI` não emite eventos, dificultando auditorias on-chain e a rastreabilidade das alterações.  
+
+#### **Informational**  
+- **Falta de Documentação**  
+  O código não possui comentários explicando a lógica ou as intenções das funções, o que pode dificultar o entendimento e manutenção do contrato.

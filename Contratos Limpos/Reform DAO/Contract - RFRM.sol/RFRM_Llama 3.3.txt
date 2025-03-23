@@ -1,0 +1,22 @@
+Tempo de processamento: 7.72 segundos
+
+Aqui está a lista de vulnerabilidades identificadas no contrato Solidity:
+
+**High**
+- Vulnerabilidade de Controle de Acesso: Falta de restrições de acesso a funções críticas.
+- Vulnerabilidade de Reentrância: Possibilidade de reentrância em funções que interagem com outros contratos.
+
+**Medium**
+- Vulnerabilidade de DoS (Denial of Service): Possibilidade de paralisar o contrato com operações de queima de tokens.
+- Vulnerabilidade de Manipulação de Eventos: Falta de validação de eventos emitidos pelo contrato.
+
+**Low**
+- Vulnerabilidade de Informação Sensível: Exposição de informações sensíveis, como o endereço do criador do contrato.
+- Vulnerabilidade de Ineficiência de Gás: Uso ineficiente de gás em operações de queima de tokens.
+
+**Undetermined**
+- Vulnerabilidade de Interoperabilidade: Possibilidade de problemas de interoperabilidade com outros contratos ou protocolos.
+
+**Informational**
+- Falta de Documentação: Falta de documentação detalhada sobre o contrato e suas funções.
+- Uso de Bibliotecas Desatualizadas: Uso de versões desatualizadas de bibliotecas, como a OpenZeppelin.

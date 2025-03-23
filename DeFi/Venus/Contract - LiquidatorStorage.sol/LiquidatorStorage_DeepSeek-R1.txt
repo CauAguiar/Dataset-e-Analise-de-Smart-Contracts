@@ -1,0 +1,50 @@
+Tempo de processamento: 65.76 segundos
+
+### Vulnerabilidades no Contrato `LiquidatorStorage`
+
+---
+
+#### **High**
+1. **Controle de Acesso Inadequado**  
+   Funções/endpoints que modificam variáveis críticas (e.g., `treasuryPercentMantissa`, `protocolShareReserve`, `liquidationRestricted`) podem não possuir restrições, permitindo alterações não autorizadas (assumindo que a implementação em contratos herdados não adicione verificações).
+
+2. **Inicialização Incorreta de Variáveis de Estado**  
+   Variáveis essenciais (e.g., `minLiquidatableVAI`, `treasuryPercentMantissa`) podem não ser inicializadas adequadamente, resultando em valores padrão inseguros ou zerados.
+
+---
+
+#### **Medium**
+1. **Gestão Potencialmente Ineficiente do Array `pendingRedeem`**  
+   Iterações sobre `pendingRedeem` sem uso de `pendingRedeemChunkLength` podem causar transações com custo excessivo de gas ou falhas.
+
+2. **Configuração Maliciosa de `pendingRedeemChunkLength`**  
+   Um administrador comprometido pode definir valores extremos para `pendingRedeemChunkLength`, causando ineficiência ou gargalos no processamento.
+
+---
+
+#### **Low**
+1. **Exposição Pública de Variáveis de Estado**  
+   Variáveis como `allowedLiquidatorsByAccount` e `liquidationRestricted` são públicas, possivelmente expondo detalhes sensíveis do sistema, embora isso seja intencional para getters.
+
+---
+
+#### **Undetermined**
+1. **Falta de Validação de Entrada em Contratos Herdados**  
+   Sem análise de contratos que herdam `LiquidatorStorage`, não é possível confirmar se valores críticos (e.g., `treasuryPercentMantissa > 100%`) são validados adequadamente.
+
+2. **Atualizações Não-Triviais de `protocolShareReserve`**  
+   Alterações no endereço `protocolShareReserve` podem redirecionar fundos para contratos maliciosos, mas depende da implementação externa de segurança.
+
+---
+
+#### **Informational**
+1. **Uso de Versão Legada do Solidity**  
+   O contrato utiliza Solidity `0.8.13`, que, embora segura, não inclui otimizações e correções mais recentes de versões subsequentes.
+
+2. **Gerenciamento de Storage para Upgrades**  
+   O array `__gap` é usado para evitar colisões em contratos upgradeable, seguindo práticas padrão de proxies, mas requer auditoria do tamanho para compatibilidade futura.
+
+---
+
+### Observações Gerais  
+As vulnerabilidades identificadas são baseadas no contexto do código fornecido. A implementação real em contratos herdados pode introduzir ou mitigar riscos adicionais.

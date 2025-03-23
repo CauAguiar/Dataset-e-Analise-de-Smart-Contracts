@@ -1,0 +1,41 @@
+Tempo de processamento: 161.77 segundos
+
+**Auditoria do Contrato LibBytes**
+
+---
+
+**High Severity**
+
+1. **Verificação Tardia de Limites (Late Bounds Check):** As funções verificam os limites após acessar a memória via assembly, permitindo leitura/escrita fora do buffer se o índice ou tamanho excederem `data.length`.
+
+2. **Corrupção de Memória em `readBytes66`:** Ao escrever 32 bytes em posições não alinhadas (ex.: `add(a, 66)`), a função pode sobrescrever memória adjacente, corrompendo estruturas de dados.
+
+3. **Sobrescrita de Memória em `readBytes`:** O loop na função `readBytes` pode escrever além do array alocado se `size` não for múltiplo de 32, corrompendo regiões de memória não relacionadas.
+
+---
+
+**Medium Severity**
+
+1. **Uso Inseguro de `assembly` para Manipulação de Bytes:** As implementações em `assembly` ignoram verificações automáticas do Solidity, aumentando o risco de erros de cálculo de offsets e corrupção de memória.
+
+2. **Leitura de Dados Não Inicializados:** Em casos onde `index` é maior que `data.length`, as funções acessam memória não alocada antes da verificação, potencialmente expondo dados residuais.
+
+---
+
+**Low Severity**
+
+1. **Desalinhamento de Bytes em Operações de Shift:** Funções como `readUint8Uint8` e `readUint16` usam shifts em valores não verificados, que podem retornar dados incorretos se os bytes subjacentes estiverem malformados.
+
+---
+
+**Informational**
+
+1. **Uso Excessivo de `assembly`:** A implementação recorrente de `assembly` dificulta a legibilidade e aumenta a complexidade da manutenção, elevando o risco de erros não detectados.
+
+2. **Falta de Documentação Detalhada:** Métodos como `readBytes66` e `readBytes` carecem de explicações claras sobre o tratamento de alinhamento de memória e casos extremos.
+
+--- 
+
+**Undetermined**
+
+1. **Compatibilidade de Versão do Solidity:** O uso da versão `0.7.6` (sem `^`) pode introduzir riscos não avaliados em ambientes com compiladores atualizados, mas não foi detectado impacto direto nas funções.

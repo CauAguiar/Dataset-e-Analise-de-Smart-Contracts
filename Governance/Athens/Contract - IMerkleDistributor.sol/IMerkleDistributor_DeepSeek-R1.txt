@@ -1,0 +1,15 @@
+Tempo de processamento: 104.55 segundos
+
+**Audit Report: Vulnerabilities in MerkleDistributor Interface**
+
+**High Severity:**
+- **Improper Access Control in `claim` Function**: The interface does not enforce that the caller (`msg.sender`) must match the `account` parameter. If the implementation lacks this check, third parties could claim tokens on behalf of valid recipients.
+- **Reentrancy Risk in `claim` Function**: The interface does not specify safeguards (e.g., checks-effects-interactions pattern or reentrancy guards), leaving the implementation vulnerable to reentrancy attacks during token transfers.
+
+**Undetermined Severity:**
+- **Merkle Proof Validation Flaws**: Correct verification of the Merkle proof is critical for security, but the interface does not detail the implementation, making vulnerabilities possible if proofs are improperly validated.
+- **Mutable Merkle Root**: If the implementation allows post-deployment modification of the Merkle root (via an unexposed function), unauthorized claims could occur.
+
+**Informational:**
+- **Event Emission Consistency**: The `Claimed` event must be emitted after successful claims to ensure transparent tracking.
+- **Input Validation Gaps**: Parameters such as `amount` should be validated (e.g., non-zero) in the implementation to prevent invalid claims.

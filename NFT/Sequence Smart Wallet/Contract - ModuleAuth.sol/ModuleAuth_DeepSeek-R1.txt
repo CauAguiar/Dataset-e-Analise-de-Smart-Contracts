@@ -1,0 +1,29 @@
+Tempo de processamento: 91.66 segundos
+
+### Vulnerabilities Audit Report
+
+#### High Risk
+1. **Improper Signature Verification (Dependency)**  
+   Relies on imported `SignatureValidator` for secure signature recovery. If susceptible to malleability or flawed recovery, unauthorized access may occur.
+
+2. **Incorrect Image Hash Validation**  
+   Abstract `_isValidImage` function's implementation determines security. Incorrect validation could allow forged configurations.
+
+#### Medium Risk
+1. **Dynamic Signature Denial-of-Service (DoS)**  
+   Extremely large dynamic signatures may cause gas exhaustion during validation, disrupting contract operations.
+
+2. **Signature Parsing Vulnerabilities**  
+   Relies on `LibBytes` for parsing. Incorrect bounds checks could lead to unexpected reverts or malformed data processing.
+
+#### Low Risk
+1. **Outdated Solidity Version Use**  
+   Solidity 0.7.6 lacks security improvements from newer versions, increasing potential for undiscovered compiler-level issues.
+
+#### Undetermined Risk
+1. **Dependence on Unverified Abstract Function**  
+   Security hinges on correct `_isValidImage` logic in child contracts, which is not audited here.
+
+#### Informational
+1. **Non-Weighted Address Flags**  
+   `FLAG_ADDRESS` includes signers in the image hash without contributing to threshold validation, requiring careful implementation in derived contracts.

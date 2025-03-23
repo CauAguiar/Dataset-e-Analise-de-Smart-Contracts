@@ -1,0 +1,30 @@
+Tempo de processamento: 12.06 segundos
+
+## Auditoria de Smart Contract - LibBytes
+
+**1. Lista de Vulnerabilidades:**
+
+**High**
+
+*   **Título:** Leitura Fora dos Limites em `readFirstUint16`
+    *   **Descrição:** A função `readFirstUint16` realiza a leitura de memória antes de verificar se o array de bytes possui o tamanho mínimo necessário (2 bytes). Se o array de bytes for menor que 2 bytes, a função tentará acessar memória fora dos limites do array, levando a um comportamento indefinido ou erro.
+
+**High**
+
+*   **Título:** Leitura Fora dos Limites em Funções de Leitura (Padrão Comum)
+    *   **Descrição:** As funções `readUint8Uint8`, `readAddress`, `readBytes66`, `readUint16` e `readBytes` seguem um padrão onde a leitura de memória (através de `mload` em assembly) é realizada *antes* da verificação `require` que visa garantir que o índice e tamanho estejam dentro dos limites do array de bytes.  Se o índice ou tamanho forem inválidos, a função tentará acessar memória fora dos limites do array antes que a verificação `require` seja executada, resultando em comportamento indefinido ou erro.
+
+**Medium**
+
+*   **Título:** Verificação de Limites Apos Leitura em `readBytes32`
+    *   **Descrição:** Na função `readBytes32`, embora a verificação `require` ocorra *antes* da leitura em assembly, a mensagem de erro "GREATER_OR_EQUAL_TO_32_LENGTH_REQUIRED" pode ser confusa.  A função na verdade requer que o tamanho restante do array a partir do índice seja *pelo menos* 32 bytes, não "maior ou igual a 32 de comprimento". A mensagem deve ser mais clara para refletir a condição real. *(Nota: Embora classificada como Medium pela clareza da mensagem, o ponto principal High é a vulnerabilidade geral de 'require depois da leitura' que não se aplica estritamente a `readBytes32`)*.
+
+**Informational**
+
+*   **Título:**  Uso de Assembly para Operações Simples
+    *   **Descrição:**  A biblioteca faz uso extensivo de assembly inline para operações que poderiam ser implementadas de forma mais legível e segura em Solidity puro, como operações bitwise e manipulação de bytes.  Embora o assembly possa oferecer otimizações de gás em alguns casos, ele aumenta a complexidade do código, dificulta a auditoria e pode introduzir erros.  Para a clareza e segurança do código, o uso de assembly deveria ser reconsiderado, especialmente para operações simples.
+
+**Informational**
+
+*   **Título:**  Mensagens de Erro Genéricas
+    *   **Descrição:** As mensagens de erro em todas as funções (`OUT_OF_BOUNDS`, `GREATER_OR_EQUAL_TO_32_LENGTH_REQUIRED`) são genéricas e não fornecem detalhes específicos sobre qual parâmetro estava fora dos limites ou qual condição não foi atendida.  Mensagens de erro mais informativas facilitariam a depuração e o entendimento de falhas ao usar a biblioteca.  Por exemplo, em vez de "OUT_OF_BOUNDS", mensagens como "LibBytes#readUint16: index out of bounds" ou "LibBytes#readBytes: size exceeds available data length" seriam mais úteis.

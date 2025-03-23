@@ -1,0 +1,48 @@
+Tempo de processamento: 118.42 segundos
+
+### Vulnerabilities Audit Report
+
+#### High Severity
+
+1. **Division by Zero in endSale**  
+   If `totalStake` is zero (no investments) when `endSale` is called, the share calculation divides by zero, causing transaction failure.
+
+2. **Unbounded Loop in endSale**  
+   Iterating over all investors in `endSale` may exceed gas limits if the list is large, preventing the function from executing.
+
+---
+
+#### Medium Severity
+
+1. **Centralization Risks**  
+   The owner controls critical functions (minting, fund withdrawal, sale lifecycle), posing risks if compromised.
+
+2. **Integer Division Precision Loss**  
+   Token distribution calculations use integer division, potentially truncating fractions and leading to lost precision.
+
+3. **Referral System Front-Running**  
+   Attackers could front-run transactions to become eligible referrers, diverting referral bonuses.
+
+---
+
+#### Low Severity
+
+1. **Zero Value Investments Allowed**  
+   Investors can submit 0 ETH, bloating the `_investors` list and wasting gas during claims.
+
+2. **Minting Zero Tokens**  
+   `claimShares` may mint zero tokens if an investor’s share is zero, allowing unnecessary transactions.
+
+---
+
+#### Informational
+
+1. **Use of block.timestamp**  
+   Relies on `block.timestamp` for vesting periods; minor miner influence is negligible in this context.
+
+---
+
+#### Undetermined
+
+1. **Dependency on LISTFuture Implementation**  
+   The contract assumes `ILISTF.burnFrom` is correctly implemented, but vulnerabilities in this dependency are not analyzed.

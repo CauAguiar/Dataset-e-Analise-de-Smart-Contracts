@@ -1,0 +1,35 @@
+Tempo de processamento: 11.26 segundos
+
+Atuando como auditor de smart contracts, listo as vulnerabilidades encontradas no código Solidity da interface `IMerkleDistributor`:
+
+1.  **Título:** Endereço de Token Incorreto
+    **Descrição:** A função `token()` pode retornar o endereço de um token incorreto, levando os usuários a interagirem com o contrato de token errado.
+    **Categoria:** Informational
+
+2.  **Título:** Merkle Root Incorreto
+    **Descrição:** A função `merkleRoot()` pode retornar um Merkle Root incorreto, impedindo que usuários legítimos reivindiquem seus tokens ou permitindo exploração se o root for manipulado.
+    **Categoria:** Medium
+
+3.  **Título:** Status `isClaimed` Incorreto
+    **Descrição:** A função `isClaimed()` pode retornar um status incorreto, permitindo múltiplas reivindicações ou impedindo reivindicações legítimas.
+    **Categoria:** Medium
+
+4.  **Título:** Falta de Validação de Inputs na Função `claim` (Implementação)
+    **Descrição:** A interface não especifica validações, mas a implementação da função `claim` deve validar minuciosamente os inputs (endereço, quantidade e prova Merkle) para evitar reivindicações não autorizadas.
+    **Categoria:** High
+
+5.  **Título:** Reentrância na Função `claim` (Implementação)
+    **Descrição:** Se a implementação da função `claim` realizar chamadas externas após a atualização do status de reivindicação, mas antes da transferência de tokens, um ataque de reentrância pode ser possível.
+    **Categoria:** Medium/High
+
+6.  **Título:** Negação de Serviço via Prova Merkle Complexa (Implementação)
+    **Descrição:**  Prover uma prova Merkle excessivamente grande na função `claim` pode consumir quantidades extremas de gás, levando a uma negação de serviço.
+    **Categoria:** Low/Medium
+
+7.  **Título:** Ataque de Front-running na Função `claim` (Implementação)
+    **Descrição:** Um ator malicioso pode monitorar o mempool e antecipar transações `claim` válidas, reivindicando tokens destinados a outro usuário.
+    **Categoria:** Informational/Low
+
+8.  **Título:** Emissão de Evento `Claimed` Incorreta ou Ausente (Implementação)
+    **Descrição:** Se o evento `Claimed` não for emitido corretamente ou não for emitido, o rastreamento de reivindicações bem-sucedidas e a depuração ficam dificultados.
+    **Categoria:** Informational

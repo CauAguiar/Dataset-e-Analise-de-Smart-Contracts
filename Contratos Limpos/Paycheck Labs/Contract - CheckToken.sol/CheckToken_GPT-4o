@@ -1,0 +1,32 @@
+### **High**  
+1. **Centralized Token Minting**  
+   - O contrato permite que todo o fornecimento máximo seja cunhado para `msg.sender` no construtor, o que pode indicar um risco de centralização caso `msg.sender` seja um endereço controlado por uma entidade única.  
+
+2. **Falta de Mecanismo de Governança**  
+   - Não há um sistema de governança ou controle sobre o fornecimento do token após a implantação, o que pode levar a problemas de administração.  
+
+---
+
+### **Medium**  
+3. **Possível Problema de Precisão (MAX_SUPPLY)**  
+   - Embora Solidity suporte operações com inteiros grandes, o valor de `MAX_SUPPLY` é extremamente alto (100 bilhões de tokens com 18 casas decimais), o que pode causar problemas de precisão em cálculos futuros.  
+
+---
+
+### **Low**  
+4. **Uso de Versão de Solidity Não Estável (`0.8.26`)**  
+   - A versão especificada (`0.8.26`) ainda não foi oficialmente lançada, o que pode indicar um erro ou um risco de compatibilidade futura.  
+
+---
+
+### **Informational**  
+5. **Contrato Não Implementa Mecanismos de Taxação ou Recompensas**  
+   - O contrato apenas segue o padrão ERC-20 sem funcionalidades adicionais, como taxas de transação ou recompensas para holders.  
+
+6. **Nome e Símbolo do Token Estão Hardcoded**  
+   - O nome e o símbolo do token são fixos no código e não podem ser alterados após a implantação.  
+
+---
+
+### **Undetermined**  
+Nenhuma vulnerabilidade identificada nesta categoria.
