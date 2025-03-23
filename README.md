@@ -1,6 +1,6 @@
 # Análise Comparativa de IA Generativa em Segurança de Blockchain
 
-Repositório oficial do artigo **"Análise comparativa de IA generativa em segurança de blockchain: avaliando modelos de linguagem de grande escala na detecção de vulnerabilidades de contratos inteligentes"** submetido ao CSBC 2025.
+Repositório oficial do artigo **"Análise comparativa de IA generativa em segurança de blockchain: avaliando LLMs na detecção de vulnerabilidades de contratos inteligentes"** submetido ao CSBC 2025.
 
 ## 📜 Contexto Acadêmico
 **Autores:**  
